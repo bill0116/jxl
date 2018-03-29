@@ -1,0 +1,233 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'评分卡指标维护','search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                        <button type="button" class="btn btn-info" value="新建" onclick="doAdd()">
+                            <span class="glyphicon glyphicon-plus">新建</span>
+                        </button>
+                        <button type="button" class="btn btn-success btn-sm" value="查询" onclick="doSearch()">
+                            <span class="glyphicon glyphicon-search">查询</span>
+                        </button>
+                        <button type="reset" class="btn btn-success btn-sm" value="重置">
+                            <span class="glyphicon glyphicon-refresh">重置</span>
+                        </button>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>指标名称:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="EvaluateItemName" id="EvaluateItemName">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>数据类型:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="DataType" id="DataType">
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+
+                            <td style='width:200px;'>指标名称</td>
+                            <td style='width:100px;'>数据类型</td>
+                            <td style='width:100px;'>数据方法</td>
+                            <td style='width:100px;'>关键字</td>
+                            <td style='width:150px;'></td>
+                            <td style='width:150px;'></td>
+                            <td style='width:150px;'></td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        {volist name="data" id="vo"}
+                        <tr style='height: 40px;' class='dbb'>
+                            <input  type='hidden' name='EvaluateItemID'  value="{$vo['EvaluateItemID']}" data-text="{$vo['EvaluateItemID']}">
+                            <td >{$vo.EvaluateItemName}</td>
+                            <td >{$vo.DataType}</td>
+                            <td >{$vo.DataFunction}</td>
+                            <td >{$vo.ItemKey}</td>
+                            <td><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>
+                            <td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td>
+                            <td><a href='javascript:void(0);' onclick='edit_detail(this)'>编辑明细</a></td>
+                        <tr>
+                         {/volist}
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+                <?php echo $page;?>
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //查询
+    function doSearch(page) {
+        $.ajax({
+            type: 'post',
+            data: $('form').serialize() + "&page=" + page,
+            url: "{:url('EvaluateItemList/search')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                                "<input  type='hidden' name='id'  value='" + data.data['list'][i].EvaluateItemID + "' data-text='" +data.data['list'][i].EvaluateItemID + "'>" +
+                                "<td >" + data.data['list'][i].EvaluateItemName+ "</td>" +
+                                "<td >" + data.data['list'][i].DataType+ "</td>" +
+                                "<td >" + data.data['list'][i].DataFunction+ "</td>" +
+                                "<td >" + data.data['list'][i].ItemKey+ "</td>" +
+                                "<td><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>" +
+                                "<td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td>" +
+                                "<td><a href='javascript:void(0);' onclick='edit_detail(this)'>编辑明细</a></td>" +
+                                "<tr>";
+                    }
+                    $("#dynr").empty();
+                    $("#dynr").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+
+    //新增
+    function doAdd(){
+        var url="{:url('EvaluateItemList/add')}";
+        var iWidth = 600; //弹出窗口的宽度;
+        var iHeight = 400; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+    }
+
+    //编辑
+    function edit(ob){
+        var id=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+        var url="{:url('EvaluateItemList/edit')}?id="+id;
+        var iWidth = 600; //弹出窗口的宽度;
+        var iHeight = 400; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+    }
+
+    //删除
+    function del(ob){
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        } else {
+            var id=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+            $.ajax({
+                url: "{:url('EvaluateItemList/del')}",
+                type: "POST",
+                data: {id: id},
+                dataType: "json",
+                success: function (data) {
+                    if (data == '1') {
+                        $(ob).parent("td").parent("tr").remove();
+                    }
+                    alert('删除成功！');
+                },
+                error: function () {
+                    alert('删除失败！');
+                }
+            });
+        }
+    }
+
+    //编辑明细
+        function edit_detail(ob){
+            var type=$(ob).parent('td').parent('tr').find('td').eq(1).text();
+            var id=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+            var url="{:url('EvaluateItemList/detail')}?id="+id+"&type="+type;
+            var iWidth = 600; //弹出窗口的宽度;
+            var iHeight = 400; //弹出窗口的高度;
+            //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+            var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+            var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+            window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                    'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                    'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+
+        }
+</script>
+{/block}

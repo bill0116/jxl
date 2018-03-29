@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="edge"/>
+    <title>{$title|default=get_system_config("system_name")}</title>
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/plugins/gritter/jquery.gritter.css"/>
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/xiaowei.css" rel="stylesheet">
+    <script type="text/javascript">
+    </script>
+</head>
+{include file="Layout:page_script"/}
+<body>
+<div class="shade"></div>
+<div class="form-group hidden" id="img_upload_container">
+    <div id="img_upload">上传</div>
+</div>
+<nav class="navbar navbar-default row" role="navigation" id="top_menu">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fa fa-bars fa-lg"></i>
+        </button>
+        <div class="hidden-xs">
+            &nbsp;
+        </div>
+        <a href="{:url('index/index')}" class="navbar-brand">{:get_system_config("system_name")}</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-6">
+        <ul class="nav navbar-nav navbar-right">
+            <foreach name="top_menu" item="top_menu_vo">
+
+            </foreach>
+            <!--         <a class="nav-app btn-button" href="{:url('OrderTracking/index')}">
+                         <i class="fa fa-crosshairs"></i>订单跟踪
+                     </a>
+                     <a class="nav-app btn-button" href="{:url('ChangePassword/index')}">
+                         <i class="fa fa-eraser"></i>修改密码
+                     </a>
+                     <a class="nav-app btn-button" href="{:url('UserAgentApply/add')}">
+                         <i class="fa fa-cog"></i>代理设置
+                     </a>
+                     <a class="nav-app btn-button" href="{:url('Flow/index')}">
+                         <i class="fa fa-search"></i>流程查询
+                     </a>-->
+            <a class="nav-app btn-danger" href="{:url('login/logout')}"><i class="fa fa-sign-out"></i>退出</a>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+<div id="wrapper">
+    <div class="sidebar navbar-static-side" id="sidebar">
+        <div id="user_info" class="text-center hidden-xs">
+            <span>当前用户：{$Think.session.user_name}</span>
+        </div>
+        <?php echo html_entity_decode($left_mune);?>
+    </div>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row wrapper border-bottom gray-bg">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home home-icon"></i>
+                        <a href="{:url('index/index')}">Home</a>
+                    </li>
+                </ul><!-- .breadcrumb -->
+            </div>
+        </div>
+        <div class="wrapper wrapper-content">
+            <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+            <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+            <div class="button">
+                    <button type="button" class="btn btn-info" value="提交"  onclick="doSubmit()">
+                        <span class="glyphicon glyphicon-ok-sign">提交</span>
+                    </button>
+            </div>
+            <div class="approve1">
+                <button type="button" class="btn btn-info" value="提交"  onclick="doSubmit1()">
+                    <span class="glyphicon glyphicon-ok-sign">提交</span>
+                </button>
+            </div>
+            <div class="button1" style="display: none;">
+                <div class="btn-group">
+                    <a href="#"  class="btn btn-info" data-toggle="dropdown">下载</a>
+                    <ul class="dropdown-menu">
+                        <li><a href="{:url('report/index')}?applicationid={$applicationid}" target="_blank">{:lang('原始下载')}</a></li>
+                        <li><a  data-toggle="modal" data-target="#uploadModal">{:lang('修改下载')}</a></li>
+                    </ul>
+                </div>
+                <button type="button" class="btn btn-info" value="发送给客户" data-toggle="modal"  data-target="#uploadModal">
+                    <span class="glyphicon">发送给客户</span>
+                </button>
+            </div>
+            <br/>
+            <div class="mail" style="display: none;">
+                客户邮箱地址：
+                <input  name="mail" type="email" value="" >
+                <input type="button" value="发送">
+            </div>
+            <div class="approve1" style="display: none;">
+                审核意见：
+                <input style="margin:0 5px 0 5px;width:auto;" name="IsApproved" type="radio" value="同意" ><label>同意</label>
+                <input style="margin:0 5px 0 5px;width:auto;" name="IsApproved" type="radio" value="拒绝" ><label>拒绝</label>
+            </div>
+            <div class="ibox" sort="12">
+                <div class="widget-header">
+                    {include file="Public:common_nav"/}
+                </div>
+            </div>
+            {include file="Public:upload"/}
+            {block name="content"}
+
+            {/block}
+        </div>
+    </div>
+
+</div>
+<script src="__PUBLIC__/js/jquery-2.1.1.js"></script>
+<script src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap.js"></script>
+<script src="__PUBLIC__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="__PUBLIC__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="__PUBLIC__/js/inspinia.js"></script>
+<script src="__PUBLIC__/js/jedate.js"></script>
+<script src="__PUBLIC__/js/jquery.form.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/public.js"></script>
+
+<!--Jquery easyui-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/report/easyui.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/report/icon.css">
+<script type="text/javascript" src="__PUBLIC__/report/jquery.easyui.min.js"></script>
+<script type="text/javascript">
+    var option="{$option}";
+    //翻译
+    if(option=='4'){
+        $('.approve1').hide();
+        $('.foreign').show();
+        $('.com').hide();//按钮
+        $('.normal').hide();//保存、确认按钮
+        $('.translate').show();//保存、确认按钮(翻译)
+
+    }
+    //报告审核
+    else if(option=='3'){
+        $('.button').hide();
+        $('.approve1').show();
+        $('.normal').hide();//保存、确认按钮
+        $('.approve_memo').show();//备注
+        $('.com').hide();//按钮
+    }
+    //翻译审核
+    else if(option=='5'){
+        $('.button').hide();
+        $('.approve1').show();
+        $('.normal').hide();//保存、确认按钮
+        $('.foreign').show();
+        $('.approve_memoEng').show();//备注（翻译）
+        $('.com').hide();//按钮
+    }
+    //已完成报告
+    else if(option=='6'){
+        $('.approve1').hide();
+        $('.button').hide();
+        $('.button1').show();
+        $('.normal').hide();//保存、确认按钮
+        $('.feedback').show();//客户反馈
+        $('.com').hide();//按钮
+    }
+    //制作报告
+    else{
+        $('.approve1').hide();
+        $('.foreign').hide();
+    }
+
+    //制作报告完成提交
+    function doSubmit(){
+        var applicationid=$('#applicationid').val();
+        var activeid=$('#activeid').val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid,"activeid":activeid},
+            url:  "{:url('Layout/update')}",
+            dataType: 'json',
+            success: function (data) {
+                if(data.code==1){
+                    tankuang(300,data.msg);
+                    window.location.href=data.url;
+                }
+
+            }
+        });
+    }
+
+    //审核完成提交
+    function doSubmit1(){
+        var applicationid=$('#applicationid').val();
+        var activeid=$('#activeid').val();
+        var obj1=document.getElementsByName('IsApproved');//审核意见
+        for(var i=0;i<obj1.length;i++){
+            if(obj1[i].checked==true){
+                IsApproved=obj1[i].value;
+            }
+        }
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid,"activeid":activeid,"IsApproved":IsApproved},
+            url:  "{:url('Layout/update1')}",
+            dataType: 'json',
+            success: function (data) {
+                if(data.code==1){
+                    tankuang(300,data.msg);
+                    window.location.href=data.url;
+                }
+
+            }
+        });
+    }
+
+    //发送给客户
+    function doSendmail(){
+        $('.mail').toggle();
+    }
+
+
+</script>
+
+{block name="js"}
+
+{/block}
+
+</body>
+</html>

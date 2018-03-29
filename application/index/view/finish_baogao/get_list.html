@@ -1,0 +1,249 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'已完成报告','search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" class="btn btn-success btn-sm" value="{:lang('查询')}" onclick="doSearch()">
+              <!--          <input type="reset" class="btn btn-info btn-sm" value="{:lang('导出')}" onclick="doExport()">
+                        <input type="reset" class="btn btn-default btn-sm" value="{:lang('重置')}">-->
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+                .table span {
+                    color: red;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('目标公司名称')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="companyName" id="companyName">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('报告编号')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="wtdCode" id="wtdCode">
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('客户代码')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="kunnr" id="kunnr">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('客户名称')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="name" id="name">
+                </td>
+            </tr>
+            <tr role="row">
+              <!--  <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('审批结果')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select name="ActiveMessage" id="ActiveMessage" size="1" style="width: 100px;">
+                        <option value=""></option>
+                        <option value="同意">同意</option>
+                        <option value="拒绝">拒绝</option>
+                    </select>
+                </td>-->
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('申请人')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                    aria-label="Status: activate to sort column ascending">
+                    <select name="creator" id="creator" size="1" style="width: 100px;">
+                        <option value=""></option>
+                        {volist name=":model('common')->getPerson()" id="vo"}
+                        <option value="{$vo['UserID']}">{$vo['UserName']}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                width: 100%;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width: 100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr role="row">
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                报告编号
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                客户代码
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                客户名称
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                目标公司名称
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                提交人
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                提交时间
+                            </th>
+                            <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                操作
+                            </th>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function doSearch(page) {
+        $.ajax({
+            type: 'post',
+            data: $('form').serialize() + "&page=" + page,
+            url: "{:url('FinishBaogao/search')}",
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                               " <input  type='hidden' name='activeid'  value="+data.data['list'][i]['ActiveID']+" data-text="+data.data['list'][i]['ActiveID']+">"+
+                                "<input  type='hidden' name='applicationid'  value="+data.data['list'][i]['ApplicationID']+" data-text="+data.data['list'][i]['ApplicationID']+">"+
+                               " <input  type='hidden' name='Creator'  value="+data.data['list'][i]['Creator']+" data-text="+data.data['list'][i]['Creator']+">"+
+                                "<input  type='hidden' name='KeyCol10'  value="+data.data['list'][i]['KeyCol10']+" data-text="+data.data['list'][i]['KeyCol10']+">"+
+                                "<td >" + data.data['list'][i].KeyCol6 + "</td>" +
+                                "<td>" + data.data['list'][i].KeyCol4 + "</td>" +
+                                "<td>" + data.data['list'][i].KeyCol5 + "</td>" +
+                                "<td>" + data.data['list'][i].KeyCol8 + "</td>" +
+                                "<td>" + data.data['list'][i].sendusername + "</td>" +
+                                "<td>" + data.data['list'][i].SendDate + "</td>" +
+                                "<td><a  onclick=\"look(this)\"  class='btn btn-success' style='border:0px solid #fff;float:left;margin-left: 3px;'> 查看</a></td><tr>";
+                    }
+                    $("#dynr").empty();
+                    $("#dynr").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。");
+                return false;
+            }
+        });
+    }
+
+    //查看
+  function look(ob){
+            var activeid = $(ob).parent("td").parent("tr").find("input").eq(0).attr("data-text");
+            var applicationid = $(ob).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            var type = $(ob).parent("td").parent("tr").find("input").eq(3).attr("data-text");
+            var option='6';
+            if(type==1){
+                //标准报告
+                var url="{:url('make_baogao/index')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            else if(type==2){
+                //深度报告
+                var url="{:url('make_baogao/index1')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            window.open(url, '_self');
+
+        }
+
+    function doExport() {
+        $('#excelDownModal').modal('show');
+        $.ajax({
+            type: 'post',
+            data: $('form').serialize(),
+            url: "{:url('Report/excelOverdueEarlyWarn')}",
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == 1) {
+                    $('#excelDownModal').modal('hide');
+                    location.href = "__ROOT__" + data.url;
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。");
+                $('#excelDownModal').modal('hide');
+                return false;
+            }
+        });
+    }
+</script>
+{/block}

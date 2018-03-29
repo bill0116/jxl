@@ -1,0 +1,33 @@
+{if condition="$myActive['tasktype'] neq -1"}
+<div class="row-fluid" style="margin-bottom: 8px;">
+    <div class="span6">
+        <div id="DataTables_Table_0_lengtd" class="dataTables_lengtd">
+            <button type="button" value="提交" id="onSubmite" onclick="doSubmite()" class="btn btn-success btn-sm"
+                    style="border:0 solid #fff "><span
+                    class="glyphicon glyphicon-ok-sign"></span> 提交
+            </button>
+            {if condition="$myActive['tasktype'] eq 0"}
+            <button type="button" value="保存" id="save" onclick="doSave()"
+                    class="btn btn-info btn-sm"
+                    style="border:0 solid #fff "><span
+                    class="glyphicon glyphicon-saved"></span> 保存
+            </button>
+            {/if}
+            <button type="button" class="btn btn-info btn-sm"
+                    style="border:0 solid #fff " id="attct" data-toggle="modal"
+                    data-target="#uploadModal"><span
+                    class="glyphicon glyphicon-folder-open"></span> 附件上传
+            </button>
+            <button type="button" value="打印" id="print" class="btn btn-info btn-sm"
+                    style="border:0 solid #fff "><span
+                    class="glyphicon glyphicon-print"></span> 打印
+            </button>
+        </div>
+    </div>
+</div>
+{/if}
+<script type="text/javascript">
+    function doSave() {
+        saveFlow("{:url('Common/saveActiveFlow')}", $('#tableForm').serialize());
+    }
+</script>

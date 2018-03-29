@@ -1,0 +1,188 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'客户档案查询','search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <button type="button" class="btn btn-success btn-sm" value="查询" onclick="doSearch()">
+                            <span class="glyphicon glyphicon-search">查询</span>
+                        </button>
+                        <button type="reset" class="btn btn-success btn-sm" value="重置">
+                            <span class="glyphicon glyphicon-refresh">重置</span>
+                        </button>
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>SAP代码:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="kunnr" id="kunnr">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>买方国家:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerCountryCode" id="buyerCountryCode" value="" onkeypress="getCountryName('buyer')" style="width:12%;">
+                    <input type="button" value="..." data-toggle="modal" data-target="#searchCountryModal" style="width: 25px;" onclick="checkTypeCountry('buyer')">
+                    <input type="text" id="buyerCountryName" value="" style="width:28%;" readonly>
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>买方代码:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerno" id="buyerno">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>买方英文名称:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerEngName" id="buyerEngName">
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>状态:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="Black" name="Black" size="1" style="width:175px;">
+                        <option value="">请选择客户状态</option>
+                        <option value="正常客户">正常客户</option>
+                        <option value="风险客户">风险客户</option>
+                    </select>
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width: 2500px;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+                            <td style='width:80px;'>SAP代码</td>
+                            <td style='width:80px;'>SAP名称</td>
+                            <td style='width:80px;'>SAP国家</td>
+                            <td style='width:80px;'>买方代码</td>
+                            <td style='width:140px;'>买方英文名称</td>
+                            <td style='width:150px;'>买方国家</td>
+                            <td style='width:150px;'>买方英文地址</td>
+                            <td style='width:200px;'>状态</td>
+                            <td style='width:150px;'></td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function doSearch(page) {
+        $.ajax({
+            type: 'post',
+            data: $('form').serialize() + "&page=" + page,
+            url: "{:url('CustomerList/index')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                                "<td >" + data.data['list'][i].kunnr+ "</td>" +
+                                "<td >" + data.data['list'][i].name+ "</td>" +
+                                "<td >" + data.data['list'][i].land1+ "</td>" +
+                                "<td>" + data.data['list'][i].buyerno+ "</td>" +
+                                "<td>" + data.data['list'][i].buyerEngName+ "</td>" +
+                                "<td>" + data.data['list'][i].buyerCountryCode+ "</td>" +
+                                "<td>" + data.data['list'][i].buyerEngAddress+ "</td>" +
+                                "<td >" + data.data['list'][i].Black+ "</td>" +
+                                "<td><a href='" + data.data['list'][i].FlowUrl + "' rel='look' target='_blank'>查看</a></td><tr>";
+                    }
+                    $("#dynr").empty();
+                    $("#dynr").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+
+
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+</script>
+{/block}

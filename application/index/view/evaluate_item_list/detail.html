@@ -1,0 +1,155 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'评分卡指标明细维护','search'=>'N'))}
+<div class="box-content">
+    <form class="form-horizontal" method="post" action="{:url('EvaluateItemList/detail_save')}" id="tableForm">
+        <button type="button" value="新建"  onclick="doAdd()"
+                class="btn btn-info btn-sm"
+                style="border:0 solid #fff "><span
+                class="glyphicon glyphicon-plus"></span> 新建
+        </button>
+
+        <input type="hidden" name="pid" id="pid" value="{$pid}">
+        <input type="hidden" name="type" id="type" value="{$type}">
+
+        <style>
+            #pageajax {
+                height: 400px;
+                width: 600px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+
+                            <td style='width:50px;'>序号</td>
+                            <td style='width:100px;' class="type1">开始值</td>
+                            <td style='width:50px;' class="type2">结束值</td>
+                            <td style='width:50px;'>比重</td>
+                            <td style='width:150px;'></td>
+                            <td style='width:150px;'></td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        {volist name="data" id="vo"}
+                        <tr style='height: 40px;' class='dbb'>
+                            <input  type='hidden' name='EvaluateItemDetailID'  value="{$vo['EvaluateItemDetailID']}" data-text="{$vo['EvaluateItemDetailID']}">
+                            <td >{$vo.EvaluateItemDetailIndex}</td>
+                            <td >{$vo.StartValue}</td>
+                            <td  class="type2">{$vo.EndValue}</td>
+                            <td >{$vo.Ratio}</td>
+                            <td><a href='javascript:void(0);' onclick='edit(this)'>编辑</a></td>
+                            <td><a href='javascript:void(0);' onclick='del(this)'>删除</a></td>
+                        <tr>
+                            {/volist}
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+
+       var type=$('#type').val();
+        console.log(type);
+        if(type=='str'){
+            $(".type1").text('值');
+            $(".type2").hide();
+        }
+    });
+
+    //新增
+    function doAdd(){
+        var type=$('#type').val();
+        var pid=$("#pid").val();
+        var url="{:url('EvaluateItemList/detail_add')}?pid="+pid+"&type="+type;
+        var iWidth = 600; //弹出窗口的宽度;
+        var iHeight = 400; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+    }
+
+    //编辑
+    function edit(ob){
+        var type=$('#type').val();
+        var id=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+        var url="{:url('EvaluateItemList/detail_edit')}?id="+id+"&type="+type;
+        var iWidth = 600; //弹出窗口的宽度;
+        var iHeight = 400; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+    }
+
+    //删除
+    function del(ob){
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        } else {
+            var id=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+            $.ajax({
+                url: "{:url('EvaluateItemList/detail_del')}",
+                type: "POST",
+                data: {id: id},
+                dataType: "json",
+                success: function (data) {
+                    if (data == '1') {
+                        $(ob).parent("td").parent("tr").remove();
+                    }
+                    alert('删除成功！');
+                },
+                error: function () {
+                    alert('删除失败！');
+                }
+            });
+        }
+    }
+</script>
+{/block}

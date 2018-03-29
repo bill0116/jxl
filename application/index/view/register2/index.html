@@ -1,0 +1,1069 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p><b style="font-size: 20px; text-align: left;">注册变更</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="capital_add" class="com"></p>
+                    <br/>
+                    <table class="table table-striped">
+                        <thead>
+                        <tr class="capital_header">
+                            <td >变更项目</td>
+                            <td >变更时间(XXXX-XX-XX)</td>
+                            <td >变更前</td>
+                            <td >变更后</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {foreach name="capital_list" item="vo"}
+                        <tr class="capital">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst4'>{$vo.item}</span><select name='xs4' style="display: none;"><option value="注册资本" {if condition="$vo.item eq '注册资本'"}selected{/if}>注册资本</option><option value="股东" {if condition="$vo.item eq '股东'"}selected{/if}>股东</option><option value="法定代表人" {if condition="$vo.item eq '法定代表人'"}selected{/if}>法定代表人</option><option value="企业名称" {if condition="$vo.item eq '企业名称'"}selected{/if}>企业名称</option><option value="注册地址" {if condition="$vo.item eq '注册地址'"}selected{/if}>注册地址</option><option value="经营范围" {if condition="$vo.item eq '经营范围'"}selected{/if}>经营范围</option><option value="企业类型" {if condition="$vo.item eq '企业类型'"}selected{/if}>企业类型</option></select></td>
+                            <td><span class='xst1'>{$vo.time}</span><input name='xs1' type='text' value="{$vo.time}" style="display: none;"></td>
+                            <td><span class='xst2'>{$vo.before}</span><input name='xs2' type='text' value="{$vo.before}" style="display: none;"></td>
+                            <td><span class='xst3'>{$vo.after}</span><input name='xs3' type='text' value="{$vo.after}" style="display: none;"></td>
+                            <td class="com"><span name='n' class='normal'> <a rel='edit_capital' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_capital' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_capital' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"><a rel='del_capital' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                        </tr>
+                        {/foreach}
+                        </thead>
+                    </table>
+                    <br/><br/>
+                    <p><b style="font-size: 20px; text-align: left;">获得资质</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="board_add" class="com"></p>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="board_header">
+                            <td style="width: 20%">证书编号</td>
+                            <td style="width: 20%">认证名称</td>
+                            <td style="width: 20%">产品名称</td>
+                            <td style="width: 10%">认证时间</td>
+                            <td style="width: 20%">认证机构:</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="board_list" id="vo"}
+                        <tr class="board">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst1'>{$vo.certificate}</span><input name='xs1' type='text' value="{$vo.certificate}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst2'>{$vo.name}</span><input name='xs2' type='text' value="{$vo.name}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst3'>{$vo.productName}</span><input name='xs3' type='text' value="{$vo.productName}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst4'>{$vo.date}</span><input name='xs4' type='text' value="{$vo.date}" style="display: none;" size="10px;"></td>
+                            <td><span class='xst5'>{$vo.organization}</span><input name='xs5' type='text' value="{$vo.organization}" style="display: none;" size="30px;"></td>
+                            <td class="com"><span name='n' class='normal'> <a rel='edit_board' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_board' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_board' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"><a rel='del_board' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/>
+                    <br/><br/>
+                    <p><b style="font-size: 20px; text-align: left;">顾问机构</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="adviser_add" class="com"></p>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="adviser_header">
+                            <td style="width: 20%">顾问机构名称</td>
+                            <td style="width: 30%">地址</td>
+                            <td style="width: 30%">服务内容</td>
+                            <td style="width: 10%">开始合作时间</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="adviser_list" id="vo"}
+                        <tr class="adviser">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst1'>{$vo.adviser}</span><input name='xs1' type='text' value="{$vo.adviser}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst2'>{$vo.address}</span><input name='xs2' type='text' value="{$vo.address}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst3'>{$vo.content}</span><input name='xs3' type='text' value="{$vo.content}" style="display: none;" size="20px;"></td>
+                            <td><span class='xst4'>{$vo.start}</span><input name='xs4' type='text' value="{$vo.start}" style="display: none;" size="10px;"></td>
+                            <td class="com"><span name='n' class='normal'> <a rel='edit_adviser' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_adviser' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_adviser' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"><a rel='del_adviser' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/><br/>
+                    <p style="font-size: 20px; text-align: left;"><b>实地访问</b></p>
+                    <form class="form-horizontal" method="post" action="{:url('Register2/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 15%;">访问时间：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="date" id="date" value="{$data['date']}" size="100px;" placeholder="单击选择日期" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="dateEng" value="{$data['dateEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">访谈部门：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="department"  value="{$data['department']}"  size="100px;" ></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="departmentEng" value="{$data['departmentEng']}"  size="100px;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/> <br/>
+                        <p style="font-size: 20px; text-align: left;"><b>调查人员实地考察与感受</b></p>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                                 <tr>
+                                     <td></td>
+                                     <td>好</td>
+                                     <td>偏好</td>
+                                     <td>一般</td>
+                                     <td>偏差</td>
+                                     <td>差</td>
+                                 </tr>
+                                 <tr>
+                                     <td>员工精神面貌与着装</td>
+                                     <td><input type="radio" name="key1" value="1" {if condition="$data['key1'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key1" value="2" {if condition="$data['key1'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key1" value="3" {if condition="$data['key1'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key1" value="4" {if condition="$data['key1'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key1" value="5" {if condition="$data['key1'] eq 5"}checked{/if}></td>
+                                 </tr>
+                                 <tr>
+                                     <td>员工对企业发展的信心</td>
+                                     <td><input type="radio" name="key2" value="1" {if condition="$data['key2'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key2" value="2" {if condition="$data['key2'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key2" value="3" {if condition="$data['key2'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key2" value="4" {if condition="$data['key2'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key2" value="5" {if condition="$data['key2'] eq 5"}checked{/if}></td>
+                                 </tr>
+                                 <tr>
+                                     <td>物品陈列和摆放</td>
+                                     <td><input type="radio" name="key3" value="1" {if condition="$data['key3'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key3" value="2" {if condition="$data['key3'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key3" value="3" {if condition="$data['key3'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key3" value="4" {if condition="$data['key3'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key3" value="5" {if condition="$data['key3'] eq 5"}checked{/if}></td>
+                                 </tr>
+                                 <tr>
+                                     <td>工作间和场区秩序</td>
+                                     <td><input type="radio" name="key4" value="1" {if condition="$data['key4'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key4" value="2" {if condition="$data['key4'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key4" value="3" {if condition="$data['key4'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key4" value="4" {if condition="$data['key4'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key4" value="5" {if condition="$data['key4'] eq 5"}checked{/if}></td>
+                                 </tr>
+                                 <tr>
+                                     <td>地理位置和附属设施</td>
+                                     <td><input type="radio" name="key5" value="1" {if condition="$data['key5'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key5" value="2" {if condition="$data['key5'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key5" value="3" {if condition="$data['key5'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key5" value="4" {if condition="$data['key5'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key5" value="5" {if condition="$data['key5'] eq 5"}checked{/if}></td>
+                                 </tr>
+                                 <tr>
+                                     <td>当地关联单位和群众评价</td>
+                                     <td><input type="radio" name="key6" value="1" {if condition="$data['key6'] eq 1"}checked{/if}></td>
+                                     <td><input type="radio" name="key6" value="2" {if condition="$data['key6'] eq 2"}checked{/if}></td>
+                                     <td><input type="radio" name="key6" value="3" {if condition="$data['key6'] eq 3"}checked{/if}></td>
+                                     <td><input type="radio" name="key6" value="4" {if condition="$data['key6'] eq 4"}checked{/if}></td>
+                                     <td><input type="radio" name="key6" value="5" {if condition="$data['key6'] eq 5"}checked{/if}></td>
+                                 </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        //访问时间
+        jeDate({
+            dateCell: "#date",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+
+
+
+    });
+
+    //增加变更
+    $("#capital_add").click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('CompanyInformation2/add_capital')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.data){
+                    var   str="<tr class='capital'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst4' style='display: none;'>"+data.data.item+"</span><select name='xs4'><option value='注册资本'>注册资本</option><option value='股东'>股东</option><option value='法定代表人'>法定代表人</option><option value='企业名称'>企业名称</option><option value='注册地址'>注册地址</option><option value='经营范围'>经营范围</option><option value='企业类型'>企业类型</option></select></td>"+
+                            "<td><span class='xst1' style='display: none;'>"+data.data.time+"</span><input name='xs1' type='text' value='"+data.data.time+"'></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.before+"</span><input name='xs2' type='text' value='"+data.data.before+"' ></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.after+"</span><input name='xs3' type='text' value='"+data.data.after+"' ></td>"+
+                            "<td><span name='n' class='normal'> <a rel='edit_capital' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_capital' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_capital' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td><a rel='del_capital' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+
+                    $(".capital_header").after(str);
+
+                    //点击编辑
+                    $("a[rel='edit_capital']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").show();
+                        $(this).parent().parent().parent().find("input[name='xs2']").show();
+                        $(this).parent().parent().parent().find("input[name='xs3']").show();
+                        $(this).parent().parent().parent().find("select[name='xs4']").show();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+                        $(this).hide();
+                        $(this).parent().parent().find("span[class='edit']").show();
+                    });
+                    //点击保存
+                    $("a[rel='update_capital']").click(function () {
+                        var xss = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                        var ret= checkDate(xss);
+                        if(!ret){
+                            tankuang(300,'日期不合法');
+                            return false;
+                        }
+                        var xs1=ret;
+                        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                        var xs4 = $(this).parent().parent().parent().find("select[name='xs4']").val();
+                        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        var applicationid = $('#applicationid').val();
+                        var tis = $(this);
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('CompanyInformation2/capital_update1')}",
+                            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,applicationid:applicationid,id:id}
+                        }).done(function (data) {
+                            console.log(data);
+                            if (data.code ==1) {
+                                //alert(data.msg);
+                                tankuang(300,data.msg);
+                                location=location;
+                                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                                tis.parent().parent().parent().find("select[name='xs4']").hide();
+
+                                tis.parent().parent().find("span[class='edit']").hide();
+                                tis.parent().parent().find("a[rel='edit_capital']").show();
+                            }
+                        });
+                        //取消表单
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("select[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_capital']").show();
+                    });
+                    //点击取消
+                    $("a[rel='cancel_capital']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("select[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_capital']").show();
+                    });
+                    //点击删除
+                    $("a[rel='del_capital']").click(function () {
+                        if (!confirm("确定要删除吗？")) {
+                            return false;
+                        }
+                        var id = $(this).parent().parent().find("input[name='ids']").val();
+                        var tis = $(this);
+                        if(id!=''){
+                            $.ajax({
+                                type: 'post',
+                                data: {id: id},
+                                url: "{:url('CompanyInformation2/capital_del')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    if(data.code == 1){
+                                        tis.parent().parent().remove();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
+    });
+
+    //点击编辑
+    $("a[rel='edit_capital']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("select[name='xs4']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_capital']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("select[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_capital']").show();
+    });
+    //点击保存
+    $("a[rel='update_capital']").click(function () {
+        var xss = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var ret= checkDate(xss);
+        if(!ret){
+            tankuang(300,'日期不合法');
+            return false;
+        }
+        var xs1=ret;
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var xs4 = $(this).parent().parent().parent().find("select[name='xs4']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('CompanyInformation2/capital_update1')}",
+            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,applicationid:applicationid,id:id}
+        }).done(function (data) {
+            console.log(data);
+            if (data.code ==1) {
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("select[name='xs4']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_capital']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("select[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_capital']").show();
+    });
+    //点击删除
+    $("a[rel='del_capital']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('CompanyInformation2/capital_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //新增资质
+    $('#board_add').click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('Register2/add_board')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.data){
+                    var  str =  "<tr class='board'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst1' style='display: none;'>"+data.data.certificate+"</span><input name='xs1' type='text' value='"+data.data.certificate+"' size='20px;'></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.name+"</span><input name='xs2' type='text' value='"+data.data.name+"' size='20px;'></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.productName+"</span><input name='xs3' type='text' value='"+data.data.productName+"' size='20px;'></td>"+
+                            "<td><span class='xst4' style='display: none;'>"+data.data.date+"</span><input name='xs4' type='text' value='"+data.data.date+"' size='10px;'></td>"+
+                            "<td><span class='xst5' style='display: none;'>"+data.data.organization+"</span><input name='xs5' type='text' value='"+data.data.organization+"' size='30px;'></td>"+
+                            "<td><span name='n' class='normal'> <a rel='edit_board' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_board' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_board' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td><a rel='del_board' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+
+                    $(".board_header").after(str);
+
+                    //点击编辑
+                    $("a[rel='edit_board']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").show();
+                        $(this).parent().parent().parent().find("input[name='xs2']").show();
+                        $(this).parent().parent().parent().find("input[name='xs3']").show();
+                        $(this).parent().parent().parent().find("input[name='xs4']").show();
+                        $(this).parent().parent().parent().find("input[name='xs5']").show();
+
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst5']").hide();
+
+                        $(this).hide();
+                        $(this).parent().parent().find("span[class='edit']").show();
+                    });
+                    //点击保存
+                    $("a[rel='update_board']").click(function () {
+                        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+                        var xs5 = $(this).parent().parent().parent().find("input[name='xs5']").val();
+                        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+                        $(this).parent().parent().parent().find("span[class='xst5']").text(xs5);
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+                        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+                        var tis = $(this);
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('Register2/board_update')}",
+                            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,xs5: xs5,id:id}
+                        }).done(function (data) {
+                            if (data.code) {
+                                tankuang(300,data.msg);
+                                location=location;
+                                tis.parent().parent().parent().find("span[class='xst1']").show();
+                                tis.parent().parent().parent().find("span[class='xst2']").show();
+                                tis.parent().parent().parent().find("span[class='xst3']").show();
+                                tis.parent().parent().parent().find("span[class='xst4']").show();
+                                tis.parent().parent().parent().find("span[class='xst5']").show();
+                                tis.parent().parent().parent().find("span[class='xst6']").show();
+
+                                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                                tis.parent().parent().parent().find("input[name='xs5']").hide();
+                                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                                tis.parent().parent().find("span[class='edit']").hide();
+                                tis.parent().parent().find("a[rel='edit_board']").show();
+                            }
+                        });
+                        //取消表单
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+                        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_board']").show();
+                    });
+                    //点击取消
+                    $("a[rel='cancel_board']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+                        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_board']").show();
+                    });
+                    //点击删除
+                    $("a[rel='del_board']").click(function () {
+                        if (!confirm("确定要删除吗？")) {
+                            return false;
+                        }
+                        var id = $(this).parent().parent().find("input[name='ids']").val();
+                        var tis = $(this);
+                        if(id!=''){
+                            $.ajax({
+                                type: 'post',
+                                data: {id: id},
+                                url: "{:url('Register2/board_del')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    if(data.code == 1){
+                                        tis.parent().parent().remove();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
+    });
+    //点击编辑
+    $("a[rel='edit_board']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("input[name='xs4']").show();
+        $(this).parent().parent().parent().find("input[name='xs5']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+        $(this).parent().parent().parent().find("span[class='xst5']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_board']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+        var xs5 = $(this).parent().parent().parent().find("input[name='xs5']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+        $(this).parent().parent().parent().find("span[class='xst5']").text(xs5);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('Register2/board_update')}",
+            data: {xs1:xs1,xs2:xs2,xs3:xs3,xs4:xs4,xs5:xs5,id:id}
+        }).done(function (data) {
+            console.log(data);
+            if (data.code) {
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+                tis.parent().parent().parent().find("span[class='xst3']").show();
+                tis.parent().parent().parent().find("span[class='xst4']").show();
+                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_board']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_board']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_board']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_board']").show();
+    });
+    //点击删除
+    $("a[rel='del_board']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('Register2/board_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //新增顾问机构
+    $('#adviser_add').click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('Register2/add_adviser')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.data){
+                    var  str =  "<tr class='adviser'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst1' style='display: none;'>"+data.data.adviser+"</span><input name='xs1' type='text' value='"+data.data.adviser+"' size='20px;'></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.address+"</span><input name='xs2' type='text' value='"+data.data.address+"' size='20px;'></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.content+"</span><input name='xs3' type='text' value='"+data.data.content+"' size='20px;'></td>"+
+                            "<td><span class='xst4' style='display: none;'>"+data.data.start+"</span><input name='xs4' type='text' value='"+data.data.start+"' size='10px;'></td>"+
+                            "<td><span name='n' class='normal'> <a rel='edit_adviser' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_adviser' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_adviser' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td><a rel='del_adviser' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+
+                    $(".adviser_header").after(str);
+
+                    //点击编辑
+                    $("a[rel='edit_adviser']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").show();
+                        $(this).parent().parent().parent().find("input[name='xs2']").show();
+                        $(this).parent().parent().parent().find("input[name='xs3']").show();
+                        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+                        $(this).hide();
+                        $(this).parent().parent().find("span[class='edit']").show();
+                    });
+                    //点击保存
+                    $("a[rel='update_adviser']").click(function () {
+                        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+                        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        var tis = $(this);
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('Register2/adviser_update')}",
+                            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,id:id}
+                        }).done(function (data) {
+                            if (data.code) {
+                                tankuang(300,data.msg);
+                                location=location;
+                                tis.parent().parent().parent().find("span[class='xst1']").show();
+                                tis.parent().parent().parent().find("span[class='xst2']").show();
+                                tis.parent().parent().parent().find("span[class='xst3']").show();
+                                tis.parent().parent().parent().find("span[class='xst4']").show();
+                                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                                tis.parent().parent().find("span[class='edit']").hide();
+                                tis.parent().parent().find("a[rel='edit_adviser']").show();
+                            }
+                        });
+                        //取消表单
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_adviser']").show();
+                    });
+                    //点击取消
+                    $("a[rel='cancel_adviser']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_adviser']").show();
+                    });
+                    //点击删除
+                    $("a[rel='del_adviser']").click(function () {
+                        if (!confirm("确定要删除吗？")) {
+                            return false;
+                        }
+                        var id = $(this).parent().parent().find("input[name='ids']").val();
+                        var tis = $(this);
+                        if(id!=''){
+                            $.ajax({
+                                type: 'post',
+                                data: {id: id},
+                                url: "{:url('Register2/adviser_del')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    if(data.code == 1){
+                                        tis.parent().parent().remove();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
+    });
+    //点击编辑
+    $("a[rel='edit_adviser']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_adviser']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('Register2/adviser_update')}",
+            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,id:id}
+        }).done(function (data) {
+            if (data.code) {
+                tankuang(300,data.msg);
+                location=location;
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+                tis.parent().parent().parent().find("span[class='xst3']").show();
+                tis.parent().parent().parent().find("span[class='xst4']").show();
+                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_adviser']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_adviser']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_adviser']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_adviser']").show();
+    });
+    //点击删除
+    $("a[rel='del_adviser']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('Register2/adviser_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('Register2/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(保存)
+    function doSaveEng(){
+        saveFlow("{:url('Register2/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Register2/recheck')}";
+        ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Register2/recheckEng')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('Register2/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var url="{:url('Register2/save_memoEng')}";
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

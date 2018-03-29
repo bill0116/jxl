@@ -1,0 +1,296 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>委托信息</b></p>
+                    <form class="form-horizontal" method="post" action="{:url('Summany/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped weituo">
+                            <style type="text/css">
+                                .weituo td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">提供名称:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="WTFName" value="{$wtd['companyName']}" size="100%;" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="WTFNameEng" value="{$data['WTFNameEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">提供地址:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="WTFAddress" value="{$wtd['address']}" size="100%;" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="WTFAddressEng" value="{$data['WTFAddressEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">调查侧重点:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="surveyKey" value="标准调查" size="100%;" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="surveyKeyEng" value="{$data['surveyKeyEng']}" size="100%;"></td>
+                            </tr>
+
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>联络信息</b></p>
+                        <table class="table table-striped lianluo">
+                            <style type="text/css">
+                                .lianluo td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">公司中文名称:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="name" value="{$wtd['companyName']}" size="100%;" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="nameEng" value="{$data['nameEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">公司英文名称:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="engName" value="{$data['engName']}" size="100%;" placeholder="--"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="engNameEng" value="{$data['engNameEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">经营地址:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="address" value="{$data['address']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="addressEng" value="{$data['addressEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">邮编:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="email" value="{$data['email']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="emailEng" value="{$data['emailEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">电话:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="tel" value="{$data['tel']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="telEng" value="{$data['telEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">传真:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="fax" value="{$data['fax']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="faxEng" value="{$data['faxEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">网址:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="website" value="{$data['website']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="websiteEng" value="{$data['websiteEng']}" size="100%;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>报告摘要</b></p>
+                        <table class="table table-striped baogao">
+                            <style type="text/css">
+                                .baogao td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">信用等级:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span>
+                                    <select name="creditGrade" size="1" style="width: 100px;">
+                                        <option value=""></option>
+                                        <option value="CR1" {if condition="$data['creditGrade'] eq  'CR1'"}selected{/if}>CR1</option>
+                                        <option value="CR2" {if condition="$data['creditGrade'] eq  'CR2'"}selected{/if}>CR2</option>
+                                        <option value="CR3" {if condition="$data['creditGrade'] eq  'CR3'"}selected{/if}>CR3</option>
+                                        <option value="CR4" {if condition="$data['creditGrade'] eq  'CR4'"}selected{/if}>CR4</option>
+                                        <option value="CR5" {if condition="$data['creditGrade'] eq  'CR5'"}selected{/if}>CR5</option>
+                                        <option value="CR6" {if condition="$data['creditGrade'] eq  'CR6'"}selected{/if}>CR6</option>
+                                        <option value="NR" {if condition="$data['creditGrade'] eq  'NR'"}selected{/if}>NR</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="creditGradeEng" value="{$data['creditGradeEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">基准信用额度:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="limit" value="{$data['limit']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="limitEng" value="{$data['limitEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">DSO:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="DSO" value="{$data['DSO']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="DSOEng" value="{$data['DSOEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">DPO:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="DPO" value="{$data['DPO']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="DPOEng" value="{$data['DPOEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">成立日期:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="establishDate" id="establishDate" value="{$data['establishDate']}" size="100%;" placeholder="单击选择日期"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="establishDateEng" value="{$data['establishDateEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">主营业务:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainBusiness" value="{$data['mainBusiness']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="mainBusinessEng" value="{$data['mainBusinessEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">销售收入:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="salesRevenue" value="{$data['salesRevenue']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="salesRevenueEng" value="{$data['salesRevenueEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">资产总计:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="totalAssets" value="{$data['totalAssets']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="totalAssetsEng" value="{$data['totalAssetsEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">净利润:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="netProfit" value="{$data['netProfit']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="netProfitEng" value="{$data['netProfitEng']}" size="100%;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+      {include file="public:baogaoMemo"/}
+        <div>
+            备注：  <p> 1、我们在评估基准信用额度时，采用营运资产法计算基准信用额度，并在此基础上，结合客户信用等级评估结论，考察客户的定性和定量信息，对基准信用额度进行修订。因该评估以注册资本、净资产、总资产、营业额、利润和信用风险等级等作为计算因素，没有考虑您与目标公司的具体交易情况。在您进行信贷决策时可参考以上建议，但需根据您的交易记录、营销策略和信用政策做出适当调整，我们不承担决策风险。</p>
+            <p> 2、由于我们采取平均年限法计算DSO，需要连续两年的财务资料作为计算依据，因此如果客户财务资料不能满足上述要求，我们只计算一年或者不予计算DSO。</p>
+             <p>3、缺少财务信息时，我们将不予评估基准信用额度。</p>
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        jeDate({
+            dateCell: "#establishDate",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('Summany/save')}", $('#tableForm').serialize());
+    }
+
+    //保存（翻译）
+    function doSaveEng(){
+        saveFlow("{:url('Summany/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Summany/recheck')}";
+        ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Summany/recheckEng')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        var url="{:url('Summany/save_memo')}";
+          ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        var url="{:url('Summany/save_memoEng')}";
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

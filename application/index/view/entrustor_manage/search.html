@@ -1,0 +1,194 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>lang('委托方管理'),'search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" class="btn btn-success btn-sm" value="{:lang('查询')}" onclick="doSearch()">
+                        <input type="button" class="btn btn-success btn-sm" value="{:lang('新建')}" onclick="javascript:window.location.href='{:url('EntrustorManage/add')}'">
+                        <input type="button" class="btn btn-danger btn-sm" value="{:lang('删除')}" onclick="del()">
+                        <input type="reset" class="btn btn-default btn-sm" value="{:lang('重置')}">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('客户代码')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerno" id="buyerno">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>{:lang('客户名称')}:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerName" id="buyerName">
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:auto;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+                            <td style='width:20px;'></td>
+                            <td style='width:100px;'><label>客户代码</label></td>
+                            <td style='width:200px;'><label>客户名称</label></td>
+                            <td style='width:60px;'><label>联系人</label></td>
+                            <td style='width:80px;'><label>电话</label></td>
+                            <td style='width:80px;'><label>委托人</label></td>
+                            <td style='width:80px;'><label>普通报告完成天数</label></td>
+                            <td style='width:200px;'><label>特殊需求</label></td>
+                            <td style='width:80px;'><label>操作</label></td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function doSearch(page) {
+        $.ajax({
+            type: 'post',
+            data: $('form').serialize() + "&page=" + page,
+            url: "{:url('EntrustorManage/search')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                                "<input  type='hidden' name='id'  value='" + data.data['list'][i].buyerno + "' data-text='" +data.data['list'][i].buyerno + "'>" +
+                                "<td ><input type='checkbox' name='ID[]' value='" + data.data['list'][i].buyerno + "' style='width:20px;'/></td>" +
+                                "<td >" + data.data['list'][i].buyerno+ "</td>" +
+                                "<td >" + data.data['list'][i].buyerName+ "</td>" +
+                                "<td >" + data.data['list'][i].buyerPerson+ "</td>" +
+                                "<td>" + data.data['list'][i].buyerTel+ "</td>" +
+                                "<td>" + data.data['list'][i].entrustor+ "</td>" +
+                                "<td>" + data.data['list'][i].finishDay+ "</td>" +
+                                "<td>" + data.data['list'][i].specicalRequire+ "</td>" +
+                                "<td><a href='javascript:void(0);' onclick='edit(this)'>{:lang('编辑')}</a></td>" +
+                                "<tr>";
+                    }
+                    $("#dynr").empty();
+                    $("#dynr").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+
+    //编辑
+    function edit(ob){
+        var buyerno=$(ob).parent('td').parent('tr').find('input').eq(0).attr('data-text');
+        var url = "{:url('EntrustorManage/edit')}?buyerno="+buyerno;
+        var iWidth = 1000; //弹出窗口的宽度;
+        var iHeight = 600; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+    }
+    //删除
+    function del(){
+        var id_array = new Array();
+        $('input[name="ID[]"]:checked').each(function () {
+            id_array.push($.trim($(this).val()));
+        });
+        var idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+        if (idstr != '') {
+            $.ajax({
+                type: 'post',
+                url: "{:url('EntrustorManage/del')}",
+                data: {id: idstr},
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        doSearch();
+                    }
+                    alert(data.msg);
+                },
+                error: function () {
+                    alert("服务器繁忙中。。。");
+                    return false;
+                }
+            })
+        } else {
+            alert("请选择要删除的数据!");
+        }
+    }
+</script>
+{/block}

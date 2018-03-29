@@ -1,0 +1,126 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'确认报告类型','search'=>'N'))}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <form class="form-horizontal" method="post" action="{:url('ConfirmBg/update')}" id="tableForm">
+
+        <div class="span6">
+                <button type="button" class="btn btn-info" value="提交" onclick="doSubmit()">
+                    <span class="glyphicon glyphicon-ok-sign">提交</span>
+                </button>
+                <button type="button" class="btn btn-info" value="保存"  onclick="doSave()">
+                    <span class="glyphicon glyphicon-saved">保存</span>
+                </button>
+            <button type="button" class="btn btn-info" value="调查历史"  onclick="doSearch()">
+                <span class="glyphicon glyphicon-search">调查历史</span>
+            </button>
+            <input type="hidden" name="id" id="applicationid" value="{$data['id']}">
+            <input type="hidden" id="activeid" name="activeid" value="{$activeid}">
+            <input type="hidden" name="companyName" id="companyName" value="{$data['companyName']}">
+        </div>
+        <style>
+            #pageajax {
+                height: 500px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+            .tablehead p {
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <form action="" method="post" name="">
+                        <p>状态：{$data['statusName']}阶段</p>
+                        <p>确认报告类型
+                            <input type="radio" name="speedType1" value="1" {if condition="$data['speedType1'] eq 1"}checked{/if}>普通&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="speedType1" value="2" {if condition="$data['speedType1'] eq 2"}checked{/if}>加急&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="speedType1" value="3" {if condition="$data['speedType1'] eq 3"}checked{/if}>特急&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        <p>
+                       委托日期:
+                        <input type="text" name="entrustDate" value="{$data['entrustDate']}" size="15px;" id="entrustDate" readonly>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                       预计完成日期:
+                        <input type="text" name="finishDate" value="{$data['finishDate']}" size="15px;" id="finishDate" readonly>
+                        </p>
+                        <p>备注：</p>
+                        <textarea name="speedMemo"  style="width:98%;overflow-y:auto;height:100px;;">{$data['speedMemo']}</textarea>
+                        <br/>
+                        <p>确认是否有误：
+                            <input type="radio" name="isTrue" value="1" {if condition="$data['isTrue'] eq 1"}checked{/if} disabled>是  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isTrue" value="0" {if condition="$data['isTrue'] eq 0"}checked{/if} disabled>否
+                        </p>
+                        <p>备注：</p>
+                        <textarea name="trueMemo"  style="width:98%;overflow-y:auto;height:100px;;">{$data['trueMemo']}</textarea>
+                        <br/><br/>
+                        <!--委托单-->
+                        {include file="public:wtd"/}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        jeDate({
+            dateCell: "#auditDate",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+
+        $("#WTD_info").find("input,textarea").attr("disabled", "disabled");
+    });
+
+
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('ConfirmBg/save')}", $('#tableForm').serialize());
+    }
+
+    //提交
+    function doSubmit(){
+        $('#tableForm').submit();
+    }
+
+    //调查历史
+    function doSearch(){
+        var companyName=$("#companyName").val();
+        var url="{:url('Confirm/history')}?companyName="+companyName;
+        window.open(url,'_blank');
+    }
+
+</script>
+{/block}
+

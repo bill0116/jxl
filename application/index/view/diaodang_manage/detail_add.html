@@ -1,0 +1,143 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'调档明细项目','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('DiaodangManage/detail_add')}" id="tableForm">
+                <div class="tab-pane">
+                    <button type="button" value="保存" id="save" onclick="doSave()"
+                            class="btn btn-info btn-sm"
+                            style="border:0 solid #fff "><span
+                            class="glyphicon glyphicon-saved"></span> 保存
+                    </button>
+                    <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                               aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 13px;
+                                    text-align: left;
+                                }
+
+                                .table td span {
+                                    color: red;
+                                }
+                            </style>
+                            <tbody>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                   <table style="width: 100%;">
+                                       <tr>
+                                           <td style="width: 10%;"><input type="checkbox" id="all" onclick="change()">全选</td>
+                                           <td style="width: 20%;">渠道</td>
+                                           <td style="width: 70%;">调档内容</td>
+                                       </tr>
+                                    {volist name=":model('common')->getContent()" id="v1"}
+                                       <tr class="memo" style="height: 30px;">
+                                           <td><input type="checkbox" name="id" value="{$v1['id']}"></td>
+                                           <td>
+                                               <select name="company" id="company" size="1" >
+                                                   <option value=""></option>
+                                                   {volist name=":model('common')->getChannel()" id="vo"}
+                                                   <option value="{$vo['code']}">{$vo.name}</option>
+                                                   {/volist}
+                                               </select>
+                                           </td>
+                                           <td>{$v1['name']}</td>
+                                       </tr>
+                                    {/volist}
+                                   </table>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{:widget('PageHeader/load',array('name'=>lang('文件上传中。。。'),'search'=>'N'))}
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+    });
+
+    //获取checkbox按钮组
+    var allpro = document.getElementsByName("id");
+    //全选方法
+    function change() {
+        //获取全选按钮
+        var all = document.getElementById("all");
+        //全选按钮被选中时，遍历所有按钮
+        if (all.checked) {
+            for (var i = 0; i < allpro.length; i++) {
+                if (allpro[i].type=="checkbox") {
+                    allpro[i].checked=true;
+
+                }
+            }
+            //全选按钮未被选中时
+        }else{
+            for (var i = 0; i < allpro.length; i++) {
+                if (allpro[i].type=="checkbox") {
+                    allpro[i].checked=false;
+                }
+            }
+        }
+    }
+
+    //保存
+    function doSave() {
+        var ret='1';
+        var url="{:url('DiaodangManage/detail_add')}";
+        var applicationid=$('#applicationid').val();
+        $(".memo input[type='checkbox']:checked").each(function(){
+            var memo=$(this).parent().parent('tr').find('td').eq(2).text();
+            var company=$(this).parent().parent('tr').find("#company option:selected").val();
+            if(!company){
+                alert('渠道不能为空');
+                 ret='0';
+            }
+        });
+        if(ret=='0'){
+            return false;
+        }else{
+            $(".memo input[type='checkbox']:checked").each(function(){
+                var memo=$(this).parent().parent('tr').find('td').eq(2).text();
+                var company=$(this).parent().parent('tr').find("#company option:selected").val();
+                if(!company){
+                    alert('渠道不能为空');
+                    return false;
+                }
+                $.ajax({
+                    type:"post",
+                    data:{"applicationid":applicationid,"memo":memo,"company":company},
+                    url:url,
+                    dataType:"json",
+                    success:function(data){
+                        if(data.code==1){
+                            tankuang(300,data.msg);
+                            setTimeout('close1()',400);
+                            window.opener.location.href = window.opener.location.href;
+                        }
+                    }
+                });
+
+            });
+        }
+
+
+    }
+
+</script>
+{/block}

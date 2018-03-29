@@ -1,0 +1,179 @@
+<div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width:800px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title" id="uploadModalLabel">
+                    附件上传
+                </h4>
+            </div>
+            <div class="modal-body" style="overflow:auto;">
+                <form id="attachForm" metdod="post" enctype="multipart/form-data">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable" aria-describedby="DataTables_Table_0_info">
+                        <tbody id="attlist">
+                        <tr role="row" id="upload">
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Role: activate to sort column ascending" style="widtd: 15%;">
+                                <label>附件上传</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="5" aria-label="Role: activate to sort column ascending" style="widtd: 85%;">
+                                <input name="file" type="file" multiple="multiple" style="float: left;width:28%;">
+                                <input id="btn_otder" type="submit" onclick="upAttachFiles('attachForm','attcon');" value="上传" style="width:auto;">
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <td></td>
+                            <td>文件名<span style="color: red;">[点击下载]</span></td>
+                            <td>文件大小</td>
+                            <td>上传者</td>
+                            <td>上传时间</td>
+                            <td>操作</td>
+                        </tr>
+                        </tbody>
+                        <tbody id="attcon">
+                        {if isset($attachList) AND $attachList}
+                        {volist name="attachList" id="vo"}
+                        <tr role="row">
+                            <td><input type="checkbox" name="id[]" value="{$vo['ID']}"></a></td>
+                            <td><a href="__ROOT__/{$vo.AttachUrl}" target="_blank">{$vo.AttachName} </a></td>
+                            <td>{$vo.Size}</td>
+                            <td>{$vo.CreatorName}</td>
+                            <td>{$vo.CreateDate}</td>
+                            <td>{if session('auth_id') eq $vo['Creator']}
+                                <a onclick="delAttachFile('{$vo.ID}',this)" title="删除">删除</a>
+                                {/if}
+                            </td>
+                        </tr>
+                        {/volist}
+                        {/if}
+                        </tbody>
+
+                        <tbody id="send" style="margin-top:12px;">
+                        <tr role="row"  style="background-color: #9dbdd6;">
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Role: activate to sort column ascending" style="widtd: 15%;">
+                                <label>附件发送</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="5" aria-label="Role: activate to sort column ascending" style="widtd: 85%;">
+                                <input  name="mail" type="email" id="email" value="" placeholder="请输入客户Email">
+                                <input type="button" value="发送" onclick="sendMail()">
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <input type="reset" value="重置" class="btn btn-sm"
+                       style="border:0px solid #fff ">
+                <input type="button" value="关闭" class="btn btn-sm" data-dismiss="modal"
+                       style="border:0px solid #fff ">
+            </div>
+        </div>
+    </div>
+</div>
+{:widget('PageHeader/load',array('name'=>lang('文件上传中。。。'),'search'=>'N'))}
+<script type="text/javascript">
+    function upAttachFiles(fm, attcon) {
+        var activeid = $('#activeid').val();
+        var applicationid = $('#applicationid').val();
+        var userID = "{$Think.session.user.UserID}";
+        var options = {
+            url: "{:url('Common/uploadAttachFile')}",
+            type: 'post',
+            data: {activeid: activeid,applicationid:applicationid},
+            dataType: 'json',
+            uploadProgress: function (event, position, total, percentComplete) {
+                $("#searchModal").modal("show");
+            },
+            success: function (data) {
+                $('#searchModal').modal('hide');
+                if (data.code == 1) {
+                    if (data.data.length > 0) {
+                        $('#attcon').empty();
+                        var html = "";
+                        for (var i = 0; i < data.data.length; i++) {
+                            html += "<tr role='row'><td><input type='checkbox' name='id[]' value='"+ data['data'][i]['ID'] +"'></a></td>" +
+                                    "<td><a href='__ROOT__/" + data['data'][i]['AttachUrl'] + "' target='_blank'>" + data['data'][i]['AttachName'] + "</a></td>" +
+                                    "<td>" + data['data'][i]['Size'] + "</td>" +
+                                    "<td>" + data['data'][i]['CreatorName'] + "</td>" +
+                                    "<td>" + data['data'][i]['CreateDate'] + "</td>";
+                            if (userID == data['data'][i]['Creator']) {
+                                html += "<td><a onclick='delAttachFile(" + data['data'][i]['ID'] + ",this)' title='删除'>删除</a></td></tr>"
+                            } else {
+                                html += "<td></td></tr>"
+                            }
+                        }
+                        $('#attcon').html(html);
+                    }
+                } else {
+                    alert(data.msg);
+                }
+            },
+            error: function () {
+                alert("上传提交异常！");
+                $('#searchModal').modal('hide');
+            }
+        };
+        $("#attachForm").ajaxForm(options);
+    }
+    function delAttachFile(id, ob) {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        } else {
+            var activeid = $('#activeid').val();
+            var applicationid = $('#applicationid').val();
+            $.ajax({
+                url: "{:url('Common/delAttachFile')}",
+                type: "POST",
+                data: {id: id, activeid: activeid,applicationid:applicationid},
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 1) {
+                        $(ob).parents("td").parents("tr").remove();
+                    }
+                    alert(data.msg);
+                },
+                error: function () {
+                    alert('删除失败！');
+                }
+            });
+        }
+    }
+    function sendMail(){
+        var id_array = new Array();
+        $('input[name="id[]"]:checked').each(function () {
+            id_array.push($.trim($(this).val()));
+        });
+        var idstr = id_array.join(',');//将数组元素连接起来以构建一个字符串
+        var email = $('#email').val();
+        if (email == '') {
+            alert("请填写要发送的Email!");
+            return false;
+        }
+        if (idstr == '') {
+            alert("请选择要发送的附件!");
+            return false;
+        }
+        $.ajax({
+            type: 'post',
+            url: "{:url('SendEmail/index')}",
+            data: {id: idstr,email:email},
+            dataType: 'json',
+            success: function (data) {
+                alert(data.msg);
+            },
+            error: function () {
+                alert("服务器繁忙中。。。");
+                return false;
+            }
+        })
+    }
+</script>

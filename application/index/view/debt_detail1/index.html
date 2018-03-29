@@ -1,0 +1,380 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+            #pageajax span{
+                color: red;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>2.负债表</b></p>
+                    <br/>
+                    <p style="font-size: 14px; text-align: right;"><span>单位：千元</span></p>
+                    <form class="form-horizontal" method="post" action="{:url('DebtDetail1/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+
+                        <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                                width: 20%;
+                            }
+                        </style>
+                        <thead>
+                        {if condition="$data eq null"}
+                        <tr>
+                            <td ></td>
+                            <td><?php echo date('Y',time())-1;?></td>
+                            <td><?php echo date('Y',time())-2;?></td>
+                            <td><?php echo date('Y',time())-3;?></td>
+                            <td><?php echo date('Y',time())-4;?></td>
+                            <td><?php echo date('Y',time())-5;?></td>
+                        </tr>
+                        {else/}
+                        <tr>
+                            <td ></td>
+                            <td>{$data[0]['year']}</td>
+                            <td>{$data[1]['year']}</td>
+                            <td>{$data[2]['year']}</td>
+                            <td>{$data[3]['year']}</td>
+                            <td>{$data[4]['year']}</td>
+                        </tr>
+                        {/if}
+                        <tr>
+                            <td>流动负债</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                        </tr>
+                        <tr>
+                            <td>短期借款</td>
+                            <td><input type="text" name="short_termBorrowing[]" value="{$data[0]['short_termBorrowing']}"></td>
+                            <td><input type="text" name="short_termBorrowing[]" value="{$data[1]['short_termBorrowing']}"></td>
+                            <td><input type="text" name="short_termBorrowing[]" value="{$data[2]['short_termBorrowing']}"></td>
+                            <td><input type="text" name="short_termBorrowing[]" value="{$data[3]['short_termBorrowing']}"></td>
+                            <td><input type="text" name="short_termBorrowing[]" value="{$data[4]['short_termBorrowing']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应付票据</td>
+                            <td><input type="text" name="payableBill[]" value="{$data[0]['payableBill']}"></td>
+                            <td><input type="text" name="payableBill[]" value="{$data[1]['payableBill']}"></td>
+                            <td><input type="text" name="payableBill[]" value="{$data[2]['payableBill']}"></td>
+                            <td><input type="text" name="payableBill[]" value="{$data[3]['payableBill']}"></td>
+                            <td><input type="text" name="payableBill[]" value="{$data[4]['payableBill']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应付账款</td>
+                            <td><input type="text" name="payableAccount[]" value="{$data[0]['payableAccount']}"></td>
+                            <td><input type="text" name="payableAccount[]" value="{$data[1]['payableAccount']}"></td>
+                            <td><input type="text" name="payableAccount[]" value="{$data[2]['payableAccount']}"></td>
+                            <td><input type="text" name="payableAccount[]" value="{$data[3]['payableAccount']}"></td>
+                            <td><input type="text" name="payableAccount[]" value="{$data[4]['payableAccount']}"></td>
+                        </tr>
+                        <tr>
+                            <td>预收账款</td>
+                            <td><input type="text" name="advanceAccount[]" value="{$data[0]['advanceAccount']}"></td>
+                            <td><input type="text" name="advanceAccount[]" value="{$data[1]['advanceAccount']}"></td>
+                            <td><input type="text" name="advanceAccount[]" value="{$data[2]['advanceAccount']}"></td>
+                            <td><input type="text" name="advanceAccount[]" value="{$data[3]['advanceAccount']}"></td>
+                            <td><input type="text" name="advanceAccount[]" value="{$data[4]['advanceAccount']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应付工资</td>
+                            <td><input type="text" name="payableWages[]" value="{$data[0]['payableWages']}"></td>
+                            <td><input type="text" name="payableWages[]" value="{$data[1]['payableWages']}"></td>
+                            <td><input type="text" name="payableWages[]" value="{$data[2]['payableWages']}"></td>
+                            <td><input type="text" name="payableWages[]" value="{$data[3]['payableWages']}"></td>
+                            <td><input type="text" name="payableWages[]" value="{$data[4]['payableWages']}"></td>
+                       </tr>
+                        <tr>
+                            <td>应付福利费</td>
+                            <td><input type="text" name="payableWelfare[]" value="{$data[0]['payableWelfare']}"></td>
+                            <td><input type="text" name="payableWelfare[]" value="{$data[1]['payableWelfare']}"></td>
+                            <td><input type="text" name="payableWelfare[]" value="{$data[2]['payableWelfare']}"></td>
+                            <td><input type="text" name="payableWelfare[]" value="{$data[3]['payableWelfare']}"></td>
+                            <td><input type="text" name="payableWelfare[]" value="{$data[4]['payableWelfare']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应交税金</td>
+                            <td><input type="text" name="payableTax[]" value="{$data[0]['payableTax']}"></td>
+                            <td><input type="text" name="payableTax[]" value="{$data[1]['payableTax']}"></td>
+                            <td><input type="text" name="payableTax[]" value="{$data[2]['payableTax']}"></td>
+                            <td><input type="text" name="payableTax[]" value="{$data[3]['payableTax']}"></td>
+                            <td><input type="text" name="payableTax[]" value="{$data[4]['payableTax']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应交利润</td>
+                            <td><input type="text" name="payableProfit[]" value="{$data[0]['payableProfit']}"></td>
+                            <td><input type="text" name="payableProfit[]" value="{$data[1]['payableProfit']}"></td>
+                            <td><input type="text" name="payableProfit[]" value="{$data[2]['payableProfit']}"></td>
+                            <td><input type="text" name="payableProfit[]" value="{$data[3]['payableProfit']}"></td>
+                            <td><input type="text" name="payableProfit[]" value="{$data[4]['payableProfit']}"></td>
+                        </tr>
+                        <tr>
+                            <td>其他应付款</td>
+                            <td><input type="text" name="otherPayable[]" value="{$data[0]['otherPayable']}"></td>
+                            <td><input type="text" name="otherPayable[]" value="{$data[1]['otherPayable']}"></td>
+                            <td><input type="text" name="otherPayable[]" value="{$data[2]['otherPayable']}"></td>
+                            <td><input type="text" name="otherPayable[]" value="{$data[3]['otherPayable']}"></td>
+                            <td><input type="text" name="otherPayable[]" value="{$data[4]['otherPayable']}"></td>
+                        </tr>
+                        <tr>
+                            <td>预提费用</td>
+                            <td><input type="text" name="advanceExpense[]" value="{$data[0]['advanceExpense']}"></td>
+                            <td><input type="text" name="advanceExpense[]" value="{$data[1]['advanceExpense']}"></td>
+                            <td><input type="text" name="advanceExpense[]" value="{$data[2]['advanceExpense']}"></td>
+                            <td><input type="text" name="advanceExpense[]" value="{$data[3]['advanceExpense']}"></td>
+                            <td><input type="text" name="advanceExpense[]" value="{$data[4]['advanceExpense']}"></td>
+                        </tr>
+                        <tr>
+                            <td>一年内到期的长期负债</td>
+                            <td><input type="text" name="longdebt[]" value="{$data[0]['longdebt']}"></td>
+                            <td><input type="text" name="longdebt[]" value="{$data[1]['longdebt']}"></td>
+                            <td><input type="text" name="longdebt[]" value="{$data[2]['longdebt']}"></td>
+                            <td><input type="text" name="longdebt[]" value="{$data[3]['longdebt']}"></td>
+                            <td><input type="text" name="longdebt[]" value="{$data[4]['longdebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>其他流动负债</td>
+                            <td><input type="text" name="otherDebt[]" value="{$data[0]['otherDebt']}"></td>
+                            <td><input type="text" name="otherDebt[]" value="{$data[1]['otherDebt']}"></td>
+                            <td><input type="text" name="otherDebt[]" value="{$data[2]['otherDebt']}"></td>
+                            <td><input type="text" name="otherDebt[]" value="{$data[3]['otherDebt']}"></td>
+                            <td><input type="text" name="otherDebt[]" value="{$data[4]['otherDebt']}"></td>
+                        </tr>  <tr>
+                            <td>流动负债合计</td>
+                            <td><input type="text" name="totalDebtFlow[]" value="{$data[0]['totalDebtFlow']}"></td>
+                            <td><input type="text" name="totalDebtFlow[]" value="{$data[1]['totalDebtFlow']}"></td>
+                            <td><input type="text" name="totalDebtFlow[]" value="{$data[2]['totalDebtFlow']}"></td>
+                            <td><input type="text" name="totalDebtFlow[]" value="{$data[3]['totalDebtFlow']}"></td>
+                            <td><input type="text" name="totalDebtFlow[]" value="{$data[4]['totalDebtFlow']}"></td>
+                        </tr>
+                        <tr>
+                            <td>长期负债</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>长期借款</td>
+                            <td><input type="text" name="long_termBorrowing[]" value="{$data[0]['long_termBorrowing']}"></td>
+                            <td><input type="text" name="long_termBorrowing[]" value="{$data[1]['long_termBorrowing']}"></td>
+                            <td><input type="text" name="long_termBorrowing[]" value="{$data[2]['long_termBorrowing']}"></td>
+                            <td><input type="text" name="long_termBorrowing[]" value="{$data[3]['long_termBorrowing']}"></td>
+                            <td><input type="text" name="long_termBorrowing[]" value="{$data[4]['long_termBorrowing']}"></td>
+                        </tr>
+                        <tr>
+                            <td>应付债务</td>
+                            <td><input type="text" name="payableDebt[]" value="{$data[0]['payableDebt']}"></td>
+                            <td><input type="text" name="payableDebt[]" value="{$data[1]['payableDebt']}"></td>
+                            <td><input type="text" name="payableDebt[]" value="{$data[2]['payableDebt']}"></td>
+                            <td><input type="text" name="payableDebt[]" value="{$data[3]['payableDebt']}"></td>
+                            <td><input type="text" name="payableDebt[]" value="{$data[4]['payableDebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>长期应付款</td>
+                            <td><input type="text" name="longPayableDebt[]" value="{$data[0]['longPayableDebt']}"></td>
+                            <td><input type="text" name="longPayableDebt[]" value="{$data[1]['longPayableDebt']}"></td>
+                            <td><input type="text" name="longPayableDebt[]" value="{$data[2]['longPayableDebt']}"></td>
+                            <td><input type="text" name="longPayableDebt[]" value="{$data[3]['longPayableDebt']}"></td>
+                            <td><input type="text" name="longPayableDebt[]" value="{$data[4]['longPayableDebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>其他长期负债</td>
+                            <td><input type="text" name="otherLongDebt[]" value="{$data[0]['otherLongDebt']}"></td>
+                            <td><input type="text" name="otherLongDebt[]" value="{$data[1]['otherLongDebt']}"></td>
+                            <td><input type="text" name="otherLongDebt[]" value="{$data[2]['otherLongDebt']}"></td>
+                            <td><input type="text" name="otherLongDebt[]" value="{$data[3]['otherLongDebt']}"></td>
+                            <td><input type="text" name="otherLongDebt[]" value="{$data[4]['otherLongDebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>住房周转金</td>
+                            <td><input type="text" name="houseTurnover[]" value="{$data[0]['houseTurnover']}"></td>
+                            <td><input type="text" name="houseTurnover[]" value="{$data[1]['houseTurnover']}"></td>
+                            <td><input type="text" name="houseTurnover[]" value="{$data[2]['houseTurnover']}"></td>
+                            <td><input type="text" name="houseTurnover[]" value="{$data[3]['houseTurnover']}"></td>
+                            <td><input type="text" name="houseTurnover[]" value="{$data[4]['houseTurnover']}"></td>
+                        </tr>
+                        <tr>
+                            <td>专项应付款</td>
+                            <td><input type="text" name="specialPayable[]" value="{$data[0]['specialPayable']}"></td>
+                            <td><input type="text" name="specialPayable[]" value="{$data[1]['specialPayable']}"></td>
+                            <td><input type="text" name="specialPayable[]" value="{$data[2]['specialPayable']}"></td>
+                            <td><input type="text" name="specialPayable[]" value="{$data[3]['specialPayable']}"></td>
+                            <td><input type="text" name="specialPayable[]" value="{$data[4]['specialPayable']}"></td>
+                        </tr>
+                        <tr>
+                            <td>长期负债合计</td>
+                            <td><input type="text" name="totalLong_termDebt[]" value="{$data[0]['totalLong_termDebt']}"></td>
+                            <td><input type="text" name="totalLong_termDebt[]" value="{$data[1]['totalLong_termDebt']}"></td>
+                            <td><input type="text" name="totalLong_termDebt[]" value="{$data[2]['totalLong_termDebt']}"></td>
+                            <td><input type="text" name="totalLong_termDebt[]" value="{$data[3]['totalLong_termDebt']}"></td>
+                            <td><input type="text" name="totalLong_termDebt[]" value="{$data[4]['totalLong_termDebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>递延税款贷项</td>
+                            <td><input type="text" name="dydksx[]" value="{$data[0]['dydksx']}"></td>
+                            <td><input type="text" name="dydksx[]" value="{$data[1]['dydksx']}"></td>
+                            <td><input type="text" name="dydksx[]" value="{$data[2]['dydksx']}"></td>
+                            <td><input type="text" name="dydksx[]" value="{$data[3]['dydksx']}"></td>
+                            <td><input type="text" name="dydksx[]" value="{$data[4]['dydksx']}"></td>
+                        </tr>
+                        <tr>
+                            <td>负债合计</td>
+                            <td><input type="text" name="totalDebt[]" value="{$data[0]['totalDebt']}"></td>
+                            <td><input type="text" name="totalDebt[]" value="{$data[1]['totalDebt']}"></td>
+                            <td><input type="text" name="totalDebt[]" value="{$data[2]['totalDebt']}"></td>
+                            <td><input type="text" name="totalDebt[]" value="{$data[3]['totalDebt']}"></td>
+                            <td><input type="text" name="totalDebt[]" value="{$data[4]['totalDebt']}"></td>
+                        </tr>
+                        <tr>
+                            <td>所有者权益</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>少数股东权益</td>
+                            <td><input type="text" name="shareholderEquity[]" value="{$data[0]['shareholderEquity']}"></td>
+                            <td><input type="text" name="shareholderEquity[]" value="{$data[1]['shareholderEquity']}"></td>
+                            <td><input type="text" name="shareholderEquity[]" value="{$data[2]['shareholderEquity']}"></td>
+                            <td><input type="text" name="shareholderEquity[]" value="{$data[3]['shareholderEquity']}"></td>
+                            <td><input type="text" name="shareholderEquity[]" value="{$data[4]['shareholderEquity']}"></td>
+                        </tr>
+                        <tr>
+                            <td>实收资本</td>
+                            <td><input type="text" name="capitalCollect[]" value="{$data[0]['capitalCollect']}"></td>
+                            <td><input type="text" name="capitalCollect[]" value="{$data[1]['capitalCollect']}"></td>
+                            <td><input type="text" name="capitalCollect[]" value="{$data[2]['capitalCollect']}"></td>
+                            <td><input type="text" name="capitalCollect[]" value="{$data[3]['capitalCollect']}"></td>
+                            <td><input type="text" name="capitalCollect[]" value="{$data[4]['capitalCollect']}"></td>
+                        </tr>
+                        <tr>
+                            <td>资本公积</td>
+                            <td><input type="text" name="capitalReserve[]" value="{$data[0]['capitalReserve']}"></td>
+                            <td><input type="text" name="capitalReserve[]" value="{$data[1]['capitalReserve']}"></td>
+                            <td><input type="text" name="capitalReserve[]" value="{$data[2]['capitalReserve']}"></td>
+                            <td><input type="text" name="capitalReserve[]" value="{$data[3]['capitalReserve']}"></td>
+                            <td><input type="text" name="capitalReserve[]" value="{$data[4]['capitalReserve']}"></td>
+                        </tr>
+                        <tr>
+                            <td>盈余公积</td>
+                            <td><input type="text" name="surplusReserve[]" value="{$data[0]['surplusReserve']}"></td>
+                            <td><input type="text" name="surplusReserve[]" value="{$data[1]['surplusReserve']}"></td>
+                            <td><input type="text" name="surplusReserve[]" value="{$data[2]['surplusReserve']}"></td>
+                            <td><input type="text" name="surplusReserve[]" value="{$data[3]['surplusReserve']}"></td>
+                            <td><input type="text" name="surplusReserve[]" value="{$data[4]['surplusReserve']}"></td>
+                        </tr>
+                        <tr>
+                            <td>其中:公益金</td>
+                            <td><input type="text" name="welfare[]" value="{$data[0]['welfare']}"></td>
+                            <td><input type="text" name="welfare[]" value="{$data[1]['welfare']}"></td>
+                            <td><input type="text" name="welfare[]" value="{$data[2]['welfare']}"></td>
+                            <td><input type="text" name="welfare[]" value="{$data[3]['welfare']}"></td>
+                            <td><input type="text" name="welfare[]" value="{$data[4]['welfare']}"></td>
+                        </tr>
+                        <tr>
+                            <td>未分配利润</td>
+                            <td><input type="text" name="undistributedprofit[]" value="{$data[0]['undistributedprofit']}"></td>
+                            <td><input type="text" name="undistributedprofit[]" value="{$data[1]['undistributedprofit']}"></td>
+                            <td><input type="text" name="undistributedprofit[]" value="{$data[2]['undistributedprofit']}"></td>
+                            <td><input type="text" name="undistributedprofit[]" value="{$data[3]['undistributedprofit']}"></td>
+                            <td><input type="text" name="undistributedprofit[]" value="{$data[4]['undistributedprofit']}"></td>
+                        </tr>
+                        <tr>
+                            <td>所有者权益合计</td>
+                            <td><input type="text" name="totalOwnerEquity[]" value="{$data[0]['totalOwnerEquity']}"></td>
+                            <td><input type="text" name="totalOwnerEquity[]" value="{$data[1]['totalOwnerEquity']}"></td>
+                            <td><input type="text" name="totalOwnerEquity[]" value="{$data[2]['totalOwnerEquity']}"></td>
+                            <td><input type="text" name="totalOwnerEquity[]" value="{$data[3]['totalOwnerEquity']}"></td>
+                            <td><input type="text" name="totalOwnerEquity[]" value="{$data[4]['totalOwnerEquity']}"></td>
+                        </tr>
+                        <tr>
+                            <td>其他</td>
+                            <td><input type="text" name="other[]" value="{$data[0]['other']}"></td>
+                            <td><input type="text" name="other[]" value="{$data[1]['other']}"></td>
+                            <td><input type="text" name="other[]" value="{$data[2]['other']}"></td>
+                            <td><input type="text" name="other[]" value="{$data[3]['other']}"></td>
+                            <td><input type="text" name="other[]" value="{$data[4]['other']}"></td>
+                        </tr>
+                        <tr>
+                            <td>负债及所有者权益合计</td>
+                            <td><input type="text" name="total[]" value="{$data[0]['total']}"></td>
+                            <td><input type="text" name="total[]" value="{$data[1]['total']}"></td>
+                            <td><input type="text" name="total[]" value="{$data[2]['total']}"></td>
+                            <td><input type="text" name="total[]" value="{$data[3]['total']}"></td>
+                            <td><input type="text" name="total[]" value="{$data[4]['total']}"></td>
+                        </tr>
+                        </thead>
+                    </table>
+                     </form>
+                </div>
+            </div>
+        </div>
+        <p>
+            <input type="button" value="保存" class="make" onclick="doSave()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="recheck" value="确认" class="make">
+        </p>
+        <br/>
+        <div class="approve_memo" style="display: none;">
+            审核备注：
+            <textarea name="confirmMemo"  style="width:98%;overflow-y:auto;height:50px;" id="confirmMemo">{$data[0]['confirmMemo']}</textarea>
+            <p><input type="button" value="保存" id="save_memo"></p>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('DebtDetail1/save')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('DebtDetail/recheck')}";
+        var data={"applicationid":applicationid};
+         ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('DebtDetail/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

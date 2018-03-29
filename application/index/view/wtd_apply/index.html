@@ -1,0 +1,130 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <form class="form-horizontal" method="post" action="{:url('WtdApply/update')}" id="tableForm">
+           <div class="span6">
+                <button type="button" class="btn btn-success" value="提交"  onclick="doSubmit()">
+                    <span class="glyphicon glyphicon-ok-sign">提交</span>
+                </button>
+                <button type="button" class="btn btn-info" value="保存" id="save" onclick="doSave()">
+                    <span class="glyphicon glyphicon-saved">保存</span>
+                </button>
+               <input type="hidden" name="id" id="applicationid" value="{$data['id']}">
+               <input type="hidden" id="activeid" name="activeid" value="{$activeid}">
+           </div>
+
+        <style>
+            #pageajax {
+                height: 500px;
+                width: 100%;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+            .tablehead p {
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <!--委托单-->
+                  {include file="public:wtd"/}
+
+                    <!--确认报告的备注-->
+                    {include file="public:trueApproveList"/}
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //必填项
+    $('form').validate({
+        rules: {
+            companyName:{
+                required: true//目标公司名称
+            },
+            address:{
+                required:true//地址
+            },
+            tel: {
+                required: true//电话
+            },
+            demand: {
+                required: true//调查的目的
+            },
+            speedType:{
+                required:true//报告情况
+            },
+            entrustDate:{
+                required:true//委托日期
+            }
+        },
+        messages: {
+            companyName: {
+                required: "必填项"
+            },
+            address:{
+                required:"必填项"
+            },
+            tel: {
+                required: "必填项"
+            },
+            demand: {
+                required: "必填项"
+            },
+            speedType:{
+                required:"必填项"
+            },
+            entrustDate:{
+                required:"必填项"
+            }
+        }
+    });
+    $(function(){
+        //委托日期日期
+        jeDate({
+            dateCell: "#entrustDate",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('WtdApply/save')}", $('#tableForm').serialize());
+    }
+
+    //提交
+    function doSubmit(){
+            $('#tableForm').submit();
+    }
+</script>
+{/block}

@@ -1,0 +1,21 @@
+<p class="normal">
+    <input type="button" value="保存" onclick="doSave()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" id="recheck" value="确认">
+</p>
+<p class="translate" style="display: none;">
+    <input type="button" value="保存" onclick="doSaveEng()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <input type="button" id="recheckEng" value="确认">
+</p>
+<br/>
+<!--报告的备注-->
+<div class="approve_memo" style="display: none;">
+    审核备注：
+    <textarea name="confirmMemo"  style="width:98%;overflow-y:auto;height:50px;" id="confirmMemo">{$data['confirmMemo']}</textarea>
+    <p><input type="button" value="保存" id="save_memo"></p>
+</div>
+<!--翻译的备注-->
+<div class="approve_memoEng" style="display: none;">
+    翻译审核备注：
+    <textarea name="confirmMemoEng"  style="width:98%;overflow-y:auto;height:50px;" id="confirmMemoEng">{$data['confirmMemoEng']}</textarea>
+    <p><input type="button" value="保存" id="save_memoEng"></p>
+</div>

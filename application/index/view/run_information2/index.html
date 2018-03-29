@@ -1,0 +1,289 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>主要产品</b></p>
+                    <form class="form-horizontal" method="post" action="{:url('RunInformation2/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">主要产品:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainProduct" value="{$data['mainProduct']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="mainProductEng" value="{$data['mainProductEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">产品品牌:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="productBrand" value="{$data['productBrand']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="productBrandEng" value="{$data['productBrandEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">销售额:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="salesVolume" value="{$data['salesVolume']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="salesVolumeEng" value="{$data['salesVolumeEng']}" size="100%;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>采购情况</b></p>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">a.国内:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="purchase_internal" value="{$data['purchase_internal']}" size="5%;">%</td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="purchase_internalEng" value="{$data['purchase_internalEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; text-align: center;">主要区域:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainRegion" value="{$data['mainRegion']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%; text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainRegionEng" value="{$data['mainRegionEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;text-align: center;">主要付款方式:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainPay" value="{$data['mainPay']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainPayEng" value="{$data['mainPayEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">b.国外:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="purchase_abroad" value="{$data['purchase_abroad']}" size="5%;">%</td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="purchase_abroadEng" value="{$data['purchase_abroadEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; text-align: center;">主要区域:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainRegion_abroad" value="{$data['mainRegion_abroad']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%; text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainRegion_abroadEng" value="{$data['mainRegion_abroadEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;text-align: center;">主要付款方式:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainPay_abroad" value="{$data['mainPay_abroad']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainPay_abroadEng" value="{$data['mainPay_abroadEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">c.主要设备和材料供应商:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><textarea name="supplier" rows="3" style="width: 100%;overflow-y:auto;">{$data['supplier']}</textarea></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<textarea name="supplierEng" rows="3" style="width: 100%;overflow-y:auto;">{$data['supplierEng']}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; text-align: center;">d.对供应商付款情况:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="supplierPaySitua" value="{$data['supplierPaySitua']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%; text-align: center;"></td>
+                                <td >({$language})<input type="text" name="supplierPaySituaEng" value="{$data['supplierPaySituaEng']}" size="100%;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>销售情况</b></p>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">a.国内:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="sales_internal" value="{$data['sales_internal']}" size="5%;">%</td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="sales_internalEng" value="{$data['sales_internalEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; text-align: center;">主要区域:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainRegion1" value="{$data['mainRegion1']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%; text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainRegion1Eng" value="{$data['mainRegion1Eng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;text-align: center;">主要付款方式:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainPay1" value="{$data['mainPay1']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainPay1Eng" value="{$data['mainPay1Eng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">b.国外:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="sales_abroad" value="{$data['sales_abroad']}" size="5%;">%</td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="sales_abroadEng" value="{$data['sales_abroadEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%; text-align: center;">主要区域:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainRegion_abroad1" value="{$data['mainRegion_abroad1']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%; text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainRegion_abroad1Eng" value="{$data['mainRegion_abroad1Eng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;text-align: center;">主要付款方式:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="mainPay_abroad1" value="{$data['mainPay_abroad1']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;text-align: center;"></td>
+                                <td >({$language})<input type="text" name="mainPay_abroad1Eng" value="{$data['mainPay_abroad1Eng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;">c.销售/服务对象:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="salesObject" value="{$data['salesObject']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;"></td>
+                                <td >({$language})<input type="text" name="salesObjectEng" value="{$data['salesObjectEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;">d.销售渠道:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="salesChannel" value="{$data['salesChannel']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;"></td>
+                                <td >({$language})<input type="text" name="salesChannelEng" value="{$data['salesChannelEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">e.主要客户:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><textarea name="customer" rows="3" style="width: 100%;overflow-y:auto;">{$data['customer']}</textarea></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<textarea name="customerEng" rows="3" style="width: 100%;overflow-y:auto;">{$data['customerEng']}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%;">f.客户付款情况:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span>
+                                    <select name="customerPaySitua">
+                                        <option value="--" {if condition="$data['customerPaySitua'] eq '--'"}selected{/if}>--</option>
+                                        <option value="正常" {if condition="$data['customerPaySitua'] eq '正常'"}selected{/if}>正常</option>
+                                    </select>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%;"></td>
+                                <td >({$language})<input type="text" name="customerPaySituaEng" value="{$data['customerPaySituaEng']}" size="100%;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //保存
+    function doSave(){
+        saveFlow("{:url('RunInformation2/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(_翻译)
+    function doSaveEng(){
+        saveFlow("{:url('RunInformation2/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('RunInformation2/recheck')}";
+        var data={"applicationid":applicationid};
+          ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('RunInformation2/recheckEng')}";
+        var data={"applicationid":applicationid};
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        var url="{:url('RunInformation2/save_memo')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        var url="{:url('RunInformation2/save_memoEng')}";
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

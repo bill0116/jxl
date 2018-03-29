@@ -1,0 +1,235 @@
+<div class="widget-toolbar no-border">
+    <ul class="nav nav-tabs" id="myTab">
+        <li {if condition="$type eq 1"} class="active"{/if}>
+        <a href="{:url('make_baogao/index1')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('委托单')}</a>
+        </li>
+        <li {if condition="$type eq 2"} class="active"{/if} >
+        <a href="{:url('search_record/index1')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('调档记录')}</a>
+        </li>
+        <li {if condition="$color3 eq 2"}
+            style="background-color: #f60821"
+            {elseif condition="$color3 eq 1"}
+            style="background-color: #00ff00"
+            {elseif condition="$color3 eq 3"}
+            style="background-color: #00ff00"
+            {elseif condition="$color3 eq 4"}
+            style="background-color: #f60821"
+            {else/}
+        {/if}
+                {if condition="$type eq 3"} class="active"{/if}>
+        <a href="{:url('summany2/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('公司概要')}</a>
+        </li>
+        <li {if condition="$color4 eq 2"}
+            style="background-color: #f60821"
+            {elseif condition="$color4 eq 1"}
+            style="background-color: #00ff00"
+            {elseif condition="$color4 eq 3"}
+            style="background-color: #00ff00"
+            {elseif condition="$color4 eq 4"}
+            style="background-color: #f60821"
+            {else/}
+        {/if}
+                {if condition="$type eq 4"} class="active"{/if}>
+        <a  href="{:url('register/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('注册信息')}</a>
+        </li>
+        <li   {if condition="$color5 eq 2"}
+              style="background-color: #f60821"
+              {elseif condition="$color5 eq 1"}
+              style="background-color: #00ff00"
+              {elseif condition="$color5 eq 3"}
+              style="background-color: #00ff00"
+              {elseif condition="$color5 eq 4"}
+              style="background-color: #f60821"
+              {else/}
+        {/if}
+                {if condition="$type eq 5"} class="active"{/if}>
+        <a  href="{:url('register2/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('注册信息2')}</a>
+        </li>
+        <li {if condition="$color6 eq 2"}
+            style="background-color: #f60821"
+            {elseif condition="$color6 eq 1"}
+            style="background-color: #00ff00"
+            {elseif condition="$color6 eq 3"}
+            style="background-color: #00ff00"
+            {elseif condition="$color6 eq 4"}
+            style="background-color: #f60821"
+            {else/}
+        {/if}
+                {if condition="$type eq 6"} class="active"{/if}>
+        <a  href="{:url('shareholder/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('股权机构')}</a>
+        </li>
+        <li   {if condition="$color7 eq 2"}
+              style="background-color: #f60821"
+              {elseif condition="$color7 eq 1"}
+              style="background-color: #00ff00"
+              {elseif condition="$color7 eq 3"}
+              style="background-color: #00ff00"
+              {elseif condition="$color7 eq 4"}
+              style="background-color: #f60821"
+              {else/}
+        {/if}
+                {if condition="$type eq 7"} class="active"{/if}>
+        <a  href="{:url('organization/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('组织结构')}</a>
+        </li>
+        <li  {if condition="$color8 eq 2"}
+             style="background-color: #f60821"
+             {elseif condition="$color8 eq 1"}
+             style="background-color: #00ff00"
+             {elseif condition="$color8 eq 3"}
+             style="background-color: #00ff00"
+             {elseif condition="$color8 eq 4"}
+             style="background-color: #f60821"
+             {else/}
+        {/if}
+                {if condition="$type eq 8"} class="active"{/if}>
+        <a  href="{:url('staff_detail/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('人员状况')}</a>
+        </li>
+        <li  {if condition="$color9 eq 2"}
+             style="background-color: #f60821"
+             {elseif condition="$color9 eq 1"}
+             style="background-color: #00ff00"
+             {elseif condition="$color9 eq 3"}
+             style="background-color: #00ff00"
+             {elseif condition="$color9 eq 4"}
+             style="background-color: #f60821"
+             {else/}
+        {/if}
+                {if condition="$type eq 9"} class="active"{/if}>
+        <a  href="{:url('product_business/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('生产经营情况')}</a>
+        </li>
+        <li    {if condition="$color20 eq 2"}
+               style="background-color: #f60821"
+               {elseif condition="$color20 eq 1"}
+               style="background-color: #00ff00"
+               {elseif condition="$color20 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color20 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 20"} class="active"{/if}>
+        <a  href="{:url('business_settle/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('业务结算情况')}</a>
+        </li>
+        <li    {if condition="$color10 eq 2"}
+                style="background-color: #f60821"
+                {elseif condition="$color10 eq 1"}
+                 style="background-color: #00ff00"
+               {elseif condition="$color10 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color10 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 10"} class="active"{/if}>
+        <a  href="{:url('asset_detail1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('资产表')}</a>
+        </li>
+        <li    {if condition="$color11 eq 2"}
+               style="background-color: #f60821"
+               {elseif condition="$color11 eq 1"}
+               style="background-color: #00ff00"
+               {elseif condition="$color11 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color11 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 11"} class="active"{/if}>
+        <a  href="{:url('debt_detail1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('负债表')}</a>
+        </li>
+        <li   {if condition="$color12 eq 2"}
+              style="background-color: #f60821"
+              {elseif condition="$color12 eq 1"}
+              style="background-color: #00ff00"
+              {elseif condition="$color12 eq 3"}
+              style="background-color: #00ff00"
+              {elseif condition="$color12 eq 4"}
+              style="background-color: #f60821"
+              {else/}
+        {/if}
+                {if condition="$type eq 12"} class="active"{/if}>
+        <a  href="{:url('sunyi_detail1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('损益表')}</a>
+        </li>
+        <li    {if condition="$color13 eq 2"}
+                style="background-color: #f60821"
+                {elseif condition="$color13 eq 1"}
+                style="background-color: #00ff00"
+               {elseif condition="$color13 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color13 eq 4"}
+               style="background-color: #f60821"
+             {else/}
+        {/if}
+               {if condition="$type eq 13"} class="active"{/if}>
+        <a  href="{:url('financial_rate_detail1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('重要财务状况比率表')}</a>
+        </li>
+        <li  {if condition="$color15 eq 2"}
+             style="background-color: #f60821"
+             {elseif condition="$color15 eq 1"}
+             style="background-color: #00ff00"
+             {elseif condition="$color15 eq 3"}
+             style="background-color: #00ff00"
+             {elseif condition="$color15 eq 4"}
+             style="background-color: #f60821"
+             {else/}
+        {/if}
+                {if condition="$type eq 15"} class="active"{/if}>
+        <a  href="{:url('financial_analyse1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('财务分析')}</a>
+        </li>
+        <li    {if condition="$color16 eq 2"}
+               style="background-color: #f60821"
+               {elseif condition="$color16 eq 1"}
+               style="background-color: #00ff00"
+               {elseif condition="$color16 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color16 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 16"} class="active"{/if}>
+        <a  href="{:url('BankDetail1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('金融机构往来')}</a>
+        </li>
+        <li    {if condition="$color17 eq 2"}
+               style="background-color: #f60821"
+               {elseif condition="$color17 eq 1"}
+               style="background-color: #00ff00"
+               {elseif condition="$color17 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color17 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 17"} class="active"{/if}>
+        <a  href="{:url('LegalDispute/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('法律纠纷')}</a>
+        </li>
+        <li    {if condition="$color18 eq 2"}
+               style="background-color: #f60821"
+               {elseif condition="$color18 eq 1"}
+               style="background-color: #00ff00"
+               {elseif condition="$color18 eq 3"}
+               style="background-color: #00ff00"
+               {elseif condition="$color18 eq 4"}
+               style="background-color: #f60821"
+               {else/}
+        {/if}
+                {if condition="$type eq 18"} class="active"{/if}>
+        <a  href="{:url('credit_analyse1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('综合评价')}</a>
+        </li>
+        <li   {if condition="$color19 eq 2"}
+              style="background-color: #f60821"
+              {elseif condition="$color19 eq 1"}
+              style="background-color: #00ff00"
+              {elseif condition="$color19 eq 3"}
+              style="background-color: #00ff00"
+              {elseif condition="$color19 eq 4"}
+              style="background-color: #f60821"
+              {else/}
+        {/if}
+                {if condition="$type eq 19"} class="active"{/if}>
+        <a  href="{:url('credit_evaluate1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('风险评定')}</a>
+        </li>
+        <li style="display: none;" class="feedback"
+            {if condition="$type eq 21"} class="active"{/if}>
+        <a  href="{:url('CustomerFeedback1/index')}?option={$option}&applicationid={$applicationid}&activeid={$activeid}">{:lang('客户反馈')}</a>
+        </li>
+    </ul>
+</div>

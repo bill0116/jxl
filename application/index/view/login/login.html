@@ -1,0 +1,127 @@
+{extend name="layout/ins_base" /}
+{block name="content"}
+<div class="Public container">
+    <div class="row">
+        <div class="col-xs-12 hidden-xs" style="margin-top:120px;"></div>
+    </div>
+    <div class="row">
+        <div class="col-sm-8 hidden-xs">
+            <div class="img"></div>
+        </div>
+        <div class="col-sm-4 well">
+            <div style="margin-bottom:44px;margin-top:20px;">
+                <h1 class="text-center">{:lang(get_system_config("system_name"))} </h1>
+            </div>
+            <form method="post" id="form_login" action="{:url('login/login')}" class="form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3  control-label" for="emp_no">{:lang('帐号')}：</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="emp_no" name="LoginName"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3  control-label" for="password">{:lang('密码')}：</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" id="password" type="password" name="PassWord"/>
+                    </div>
+                </div>
+            <!--    <div class="form-group">
+                    <span class="col-sm-3  control-label"> </span>
+                    <div class="col-sm-9">
+                        <input class="ace" type="radio" name="language"  value="zh"
+                        {if $Think.cookie.think_var == 'zh-cn'}checked{/if}/>中文(Chinese)
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        <input class="ace" type="radio" name="language"  value="en"
+                        {if $Think.cookie.think_var == 'en-us'}checked{/if}/>英文(English)
+                    </div>
+                </div>-->
+                <!--<div class="form-group">-->
+                    <!--<span class="col-sm-3  control-label"> </span>-->
+                    <!--<div class="col-sm-9">-->
+                        <!--<label  style="color: red;">{:lang('请用KOA账号和密码登陆')}</label>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <input type="submit" value="{:lang('登录')}"  class="btn btn-sm btn-primary col-10">
+                    </div>
+                </div>
+            </form>
+            <p></p>
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+        </div>
+    </div>
+    <div class="row text-right" style="display: block">
+        版权所有：<a href="#"></a>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    <!--浏览器检测-->
+    function BrowserType() {
+        var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串
+        var isOpera = userAgent.indexOf("Opera") > -1; //判断是否Opera浏览器
+        var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1 && !isOpera; //判断是否IE浏览器
+        var isEdge = userAgent.indexOf("Windows NT 6.1; Trident/7.0;") > -1 && !isIE; //判断是否IE的Edge浏览器
+        var isFF = userAgent.indexOf("Firefox") > -1; //判断是否Firefox浏览器
+        var isSafari = userAgent.indexOf("Safari") > -1 && userAgent.indexOf("Chrome") == -1; //判断是否Safari浏览器
+        var isChrome = userAgent.indexOf("Chrome") > -1 && userAgent.indexOf("Safari") > -1; //判断Chrome浏览器
+        var IE11 = window.navigator.userAgent.toLocaleLowerCase(), // 判断IE11浏览器
+                ie11 = /(trident)\/([\d.]+)/,
+                b = IE11.match(ie11);
+        if (b) {
+            return {type: "IE11"};
+        }
+        if (isIE) {
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(userAgent);
+            var fIEVersion = parseFloat(RegExp["$1"]);
+            if (fIEVersion == 7) {
+                return {type: "IE7"};
+            }
+            else if (fIEVersion == 8) {
+                return {type: "IE8"};
+            }
+            else if (fIEVersion == 9) {
+                return {type: "IE9"};
+            }
+            else if (fIEVersion == 10) {
+                return {type: "IE10"};
+            }
+            else if (fIEVersion == 11) {
+                return {type: "IE11"};
+            }
+            else {
+                return {type: "0"};
+            }//IE版本过低
+        }
+        if (isFF) {
+            return {type: "FF"};
+        }
+        if (isOpera) {
+            return {type: "Opera"};
+        }
+        if (isSafari) {
+            return {type: "Safari"};
+        }
+        if (isChrome) {
+            return {type: "Chrome"};
+        }
+        if (isEdge) {
+            return {type: "Edge"};
+        }
+    }
+    function handle() {
+        var browsertype = BrowserType().type;
+        if (browsertype == 'IE8' || browsertype == 'IE9') {
+            alert("您的浏览器版本过低，请下载IE10及以上版本或谷歌浏览器");
+            window.opener = null;
+            window.open('', '_self');
+            window.close();
+        }
+    }
+    handle();
+</script>
+{/block}

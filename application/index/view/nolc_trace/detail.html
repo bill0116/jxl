@@ -1,0 +1,359 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'信用评估','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="" id="tableForm">
+                <div class="tab-pane">
+                    {if !empty($data['sinosurebuyerno'])}
+                    <!--按钮组-->
+                    <div class="row-fluid" style="margin-bottom: 8px;">
+                        <div class="span6">
+                            <div id="DataTables_Table_0_lengtd" class="dataTables_lengtd">
+                                <button type="button" value="提交" id="onSubmite" onclick="doSubmite()" class="btn btn-success btn-sm"
+                                        style="border:0 solid #fff "><span
+                                        class="glyphicon glyphicon-ok-sign"></span> 提交
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="applyTable">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                           aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 13px;
+                                    text-align: left;
+                                }
+
+                                .table td span {
+                                    color: red;
+                                }
+
+                                .table input {
+                                    width: 175px;
+                                }
+                            </style>
+                            <tbody>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>买方代码: </label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="sinosurebuyerno" id="sinosurebuyerno" value="{$data['sinosurebuyerno']}" readonly>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>客户名称: </label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="buyerEngName" id="buyerEngName" value="{$data['buyerEngName']}" readonly>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>批复额度:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="quotaSum" id="quotaSumValue" value="{$data['quotaSum']}" readonly>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>批复期限:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="payTerm" id="payTermValue" value="{$data['payTerm']}" readonly>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>建议额度:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="CalLimit" id="CalLimitValue" value="">
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>建议期限:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="CalTerm" id="CalTermValue" value="">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>支付方式:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text"  id="contractPayModeText" value="{$data['contractPayModeText']}" readonly>
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>模板得分:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="MScore" id="MScoreValue" value="">
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>评估得分:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="Score" id="ScoreValue" value="">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>等级:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="Grade" id="GradeValue" value="">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>评估模型:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <select id="ModelID" name="ModelID" size="1" style="width: 175px;">
+                                        <option></option>
+                                        {volist name=":model('Common')->getModel()" id="model"}
+                                        <option value="{$model['ModelID']}" {if isset($modelid) AND $model['ModelID'] eq $modelid}selected{/if}>{$model.ModelName}</option>
+                                        {/volist}
+                                    </select>
+                                    <input type="button" onclick="doCalculate()"  id="calculate" value="计算" style="width:66px;">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                            {notempty name="formData"}
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                   aria-describedby="DataTables_Table_0_info">
+                                <style type="text/css">
+                                    .table td {
+                                        font-size: 13px;
+                                        text-align: left;
+                                    }
+                                    .table input {
+                                        width: 175px;
+                                    }
+                                </style>
+                                <tbody>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>评估项目</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>取值</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>得分</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>权重</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>备注</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>系统取值</label>
+                                    </td>
+                                </tr>
+                                </tbody>
+                                <tbody  id="modelTable">
+                                {volist name="formData" id="form"}
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>{$form.EvaluateItemName}</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        {if is_array($form['ItemValue'])}
+                                        <select class="ItemKey" name="{$form.ItemKey}" size="1" style="width:175px;">
+                                            <option></option>
+                                            {volist name="form.ItemValue" id="sta"}
+                                            <option value="{$sta['Ratio']}">{$sta.StartValue}</option>
+                                            {/volist}
+                                        </select>
+                                        {else /}
+                                        <input type="text"  name="{$form['ItemKey']}" id="{$form['ItemKey']}" value="{$form['ItemValue']}">
+                                        {/if}
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <input type="text" name="{$form.ItemKey}Value"    id="{$form.ItemKey}Value"  readonly>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>{$form.Weight}</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <input  type="text"  name="{$form.ItemKey}Memo"  id="{$form.ItemKey}Memo">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>{$form.SysValue}</label>
+                                    </td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                            </table>
+                            {/notempty}
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $('#ModelID').change(function () {
+            var activeid="{$data['ActiveID']}";
+            if ($(this).val() != "")
+                location.href = "{:url('NolcTrace/detail','','')}/activeid/" + activeid + "/modelid/" + $(this).val() + ".html";
+            else
+                location.href = "{:url('NolcTrace/detail','','')}/activeid/" + activeid + ".html";
+        });
+        $('#tableForm').validate({
+            rules: {MScore: {required: true}, Score: {required: true}},
+            messages: {MScore: {required: "先计算再提交"}, Score: {required: "先计算再提交"}},
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            }
+        });
+    });
+    function doCalculate(){
+        var dWeight = 0;
+        if ($('#ModelID').val() != '') {
+            $('#modelTable tr').each(function (i) {
+                var value = $(this).children('td').eq(1).find("select  option:selected").val();
+                if (value == undefined)
+                    value = $(this).children('td').eq(1).find("input").val();
+                if (value != '') {
+                    var weight = parseFloat(trim($(this).children('td').eq(3).text()));
+                    dWeight += weight;
+                }
+                if (trim($(this).children('td').eq(0).text()) == "其他信息" && value == "") {
+                    alert("其他信息项不能为空！");
+                }
+            });
+            if ($('#ModelID').val() == 4 && dWeight < 70) {
+                alert("缺失数据权重大于30%，建议选择补充模型进行测评！");
+            }
+            $.ajax({
+                type: 'post',
+                data: $('form').serialize() + "&activeid=" + {$data['ActiveID']} + "&modelid=" + $('#ModelID').val(),
+                url: "{:url('NolcTrace/calCulate')}",
+                dataType: 'json',
+                success: function (data) {
+                   for(var prop in data){
+                       $('#'+prop+"Value").val( data[prop]);
+                   }
+                },
+                error: function () {
+
+                }
+
+            });
+        } else {
+            alert("必须选择一个评分卡！");
+            return false;
+        }
+
+    }
+    function doSubmite() {
+        if($('form').valid){
+            if ($('#ModelID').val() != '') {
+                $.ajax({
+                    type: 'post',
+                    data: $('form').serialize() + "&activeid=" + {$data['ActiveID']} + "&modelid=" + $('#ModelID').val(),
+                    url: "{:url('NolcTrace/createRepply')}",
+                    dataType: 'json',
+                    success: function (data) {
+                        if(data.code==1){
+                            window.location.href=data.url;
+                        }
+                    },
+                    error: function () {
+
+                    }
+                });
+            } else {
+                alert("必须选择一个评分卡！");
+                return false;
+            }
+        }
+    }
+</script>
+{/block}

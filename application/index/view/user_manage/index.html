@@ -1,0 +1,319 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'用户管理','search'=>'N'))}
+<div class="box-content">
+    <form id="serchTable">
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" class="btn btn-success btn-sm" value="查询" onclick="doSearch()">
+                        <input type="button" class="btn btn-info btn-sm" value="新增" data-toggle="modal" data-target="#userModal">
+                        <input type="reset" class="btn btn-default btn-sm" value="重置">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+
+                .table span {
+                    color: red;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>经营单元:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="Organization" name="Organization" size="1" style="width:175px;">
+                        <option value="">请选择经营单元</option>
+                        {volist name="orgData" id="flag"}
+                        <option value="{$flag['ID']}">{$flag.OrganizationTitle}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>用户名/登录名:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="Name" id="Name">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>角色:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="RoleID" name="RoleID" size="1" style="width:175px;">
+                        <option value="">请选择角色</option>
+                        {volist name="roleInfo" id="role"}
+                        <option value="{$role['RoleID']}">{$role.RoleName}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+
+            .tablehead {
+                width: auto;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <colgroup>
+                            <col/>
+                            <col/>
+                        </colgroup>
+                        <style type="text/css">
+                            .table td {
+                                font-size: 12px;;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+                            <td style='width:120px;'>登录名</td>
+                            <td style='width:120px;'>姓名</td>
+                            <td style='width:120px;'>电子邮件</td>
+                            <td style='width:120px;'>角色</td>
+                            <td style='width:80px;'>状态</td>
+                            <td style='width:80px;'>操作</td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel"
+     aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog" style="width:800px;">
+        <form id="userTable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        &times;
+                    </button>
+                    <h4 class="modal-title" id="uploadModalLabel">
+                        用户新增
+                    </h4>
+                </div>
+                <div class="modal-body" style="overflow:auto;">
+                    <div class="span6" style="margin-bottom: 8px;">
+                        <input type="button" id="LcButton" class="btn btn-success btn-sm" value="{:lang('保存')}" onclick="addUser()">
+                    </div>
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <thead>
+                        <tr role="row">
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                <label>登录名:</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending">
+                                <input type="text" name="LoginName" id="LoginName">
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                <label>用户名:</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending">
+                                <input type="text" name="UserName" id="UserName">
+                            </td>
+                        </tr>
+                        <tr role="row">
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                <label>Email:</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending">
+                                <input type="text" name="EMail" id="EMail">
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                <label>状态:</label>
+                            </td>
+                            <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                colspan="1"
+                                aria-label="Status: activate to sort column ascending">
+                                <input type="radio" name="IsActive" id="IsActive_0" value="1" style="width:20px;" checked>启用
+                                <input type="radio" name="IsActive" id="IsActive_1" value="0" style="width:20px;">禁用
+                            </td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <input type="reset" value="{:lang('重置')}" class="btn btn-sm"
+                           style="border:0px solid #fff ">
+                    <input type="button" value="{:lang('关闭')}" class="btn btn-sm" data-dismiss="modal"
+                           style="border:0px solid #fff ">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function doSearch(page) {
+        $.ajax({
+            type: 'post',
+            data: $('#serchTable').serialize() + "&page=" + page,
+            url: "{:url('UserManage/index')}",
+            dataType: 'json',
+            success: function (data) {
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                                "<input type='hidden' name='userid' id='userid' value='"+data.data['list'][i].userid+"'>"+
+                                "<input type='hidden' name='organization' id='organization' value='"+data.data['list'][i].organization+"'>"+
+                                "<input type='hidden' name='roleid' id='roleid' value='"+data.data['list'][i].roleid+"'>"+
+                                "<td >" + data.data['list'][i].loginname + "</td>" +
+                                "<td>" + data.data['list'][i].username + "</td>" +
+                                "<td>" + data.data['list'][i].email + "</td>" +
+                                "<td>" + data.data['list'][i].rolename2 + "</td>" +
+                                "<td >" + data.data['list'][i].status + "</td>" +
+                                "<td><a rel='edit' href='javascript:void(0)' class='cz'>编辑</a>&nbsp;&nbsp;" +
+                                "<a rel='del' href='javascript:void(0)' class='cz'>删除</a>" +
+                                "</td>"+
+                                "<tr>";
+                    }
+                    $("#dynr").empty();
+                    $("#dynr").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+
+                    //查询数据中的编辑
+                    $("a[rel='edit']").click(function(){
+                        var userid = $(this).parent().parent().find("input[name='userid']").val();
+                        var roleid = $(this).parent().parent().find("input[name='roleid']").val();
+                        var organization = $(this).parent().parent().find("input[name='organization']").val();
+                        var getUrl = "{:url('UserManage/edit')}"+"?userid="+userid+"&organization="+organization;
+                        var iWidth = 1000; //弹出窗口的宽度;
+                        var iHeight = 600; //弹出窗口的高度;
+                        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+                        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+                        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+                        window.open(getUrl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+                    })
+
+                    //查询数据中的删除
+                    $("a[rel='del']").click(function(){
+                        alert(111);
+                        var userid = $(this).parent().parent().find("input[name='userid']").val();
+                        var organization = $(this).parent().parent().find("input[name='organization']").val();
+                        $.ajax({
+                            type:'post',
+                            url:"{:url('UserManage/del')}",
+                            data:{organization:organization,userid:userid},
+                            datatype:'json',
+                            success:function(data){
+                                if(data.code == 1){
+                                    doSearch();
+                                }
+                                alert(data.msg);
+                            }
+                        })
+                    })
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+    function addUser(){
+        $.ajax({
+            type: 'post',
+            data: $('#userTable').serialize() ,
+            url: "{:url('UserManage/add')}",
+            dataType: 'json',
+            success: function (data) {
+                if(data.code==1){
+                    clearForm($('#userTable'));
+                    $('#userModal').modal('hide');
+                }
+                alert(data.msg);
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+    function clearForm(form) {
+        $(':input', form).each(function () {
+            var type = this.type;
+            var tag = this.tagName.toLowerCase(); // normalize case
+            if (type == 'text' || type == 'password' || tag == 'textarea')
+                this.value = "";
+            else if (tag == 'select')
+                this.selectedIndex = -1;
+        });
+    };
+</script>
+{/block}

@@ -1,0 +1,64 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            #pageajax {
+                height: 500px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>客户反馈意见</b></p>
+                    <br/><br/>
+                    <form class="form-horizontal" method="post" action="{:url('CustomerFeedback1/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <textarea name="memo"  style="width:98%;overflow-y:auto;height:200px;">{$data['memo']}</textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p>
+            <input type="button" value="保存" id="back_save">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+         <!--   <input type="button" id="recheck" value="确认" class="make">-->
+        </p>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //保存
+ $("#back_save").click(function(){
+     saveFlow("{:url('CustomerFeedback1/save')}", $('#tableForm').serialize());
+ });
+
+
+
+</script>
+{/block}
+

@@ -1,0 +1,204 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'非LC限额跟踪查询','search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" class="btn btn-success btn-sm" value="查询" onclick="doSearch()">
+                        <input type="reset" class="btn btn-default btn-sm" value="重置">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                    <label>组织机构:</label>
+                </th>
+                <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Role: activate to sort column ascending" style="width: 35%;">
+                    <select name="Organization" id="Organization" size="1" style="width:175px;">
+                        {volist name=":controller('common')->listOrganizations(session('auth_id'))" id="vo"}
+                        <option value="{$vo['ID']}">{$vo.OrganizationTitle}</option>
+                        {/volist}
+                    </select>
+                </th>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>投保账套:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="OrganizationFlag" name="OrganizationFlag" size="1" style="width:175px;">
+                        <option value="">请选择投保账套</option>
+                        {volist name=":model('Common')->getCommon(322)" id="approve"}
+                        <option value="{$approve['GeneralCode']}">{$approve.CodeText}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>买方代码:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="sinosureBuyerNo" id="sinosureBuyerNo">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>SAP代码:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input name="corpBuyerNo" id="corpBuyerNo" type="text">
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>客户名称:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="buyerEngName" id="buyerEngName" style="width: 40%;">
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width: 2000px;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <thead>
+                        <tr>
+                            <td>操作</td>
+                            <td>流水号</td>
+                            <td>投保帐套</td>
+                            <td>买方代码</td>
+                            <td >SAP代码</td>
+                            <td >客户名称</td>
+                            <td >支付方式</td>
+                            <td >申请限额</td>
+                            <td >申请期限</td>
+                            <td >状态</td>
+                            <td >批复限额</td>
+                            <td >批复期限</td>
+                            <td>原因</td>
+                            <td >生效日期</td>
+                            <td >失效日期</td>
+                            <td >拒收风险赔偿比例</td>
+                            <td >其他商业风险赔付比例</td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    function doSearch(page) {
+        if ($('#flowID').val() != '') {
+            $.ajax({
+                type: 'post',
+                data: $('form').serialize() + "&page=" + page,
+                url: "{:url('NolcTrace/index')}",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        var html = "";
+                        var page = data.data.page;
+                        for (var i = 0; i < data.data.list.length; i++) {
+                            html += "<tr style='height: 40px;' class='dbb'>" +
+                                    "<td style='width:120px;text-align: center;padding-left: 5px;'>" +
+                                    "<span class='btn btn-success' id='look' style='border:0px solid #fff'>" +
+                                    "<a href='" + data.data['list'][i].FlowUrl + "' target='_blank' style='color: white;font-size: small'>信用评估</a></span></td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].ActiveID + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].OrganizationFlagText + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].sinosurebuyerno + "</td>" +
+                                    "<td style='width:180px;'>" + data.data['list'][i].corpBuyerNo + "</td>" +
+                                    "<td style='width:300px;'>" + data.data['list'][i].buyerEngName + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].contractPayModeText + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].quotaSumApply + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].payTermApply + "</td>" +
+                                    "<td style='width:200px;'>" + data.data['list'][i].status + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].CalLimit + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].CalTerm + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].unAcceptReason + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].effectDate + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].lapseDate + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].RefuseRate2 + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].OtherRate2 + "</td>" +
+                                    "<tr>";
+                        }
+                        $("#dynr").empty();
+                        $("#dynr").html(html);
+                        $("#page").empty();
+                        $("#page").html(page);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        } else {
+            alert("请选择流程名称");
+            return false;
+        }
+    }
+</script>
+{/block}

@@ -1,0 +1,670 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'客户档案信息','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('Lc/update')}" id="tableForm">
+                <div class="tab-pane">
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active" style="width:165px;">
+                            <a href="#buyerMsg" data-toggle="tab">基本信息</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#quotaMsg" data-toggle="tab">信保限额信息</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#buyerOverdueData" data-toggle="tab">客户超期数据</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#buyerReviewHistory" data-toggle="tab">信用复评历史</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#buyerEvaluateHistory" data-toggle="tab">客户评估历史</a>
+                        </li>
+                        <li class="dropdown">
+                            <a href="#buyerCredit" data-toggle="tab">资信摘要</a>
+                        </li>
+                    </ul>
+                    <style>
+                        .baobiao{
+                            height: 580px;
+                            width: 1320px;
+                            border: 1px solid #ddd;
+                            position: relative;
+                            overflow-x: auto;
+                            overflow-y: auto;
+                            table-layout: fixed;
+                            work-break: break-all;
+                            margin-top: 10px;
+                        }
+                    </style>
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <!--基本信息-->
+                        <div class="tab-pane fade in active tab-pane fade" id="buyerMsg">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                   aria-describedby="DataTables_Table_0_info">
+                                <style type="text/css">
+                                    #buyerMsg td {
+                                        text-align: left;
+                                       font-size: 13px;
+                                    }
+
+                                    #buyerMsg td span {
+                                        color: red;
+                                    }
+                                    #buyerMsg input {
+                                        width: 175px;
+                                    }
+                                </style>
+                                <tbody>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方代码:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerno" id="buyerno" value="{$data1['buyerno']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方英文名称:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerEngName" id="buyerEngName" value="{$data1['buyerEngName']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>SAP代码:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="Kunnr" id="Kunnr" value="{$data1['Kunnr']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方国家:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerCountryCode" id="buyerCountryCode" value="{$data1['buyerCountryCode']}" onkeypress="getCountryName('buyer')" style="width:12%;">
+                                        <input type="button" value="..." data-toggle="modal" data-target="#searchCountryModal" style="width: 25px;" onclick="checkTypeCountry('buyer')">
+                                        <input type="text" id="buyerCountryName" value="{:model('Common')->getCountryName($data1['buyerCountryCode'])}" style="width:28%;" readonly>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方英文地址:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerEngAddress" id="buyerEngAddress" value="{$data1['buyerEngAddress']}" style="width: 800px;">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方城市:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerCity" id="buyerCity" value="{$data1['buyerCity']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方注册号:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerRegNo" id="buyerRegNo" value="{$data1['buyerRegNo']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方电话:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerTel" id="buyerTel" value="">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>买方传值:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="buyerFax" id="buyerFax" value="{$data1['buyerFax']}">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!--信保限额信息-->
+                        <div class="baobiao tab-pane fade" id="quotaMsg">
+                            <table class="quotaMsg table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <style type="text/css">
+                                    .quotaMsg {
+                                        width: 1500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .quotaMsg td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>投保套餐</td>
+                                    <td style='width:80px;'>客户信保买方代码</td>
+                                    <td style='width:80px;'>支付方式</td>
+                                    <td style='width:80px;'>申请限额</td>
+                                    <td style='width:140px;'>信保期限</td>
+                                    <td style='width:150px;'>最终可使用额度</td>
+                                    <td style='width:150px;'>建议期限</td>
+                                    <td style='width:200px;'>剩余额度</td>
+                                    <td style='width:150px;'>公司剩余额度</td>
+                                    <td style='width:150px;'>开证行名称</td>
+                                    <td style='width:150px;'>开证行SWIFT</td>
+                                </tr>
+                                <tbody class="body" id="dynr2" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data2" id="vo"}
+                                    <tr>
+                                        <td style='width:80px;'>{$vo['OrganizationFlagText']}</td>
+                                        <td style='width:80px;'>{$vo['buyerNo']}</td>
+                                        <td style='width:80px;'>{$vo['paymodetext']}</td>
+                                        <td style='width:80px;'>{$vo['quotaSum']}</td>
+                                        <td style='width:140px;'>{$vo['payTerm']}</td>
+                                        <td style='width:150px;'>{$vo['CalLimit']}</td>
+                                        <td style='width:150px;'>{$vo['CalTerm']}</td>
+                                        <td style='width:200px;'>{$vo['quotaBalance']}</td>
+                                        <td style='width:150px;'>{$vo['GSSYED']}</td>
+                                        <td style='width:150px;'>{$vo['bankEngName']}</td>
+                                        <td style='width:150px;'>{$vo['bankSwift']}</td>
+                                    </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                        <!--客户超期数据-->
+                        <div class="baobiao tab-pane fade" id="buyerOverdueData">
+                            <table class="buyerOverdueData table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <style type="text/css">
+                                    .buyerOverdueData {
+                                        width:100%;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerOverdueData td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>公司</td>
+                                    <td style='width:80px;'>国家</td>
+                                    <td style='width:80px;'>币种</td>
+                                    <td style='width:80px;'>超期金额</td>
+                                    <td style='width:140px;'>付款条件</td>
+                                    <td style='width:150px;'>发票号/落货纸号</td>
+                                    <td style='width:150px;'>应收款日</td>
+                                    <td style='width:200px;'>产品大类</td>
+                                    <td style='width:150px;'>销售区域</td>
+                                    <td style='width:150px;'>销售经理</td>
+                                </tr>
+                                <tbody class="body" id="dynr3" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data3" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['bukrs']}</td>
+                                    <td style='width:80px;'>{$vo['landx']}</td>
+                                    <td style='width:80px;'>{$vo['WAERS']}</td>
+                                    <td style='width:80px;'>{$vo['cqje']}</td>
+                                    <td style='width:140px;'>{$vo['zterm']}</td>
+                                    <td style='width:150px;'>{$vo['FPH']}</td>
+                                    <td style='width:150px;'>{$vo['yskr']}</td>
+                                    <td style='width:200px;'>{$vo['cpdl']}</td>
+                                    <td style='width:150px;'>{$vo['xsqy']}</td>
+                                    <td style='width:150px;'>{$vo['xsjl']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                        <!--信用复评历史-->
+                        <div class="baobiao tab-pane fade" id="buyerReviewHistory">
+                            <table class="buyerReviewHistory table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <style type="text/css">
+                                    .buyerReviewHistory {
+                                        width: 1500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerReviewHistory td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>买方代码</td>
+                                    <td style='width:80px;'>买方名称</td>
+                                    <td style='width:80px;'>评估日期</td>
+                                    <td style='width:80px;'>信用评估分数</td>
+                                    <td style='width:140px;'>信用评估等级</td>
+                                    <td style='width:150px;'>最终可使用额度</td>
+                                    <td style='width:150px;'>建议期限</td>
+                                    <td style='width:200px;'>拒收风险赔偿比例</td>
+                                    <td style='width:150px;'>其他商业风险赔偿比例</td>
+                                    <td style='width:150px;'>流水号</td>
+                                </tr>
+                                <tbody class="body" id="dynr4" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data4" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['buyerno']}</td>
+                                    <td style='width:80px;'>{$vo['buyerEngName']}</td>
+                                    <td style='width:80px;'>{$vo['CreateDate']}</td>
+                                    <td style='width:80px;'>{$vo['Score']}</td>
+                                    <td style='width:140px;'>{$vo['Grade']}</td>
+                                    <td style='width:150px;'>{$vo['CalLimit']}</td>
+                                    <td style='width:150px;'>{$vo['CalTerm']}</td>
+                                    <td style='width:200px;'>{$vo['RefuseRate2']}</td>
+                                    <td style='width:150px;'>{$vo['OtherRate2']}</td>
+                                    <td style='width:150px;'>{$vo['ActiveID']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                        <!--客户评估历史-->
+                        <div class="baobiao tab-pane fade" id="buyerEvaluateHistory">
+                            <table class="buyerEvaluateHistory table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <style type="text/css">
+                                    .buyerEvaluateHistory {
+                                        width: 100%;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerEvaluateHistory td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:100px;'>买方代码</td>
+                                    <td style='width:300px;'>买方名称</td>
+                                    <td style='width:150px;'>评估日期</td>
+                                    <td style='width:80px;'>评估人</td>
+                                    <td style='width:150px;'>信用评估分数</td>
+                                    <td style='width:150px;'>信用评估等级</td>
+                                    <td style='width:100px;'>模板得分</td>
+                                    <td style='width:80px;'>流水号</td>
+                                </tr>
+                                <tbody class="body" id="dynr5" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data5" id="vo"}
+                                <tr>
+                                    <td style='width:100px;'>{$vo['CustomerNumber']}</td>
+                                    <td style='width:300px;'>{$vo['CustomerName']}</td>
+                                    <td style='width:150px;'>{$vo['EvaluateDate']}</td>
+                                    <td style='width:80px;'>{$vo['UserName']}</td>
+                                    <td style='width:150px;'>{$vo['score']}</td>
+                                    <td style='width:150px;'>{$vo['grade']}</td>
+                                    <td style='width:100px;'>{$vo['SystemSuggest']}</td>
+                                    <td style='width:100px;'>{$vo['ActiveID']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
+                        <!--资信摘要-->
+                        <div class="baobiao tab-pane fade" id="buyerCredit">
+                            <table class="buyerCredit table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <center style="height: 30px;" ><b>信用信息</b></center>
+                                <style type="text/css">
+                                    .buyerCredit {
+                                        width: 2500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerCredit td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>买方代码</td>
+                                    <td style='width:80px;'>报告编号</td>
+                                    <td style='width:80px;'>渠道评级</td>
+                                    <td style='width:80px;'>渠道评级解释</td>
+                                    <td style='width:140px;'>报告推荐授信</td>
+                                    <td style='width:150px;'>银行最大授信</td>
+                                    <td style='width:150px;'>银行最大授信折美元</td>
+                                    <td style='width:200px;'>银行评价</td>
+                                    <td style='width:150px;'>付款评分</td>
+                                    <td style='width:150px;'>付款总笔数</td>
+                                    <td style='width:150px;'>付款总金额</td>
+                                    <td style='width:80px;'>最高单笔金额</td>
+                                    <td style='width:80px;'>平均拖欠天数</td>
+                                    <td style='width:80px;'>是否有不良付款记录</td>
+                                    <td style='width:80px;'>付款总金额折美元</td>
+                                    <td style='width:80px;'>最高单笔金额折美元</td>
+                                    <td style='width:80px;'>供应商最高授信额度</td>
+                                    <td style='width:80px;'>供应商最高授信额度折美元</td>
+                                    <td style='width:80px;'>与供应商交易时间</td>
+                                    <td style='width:80px;'>对外担保金额</td>
+                                    <td style='width:80px;'>接受担保金额</td>
+                                    <td style='width:80px;'>抵押金额</td>
+                                    <td style='width:80px;'>对外担保金额折美元</td>
+                                    <td style='width:80px;'>接受担保金额折美元</td>
+                                    <td style='width:80px;'>抵押金额折美元</td>
+                                </tr>
+                                <tbody class="body" id="dynr6" style="word-break:break-all; word-wrap:break-word;">
+                                </tbody>
+                                {volist name="data6" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['sinosureBuyerNo']}</td>
+                                    <td style='width:80px;'>{$vo['reportNo']}</td>
+                                    <td style='width:80px;'>{$vo['riskScore']}</td>
+                                    <td style='width:80px;'>{$vo['riskAnalysis']}</td>
+                                    <td style='width:140px;'>{$vo['creditRecommendation']}</td>
+                                    <td style='width:150px;'>{$vo['bankCreditMax']}</td>
+                                    <td style='width:150px;'>{$vo['bankCreditMaxUSD']}</td>
+                                    <td style='width:200px;'>{$vo['bankComment']}</td>
+                                    <td style='width:150px;'>{$vo['paymentScore']}</td>
+                                    <td style='width:150px;'>{$vo['noOfPaymentRecords']}</td>
+                                    <td style='width:150px;'>{$vo['TotalAmount']}</td>
+                                    <td style='width:80px;'>{$vo['highestPayment']}</td>
+                                    <td style='width:80px;'>{$vo['averageDBT']}</td>
+                                    <td style='width:80px;'>{$vo['badPaymentFlag']}</td>
+                                    <td style='width:80px;'>{$vo['totalAmountUSD']}</td>
+                                    <td style='width:80px;'>{$vo['highestUSD']}</td>
+                                    <td style='width:80px;'>{$vo['highestCredt']}</td>
+                                    <td style='width:80px;'>{$vo['highestCreditUSD']}</td>
+                                    <td style='width:80px;'>{$vo['tradeHistory']}</td>
+                                    <td style='width:80px;'>{$vo['guaranteeAmount']}</td>
+                                    <td style='width:80px;'>{$vo['guarantorAmount']}</td>
+                                    <td style='width:80px;'>{$vo['mortgageAmount']}</td>
+                                    <td style='width:80px;'>{$vo['guaranteeAmountUSD']}</td>
+                                    <td style='width:80px;'>{$vo['guarantorAmountUSD']}</td>
+                                    <td style='width:80px;'>{$vo['mortgageAmountUS']}</td>
+                                </tr>
+                                {/volist}
+                                </thead>
+                            </table>
+                            <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                            <table class="buyerCredit table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <center style="height: 30px;" ><b>经营信息</b></center>
+                                <style type="text/css">
+                                    .buyerCredit {
+                                        width: 2500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerCredit td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>买方代码</td>
+                                    <td style='width:80px;'>报告编号</td>
+                                    <td style='width:150px;'>经营模式</td>
+                                    <td style='width:80px;'>主营产品</td>
+                                    <td style='width:140px;'>产品品牌</td>
+                                    <td style='width:150px;'>品牌性质</td>
+                                    <td style='width:150px;'>报告主营业务行业代码</td>
+                                    <td style='width:200px;'>报告主营业务编码机构</td>
+                                    <td style='width:150px;'>行业评价</td>
+                                    <td style='width:150px;'>生产能力</td>
+                                    <td style='width:150px;'>经营地面积</td>
+                                    <td style='width:80px;'>所属行业</td>
+                                    <td style='width:80px;'>经营地价值</td>
+                                    <td style='width:80px;'>经营地面积单位</td>
+                                    <td style='width:80px;'>经营地位置</td>
+                                    <td style='width:80px;'>经营地所有权性质</td>
+                                    <td style='width:80px;'>经营地价值折美元</td>
+                                    <td style='width:80px;'>销售地区</td>
+                                    <td style='width:80px;'>客户数量</td>
+                                    <td style='width:80px;'>上年销售总额</td>
+                                    <td style='width:80px;'>出口结算方式账期</td>
+                                    <td style='width:80px;'>上年销售总额折美元</td>
+                                    <td style='width:80px;'>内销结算方式账期</td>
+                                    <td style='width:80px;'>上年出口总额</td>
+                                    <td style='width:80px;'>上年出口总额折美元</td>
+                                    <td style='width:80px;'>采购地区</td>
+                                    <td style='width:80px;'>上年采购总额</td>
+                                    <td style='width:80px;'>采购总额中本国所占比例（%）</td>
+                                    <td style='width:80px;'>采购总额中国外所占比例（%）</td>
+                                    <td style='width:80px;'>上年采购总额折美元</td>
+                                    <td style='width:80px;'>进口结算方式账期</td>
+                                    <td style='width:80px;'>上年进口总额</td>
+                                    <td style='width:80px;'>国内采购结算方式账期</td>
+                                    <td style='width:80px;'>上年进口总额折美元</td>
+                                </tr>
+                                <tbody class="body" id="dynr7" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data7" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['sinosureBuyerNo']}</td>
+                                    <td style='width:80px;'>{$vo['reportNo']}</td>
+                                    <td style='width:150px;'>{$vo['businessTxt']}</td>
+                                    <td style='width:80px;'>{$vo['products']}</td>
+                                    <td style='width:140px;'>{$vo['brands']}</td>
+                                    <td style='width:150px;'>{$vo['brandType']}</td>
+                                    <td style='width:150px;'>{$vo['primarySIC']}</td>
+                                    <td style='width:200px;'>{$vo['PrimarySICType']}</td>
+                                    <td style='width:150px;'>{$vo['trendOfIndustry']}</td>
+                                    <td style='width:150px;'>{$vo['productionCapacity']}</td>
+                                    <td style='width:150px;'>{$vo['premiseSize']}</td>
+                                    <td style='width:80px;'>{$vo['chinaSIC']}</td>
+                                    <td style='width:80px;'>{$vo['premiseValue']}</td>
+                                    <td style='width:80px;'>{$vo['sizeUnit']}</td>
+                                    <td style='width:80px;'>{$vo['location']}</td>
+                                    <td style='width:80px;'>{$vo['holdingsType']}</td>
+                                    <td style='width:80px;'>{$vo['premiseValueUSD']}</td>
+                                    <td style='width:80px;'>{$vo['mainSalesTerritory']}</td>
+                                    <td style='width:80px;'>{$vo['numberOfCustomer']}</td>
+                                    <td style='width:80px;'>{$vo['totalSales']}</td>
+                                    <td style='width:80px;'>{$vo['exportMode']}</td>
+                                    <td style='width:80px;'>{$vo['totalSalesUSD']}</td>
+                                    <td style='width:80px;'>{$vo['domesticSaleMode']}</td>
+                                    <td style='width:80px;'>{$vo['totalExport']}</td>
+                                    <td style='width:80px;'>{$vo['totalExportUSD']}</td>
+                                    <td style='width:80px;'>{$vo['purchasingArea']}</td>
+                                    <td style='width:80px;'>{$vo['totalPurchase']}</td>
+                                    <td style='width:80px;'>{$vo['domesticPurchaseRatio']}</td>
+                                    <td style='width:80px;'>{$vo['foreignPurchaseRatio']}</td>
+                                    <td style='width:80px;'>{$vo['totalPurchaseUSD']}</td>
+                                    <td style='width:80px;'>{$vo['importMode']}</td>
+                                    <td style='width:80px;'>{$vo['importAmount']}</td>
+                                    <td style='width:80px;'>{$vo['domesticPurchaseMode']}</td>
+                                    <td style='width:80px;'>{$vo['importUSD']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                            <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                            <table class="buyerCredit table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <center style="height: 30px;" ><b>公共信息</b></center>
+                                <style type="text/css">
+                                    .buyerCredit {
+                                        width: 2500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerCredit td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>买方代码</td>
+                                    <td style='width:80px;'>报告编号</td>
+                                    <td style='width:80px;'>是否用公告</td>
+                                    <td style='width:80px;'>是否有新闻</td>
+                                    <td style='width:140px;'>是否有诉讼</td>
+                                    <td style='width:150px;'>是否有抵押</td>
+                                    <td style='width:150px;'>是否有破产记录</td>
+                                    <td style='width:200px;'>是否有留置记录</td>
+                                    <td style='width:150px;'>是否有其他公告记录</td>
+                                </tr>
+                                <tbody class="body" id="dynr8" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data8" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['sinosureBuyerNo']}</td>
+                                    <td style='width:80px;'>{$vo['reportNo']}</td>
+                                    <td style='width:80px;'>{$vo['bulletinFlg']}</td>
+                                    <td style='width:80px;'>{$vo['newsFlag']}</td>
+                                    <td style='width:140px;'>{$vo['litigationFlag']}</td>
+                                    <td style='width:150px;'>{$vo['mortgateFlag']}</td>
+                                    <td style='width:150px;'>{$vo['bankruptcyFlg']}</td>
+                                    <td style='width:200px;'>{$vo['lienFlag']}</td>
+                                    <td style='width:150px;'>{$vo['otherPublicRecordFlag']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                            <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                            <table class="buyerCredit table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                                <center style="height: 30px;" ><b>股东信息</b></center>
+                                <style type="text/css">
+                                    .buyerCredit {
+                                        width: 2500px;
+                                        left: 0;
+                                        word-break: break-all;
+                                        word-wrap: break-word;
+                                        padding: 0px;
+                                        margin: 0px;
+                                    }
+                                    .buyerCredit td {
+                                        border: 1px solid #ddd;
+                                        text-align: center;
+                                        padding: 0px;
+                                        margin: 0px;
+                                        height: 30px;
+                                    }
+                                </style>
+                                <thead>
+                                <tr>
+                                    <td style='width:80px;'>买方代码</td>
+                                    <td style='width:80px;'>报告编号</td>
+                                    <td style='width:80px;'>股东名称</td>
+                                    <td style='width:80px;'>持股比例（%)</td>
+                                    <td style='width:140px;'>股份数额</td>
+                                    <td style='width:150px;'>持股金额</td>
+                                    <td style='width:150px;'>币种</td>
+                                    <td style='width:200px;'>持股金额折美元</td>
+                                </tr>
+                                <tbody class="body" id="dynr9" style="word-break:break-all; word-wrap:break-word;">
+                                {volist name="data9" id="vo"}
+                                <tr>
+                                    <td style='width:80px;'>{$vo['sinosureBuyerNo']}</td>
+                                    <td style='width:80px;'>{$vo['reportNo']}</td>
+                                    <td style='width:80px;'>{$vo['name']}</td>
+                                    <td style='width:80px;'>{$vo['ratio']}</td>
+                                    <td style='width:140px;'>{$vo['sharesHold']}</td>
+                                    <td style='width:150px;'>{$vo['valueHold']}</td>
+                                    <td style='width:150px;'>{$vo['valueMoneyID']}</td>
+                                    <td style='width:200px;'>{$vo['valueUSD']}</td>
+                                </tr>
+                                {/volist}
+                                </tbody>
+                                </thead>
+                            </table>
+                            <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/> <br/>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+    });
+</script>
+{/block}

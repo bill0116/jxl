@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="edge"/>
+    <title>{$title|default=get_system_config("system_name")}</title>
+    <link href="__PUBLIC__/css/bootstrap.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/font-awesome/css/font-awesome.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/animate.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/plugins/gritter/jquery.gritter.css"/>
+    <link href="__PUBLIC__/css/style.css" rel="stylesheet">
+    <link href="__PUBLIC__/css/xiaowei.css" rel="stylesheet">
+    <script type="text/javascript">
+    </script>
+</head>
+{include file="Layout:page_script"/}
+<body>
+<div class="shade"></div>
+<div class="form-group hidden" id="img_upload_container">
+    <div id="img_upload">上传</div>
+</div>
+<nav class="navbar navbar-default row" role="navigation" id="top_menu">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse-6">
+            <span class="sr-only">Toggle navigation</span>
+            <i class="fa fa-bars fa-lg"></i>
+        </button>
+        <div class="hidden-xs">
+            &nbsp;
+        </div>
+        <a href="{:url('index/index')}" class="navbar-brand">{:get_system_config("system_name")}</a>
+    </div>
+    <div class="collapse navbar-collapse" id="navbar-collapse-6">
+        <ul class="nav navbar-nav navbar-right">
+            <foreach name="top_menu" item="top_menu_vo">
+
+            </foreach>
+   <!--         <a class="nav-app btn-button" href="{:url('OrderTracking/index')}">
+                <i class="fa fa-crosshairs"></i>订单跟踪
+            </a>
+            <a class="nav-app btn-button" href="{:url('ChangePassword/index')}">
+                <i class="fa fa-eraser"></i>修改密码
+            </a>
+            <a class="nav-app btn-button" href="{:url('UserAgentApply/add')}">
+                <i class="fa fa-cog"></i>代理设置
+            </a>
+            <a class="nav-app btn-button" href="{:url('Flow/index')}">
+                <i class="fa fa-search"></i>流程查询
+            </a>-->
+            <a class="nav-app btn-danger" href="{:url('login/logout')}"><i class="fa fa-sign-out"></i>退出</a>
+        </ul>
+    </div><!-- /.navbar-collapse -->
+</nav>
+<div id="wrapper">
+    <div class="sidebar navbar-static-side" id="sidebar">
+        <div id="user_info" class="text-center hidden-xs">
+            <span>当前用户：{$Think.session.user_name}</span>
+        </div>
+        <?php echo html_entity_decode($left_mune);?>
+    </div>
+    <div id="page-wrapper" class="gray-bg">
+        <div class="row wrapper border-bottom gray-bg">
+            <div class="breadcrumbs" id="breadcrumbs">
+                <ul class="breadcrumb">
+                    <li>
+                        <i class="fa fa-home home-icon"></i>
+                        <a href="{:url('index/index')}">Home</a>
+                    </li>
+                </ul><!-- .breadcrumb -->
+            </div>
+        </div>
+        <div class="wrapper wrapper-content">
+            {block name="content"}{/block}
+        </div>
+    </div>
+
+</div>
+<script src="__PUBLIC__/js/jquery-2.1.1.js"></script>
+<script src="__PUBLIC__/js/jquery.validate.min.js"></script>
+<script src="__PUBLIC__/js/bootstrap.js"></script>
+<script src="__PUBLIC__/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="__PUBLIC__/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script src="__PUBLIC__/js/inspinia.js"></script>
+<script src="__PUBLIC__/js/jedate.js"></script>
+<script src="__PUBLIC__/js/jquery.form.js"></script>
+<script src="__PUBLIC__/js/common.js"></script>
+<script src="__PUBLIC__/js/public.js"></script>
+
+<!--Jquery easyui-->
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/report/easyui.css">
+<link rel="stylesheet" type="text/css" href="__PUBLIC__/report/icon.css">
+<script type="text/javascript" src="__PUBLIC__/report/jquery.easyui.min.js"></script>
+
+
+{block name="js"}{/block}
+
+</body>
+</html>

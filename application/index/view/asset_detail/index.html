@@ -1,0 +1,313 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+            #pageajax span{
+                color: red;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>1.资产表</b></p>
+                    <br/>
+                    <p>
+                    <form action="{:url('AssetDetail1/import')}" method="post" enctype="multipart/form-data" id="importForm">
+                        <input type="hidden" name="id" id="applicationids" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeids" value="{$activeid}">
+                        <label style="float: left;height: 25px;margin-top:5px;">Excel表格：</label>
+                        <input style="float: left;width: 180px;height: 25px;margin-top:5px;" type="file" name="file"/>
+                        <input type="button" value="上传" id="import">
+                    </form>
+                    </p>
+                    <p style="font-size: 14px; text-align: right;"><span>单位：千元</span></p>
+                    <form class="form-horizontal" method="post" action="{:url('AssetDetail/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                    width: 20%;
+                                }
+                            </style>
+                            <thead>
+                            {if condition="$data eq null"}
+                            <tr>
+                                <td ></td>
+                                <td><?php echo date('Y',time())-1;?></td>
+                                <td><?php echo date('Y',time())-2;?></td>
+                                <td><?php echo date('Y',time())-3;?></td>
+                                <td><?php echo date('Y',time())-4;?></td>
+                                <td><?php echo date('Y',time())-5;?></td>
+                            </tr>
+                            {else/}
+                            <tr>
+                                <td ></td>
+                                <td>{$data[0]['year']}</td>
+                                <td>{$data[1]['year']}</td>
+                                <td>{$data[2]['year']}</td>
+                                <td>{$data[3]['year']}</td>
+                                <td>{$data[4]['year']}</td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <td>流动资产</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>货币资金</td>
+                                <td><input type="text" name="currencyFunds[]" value="{$data[0]['currencyFunds']}" ></td>
+                                <td><input type="text" name="currencyFunds[]" value="{$data[1]['currencyFunds']}"></td>
+                                <td><input type="text" name="currencyFunds[]" value="{$data[2]['currencyFunds']}" ></td>
+                                <td><input type="text" name="currencyFunds[]" value="{$data[3]['currencyFunds']}"></td>
+                                <td><input type="text" name="currencyFunds[]" value="{$data[4]['currencyFunds']}" ></td>
+                            </tr>
+                            <tr>
+                                <td>应收票据</td>
+                                <td><input type="text" name="receivableBill[]" value="{$data[0]['receivableBill']}" ></td>
+                                <td><input type="text" name="receivableBill[]" value="{$data[1]['receivableBill']}"></td>
+                                <td><input type="text" name="receivableBill[]" value="{$data[2]['receivableBill']}" ></td>
+                                <td><input type="text" name="receivableBill[]" value="{$data[3]['receivableBill']}"></td>
+                                <td><input type="text" name="receivableBill[]" value="{$data[4]['receivableBill']}" ></td>
+                            </tr>
+                            <tr>
+                                <td>应收账款</td>
+                                <td><input type="text" name="receivableAccount[]" value="{$data[0]['receivableAccount']}" ></td>
+                                <td><input type="text" name="receivableAccount[]" value="{$data[1]['receivableAccount']}" ></td>
+                                <td><input type="text" name="receivableAccount[]" value="{$data[2]['receivableAccount']}" ></td>
+                                <td><input type="text" name="receivableAccount[]" value="{$data[3]['receivableAccount']}" ></td>
+                                <td><input type="text" name="receivableAccount[]" value="{$data[4]['receivableAccount']}" ></td>
+                            </tr>
+                            <tr>
+                                <td>预付账款</td>
+                                <td><input type="text" name="prepayAccount[]" value="{$data[0]['prepayAccount']}" ></td>
+                                <td><input type="text" name="prepayAccount[]" value="{$data[1]['prepayAccount']}"></td>
+                                <td><input type="text" name="prepayAccount[]" value="{$data[2]['prepayAccount']}" ></td>
+                                <td><input type="text" name="prepayAccount[]" value="{$data[3]['prepayAccount']}"></td>
+                                <td><input type="text" name="prepayAccount[]" value="{$data[4]['prepayAccount']}" ></td>
+                            </tr>
+                            <tr>
+                                <td>其他应收账款</td>
+                                <td><input type="text" name="otherReceivableAccount[]" value="{$data[0]['otherReceivableAccount']}"></td>
+                                <td><input type="text" name="otherReceivableAccount[]" value="{$data[1]['otherReceivableAccount']}"></td>
+                                <td><input type="text" name="otherReceivableAccount[]" value="{$data[2]['otherReceivableAccount']}"></td>
+                                <td><input type="text" name="otherReceivableAccount[]" value="{$data[3]['otherReceivableAccount']}"></td>
+                                <td><input type="text" name="otherReceivableAccount[]" value="{$data[4]['otherReceivableAccount']}"></td>
+                            </tr>
+                            <tr>
+                                <td>存货</td>
+                                <td><input type="text" name="stock[]" value="{$data[0]['stock']}"></td>
+                                <td><input type="text" name="stock[]" value="{$data[1]['stock']}"></td>
+                                <td><input type="text" name="stock[]" value="{$data[2]['stock']}"></td>
+                                <td><input type="text" name="stock[]" value="{$data[3]['stock']}"></td>
+                                <td><input type="text" name="stock[]" value="{$data[4]['stock']}"></td>
+                            </tr>
+                            <tr>
+                                <td>待摊费用</td>
+                                <td><input type="text" name="apportionCost[]" value="{$data[0]['apportionCost']}"></td>
+                                <td><input type="text" name="apportionCost[]" value="{$data[1]['apportionCost']}"></td>
+                                <td><input type="text" name="apportionCost[]" value="{$data[2]['apportionCost']}"></td>
+                                <td><input type="text" name="apportionCost[]" value="{$data[3]['apportionCost']}"></td>
+                                <td><input type="text" name="apportionCost[]" value="{$data[4]['apportionCost']}"></td>
+                            </tr>
+                            <tr>
+                                <td>其他流动资产</td>
+                                <td><input type="text" name="otherCurrentAssets[]" value="{$data[0]['otherCurrentAssets']}" ></td>
+                                <td><input type="text" name="otherCurrentAssets[]" value="{$data[1]['otherCurrentAssets']}"></td>
+                                <td><input type="text" name="otherCurrentAssets[]" value="{$data[2]['otherCurrentAssets']}" ></td>
+                                <td><input type="text" name="otherCurrentAssets[]" value="{$data[3]['otherCurrentAssets']}"></td>
+                                <td><input type="text" name="otherCurrentAssets[]" value="{$data[4]['otherCurrentAssets']}" ></td>
+                            </tr>  <tr>
+                                <td>流动资产合计</td>
+                                <td><input type="text" name="totalCurrentAssets[]" value="{$data[0]['totalCurrentAssets']}"></td>
+                                <td><input type="text" name="totalCurrentAssets[]" value="{$data[1]['totalCurrentAssets']}"></td>
+                                <td><input type="text" name="totalCurrentAssets[]" value="{$data[2]['totalCurrentAssets']}"></td>
+                                <td><input type="text" name="totalCurrentAssets[]" value="{$data[3]['totalCurrentAssets']}"></td>
+                                <td><input type="text" name="totalCurrentAssets[]" value="{$data[4]['totalCurrentAssets']}"></td>
+                            </tr>
+                            <tr>
+                                <td>长期投资</td>
+                                <td><input type="text" name="long_termInvestment[]" value="{$data[0]['long_termInvestment']}"></td>
+                                <td><input type="text" name="long_termInvestment[]" value="{$data[1]['long_termInvestment']}"></td>
+                                <td><input type="text" name="long_termInvestment[]" value="{$data[2]['long_termInvestment']}"></td>
+                                <td><input type="text" name="long_termInvestment[]" value="{$data[3]['long_termInvestment']}"></td>
+                                <td><input type="text" name="long_termInvestment[]" value="{$data[4]['long_termInvestment']}"></td>
+                            </tr>
+                            <tr>
+                                <td>长期投资合计</td>
+                                <td><input type="text" name="totalLong_termInvestment[]" value="{$data[0]['totalLong_termInvestment']}"></td>
+                                <td><input type="text" name="totalLong_termInvestment[]" value="{$data[1]['totalLong_termInvestment']}"></td>
+                                <td><input type="text" name="totalLong_termInvestment[]" value="{$data[2]['totalLong_termInvestment']}"></td>
+                                <td><input type="text" name="totalLong_termInvestment[]" value="{$data[3]['totalLong_termInvestment']}"></td>
+                                <td><input type="text" name="totalLong_termInvestment[]" value="{$data[4]['totalLong_termInvestment']}"></td>
+                            </tr>
+                            <tr>
+                                <td>固定资产</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>固定资产原值</td>
+                                <td><input type="text" name="fixedAssetsOriginial[]" value="{$data[0]['fixedAssetsOriginial']}"></td>
+                                <td><input type="text" name="fixedAssetsOriginial[]" value="{$data[1]['fixedAssetsOriginial']}"></td>
+                                <td><input type="text" name="fixedAssetsOriginial[]" value="{$data[2]['fixedAssetsOriginial']}"></td>
+                                <td><input type="text" name="fixedAssetsOriginial[]" value="{$data[3]['fixedAssetsOriginial']}"></td>
+                                <td><input type="text" name="fixedAssetsOriginial[]" value="{$data[4]['fixedAssetsOriginial']}"></td>
+                            </tr>
+                            <tr>
+                                <td>减：累计折扣</td>
+                                <td><input type="text" name="cumulativeDiscounts[]" value="{$data[0]['cumulativeDiscounts']}"></td>
+                                <td><input type="text" name="cumulativeDiscounts[]" value="{$data[1]['cumulativeDiscounts']}"></td>
+                                <td><input type="text" name="cumulativeDiscounts[]" value="{$data[2]['cumulativeDiscounts']}"></td>
+                                <td><input type="text" name="cumulativeDiscounts[]" value="{$data[3]['cumulativeDiscounts']}"></td>
+                                <td><input type="text" name="cumulativeDiscounts[]" value="{$data[4]['cumulativeDiscounts']}"></td>
+                            </tr>
+                            <tr>
+                                <td>固定资产净值</td>
+                                <td><input type="text" name="fixedAssetsNet[]" value="{$data[0]['fixedAssetsNet']}"></td>
+                                <td><input type="text" name="fixedAssetsNet[]" value="{$data[1]['fixedAssetsNet']}"></td>
+                                <td><input type="text" name="fixedAssetsNet[]" value="{$data[2]['fixedAssetsNet']}"></td>
+                                <td><input type="text" name="fixedAssetsNet[]" value="{$data[3]['fixedAssetsNet']}"></td>
+                                <td><input type="text" name="fixedAssetsNet[]" value="{$data[4]['fixedAssetsNet']}"></td>
+                            </tr>
+                            <tr>
+                                <td>在建工程</td>
+                                <td><input type="text" name="constructionProject[]" value="{$data[0]['constructionProject']}"></td>
+                                <td><input type="text" name="constructionProject[]" value="{$data[1]['constructionProject']}"></td>
+                                <td><input type="text" name="constructionProject[]" value="{$data[2]['constructionProject']}"></td>
+                                <td><input type="text" name="constructionProject[]" value="{$data[3]['constructionProject']}"></td>
+                                <td><input type="text" name="constructionProject[]" value="{$data[4]['constructionProject']}"></td>
+                            </tr>
+                            <tr>
+                                <td>固定资产合计</td>
+                                <td><input type="text" name="totalFixedAssets[]" value="{$data[0]['totalFixedAssets']}"></td>
+                                <td><input type="text" name="totalFixedAssets[]" value="{$data[1]['totalFixedAssets']}"></td>
+                                <td><input type="text" name="totalFixedAssets[]" value="{$data[2]['totalFixedAssets']}"></td>
+                                <td><input type="text" name="totalFixedAssets[]" value="{$data[3]['totalFixedAssets']}"></td>
+                                <td><input type="text" name="totalFixedAssets[]" value="{$data[4]['totalFixedAssets']}"></td>
+                            </tr>
+                            <tr>
+                                <td>无形资产及递延资产</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>递延资产</td>
+                                <td><input type="text" name="deferAssets[]" value="{$data[0]['deferAssets']}"></td>
+                                <td><input type="text" name="deferAssets[]" value="{$data[1]['deferAssets']}"></td>
+                                <td><input type="text" name="deferAssets[]" value="{$data[2]['deferAssets']}"></td>
+                                <td><input type="text" name="deferAssets[]" value="{$data[3]['deferAssets']}"></td>
+                                <td><input type="text" name="deferAssets[]" value="{$data[4]['deferAssets']}"></td>
+                            </tr>
+                            <tr>
+                                <td>无形资产</td>
+                                <td><input type="text" name="intangibleAssets[]" value="{$data[0]['intangibleAssets']}"></td>
+                                <td><input type="text" name="intangibleAssets[]" value="{$data[1]['intangibleAssets']}"></td>
+                                <td><input type="text" name="intangibleAssets[]" value="{$data[2]['intangibleAssets']}"></td>
+                                <td><input type="text" name="intangibleAssets[]" value="{$data[3]['intangibleAssets']}"></td>
+                                <td><input type="text" name="intangibleAssets[]" value="{$data[4]['intangibleAssets']}"></td>
+                            </tr>
+                            <tr>
+                                <td>无形资产及递延资产合计</td>
+                                <td><input type="text" name="totalDeferIntangible[]" value="{$data[0]['totalDeferIntangible']}"></td>
+                                <td><input type="text" name="totalDeferIntangible[]" value="{$data[1]['totalDeferIntangible']}"></td>
+                                <td><input type="text" name="totalDeferIntangible[]" value="{$data[2]['totalDeferIntangible']}"></td>
+                                <td><input type="text" name="totalDeferIntangible[]" value="{$data[3]['totalDeferIntangible']}"></td>
+                                <td><input type="text" name="totalDeferIntangible[]" value="{$data[4]['totalDeferIntangible']}"></td>
+                            </tr>
+                            <tr>
+                                <td>资产总计</td>
+                                <td><input type="text" name="totalAssets[]" value="{$data[0]['totalAssets']}"></td>
+                                <td><input type="text" name="totalAssets[]" value="{$data[1]['totalAssets']}"></td>
+                                <td><input type="text" name="totalAssets[]" value="{$data[2]['totalAssets']}"></td>
+                                <td><input type="text" name="totalAssets[]" value="{$data[3]['totalAssets']}"></td>
+                                <td><input type="text" name="totalAssets[]" value="{$data[4]['totalAssets']}"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                     </form>
+                </div>
+            </div>
+        </div>
+        <p>
+            <input type="button" value="保存" class="make" onclick="doSave()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="recheck" value="确认" class="make">
+        </p>
+        <br/>
+        <div class="approve_memo" style="display: none;">
+            审核备注：
+            <textarea name="confirmMemo"  style="width:98%;overflow-y:auto;height:50px;" id="confirmMemo">{$data[0]['confirmMemo']}</textarea>
+            <p><input type="button" value="保存" id="save_memo"></p>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+    //上传附件
+    $("#import").click(function(){
+        $("#importForm").submit();
+        setTimeout('attach()',200);
+
+    });
+
+    //延迟
+    function attach(){
+        tankuang(200,'上传成功');
+        location=location;
+    }
+
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('AssetDetail/save')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url= "{:url('AssetDetail/recheck')}";
+        var data={"applicationid":applicationid};
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url= "{:url('AssetDetail/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

@@ -1,0 +1,458 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'客户走访信息','search'=>'N'))}
+
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('CustomerInterviewManage/save')}" id="tableForm">
+                <div class="tab-pane">
+                    <button type="button" value="保存" id="save" onclick="doSave()"
+                            class="btn btn-info btn-sm"
+                            style="border:0 solid #fff "><span
+                            class="glyphicon glyphicon-saved"></span> 保存
+                    </button>
+                    <input type="hidden" name="id" id="applicationid" value="{$data['ID']}">
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                   aria-describedby="DataTables_Table_0_info">
+                                <style type="text/css">
+                                    .table td {
+                                        font-size: 13px;
+                                        text-align: left;
+                                    }
+
+                                    .table td span {
+                                        color: red;
+                                    }
+                                </style>
+                                <tbody>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>组织机构:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <select name="Organization" id="Organization" size="1" style="width:340px;">
+                                            <option value=""></option>
+                                            {volist name="org" id="vo"}
+                                            <option value="{$vo['ID']}">{$vo.OrganizationTitle}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>买方代码:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="CustomerNumber"  value="{$data['CustomerNumber']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>买方名称:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text"   value="{$data['CustomerName']}" readonly>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>走访地址:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="InterviewAddress"  value="{$data['InterviewAddress']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>走访日期:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="InterviewDate" id="InterviewDate" value="{$data['InterviewDate']}" placeholder="单击选择日期">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>走访目的:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="InterviewPurpose" value="{$data['InterviewPurpose']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>走访人员:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="InterviewPersons"  value="{$data['InterviewPersons']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>客户接待人员:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="CustomerPersons" value="{$data['CustomerPersons']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>接待人员职位:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="CustomerPosition"  value="{$data['CustomerPosition']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>客户最新动向:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="Khzxdx" value="{$data['Khzxdx']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>人员变化:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="Rybh"  value="{$data['Rybh']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>外界评价:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="wjpj"  value="{$data['wjpj']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>存货的销售情况:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="chxsqk"  value="{$data['chxsqk']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>门店变化:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="3"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="mdbh"  value="{$data['mdbh']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>当地经济发展水平:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Ddjjfzsp" id="Ddjjfzsp" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(250)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>股东背景:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Gdbj" id="Gdbj" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(256)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>市场地位:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Scdw" id="Scdw" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(261)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>企业发展变革:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Qyfzbg" id="Qyfzbg" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(266)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>我方业务占比:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Wfywzg" id="Wfywzg" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(271)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>资产抵押状况:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Zcdyzk" id="Zcdyzk" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(276)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>管理者经验:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Glzjy" id="Glzjy" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(280)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>信息化水平:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Xxhsp" id="Xxhsp" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(285)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>主要收款账期:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Zyskzq" id="Zyskzq" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(290)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>库存周转天数:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Kczzts" id="Kczzts" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(296)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>对外担保责任及诉讼:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Dwdbzr" id="Dwdbzr" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(302)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>银行资信证书或评定:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Yhzxzs" id="Yhzxzs" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(306)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>自有门店面积:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Zymdmj" id="Zymdmj" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(311)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>与主要供应商合作时间:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="Yzygyshz" id="Yzygyshz" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(318)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>是否跟新:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="ifupdate" id="ifupdate" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(329)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}">{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>创建人:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="CreateName" id="CreateName" value="{$data['CreateName']}" readonly>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        <label>创建时间:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                                        aria-label="Status: activate to sort column ascending">
+                                        <input type="text" name="CreateDate" id="CreateDate" value="{$data['CreateDate']}" readonly>
+                                    </td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+
+        //选择日期
+        jeDate({
+            dateCell: "#InterviewDate",
+            format: "YYYY-MM-DD",
+            //isinitVal:true,
+            isTime: true, //isClear:false,
+            okfun: function (val) {
+                alert(val)
+            }
+        });
+    });
+
+    function doSave() {
+        saveFlow("{:url('CustomerInterviewManage/save')}", $('#tableForm').serialize());
+    }
+</script>
+{/block}

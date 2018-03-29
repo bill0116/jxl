@@ -1,0 +1,104 @@
+{extend name='layout/ins_page' /}
+{block name="content"}
+{:widget('PageHeader/simple',['name'=>'资信报告确认下单','search'=>'N'])}
+<div class="box span12">
+    <div class="box-content">
+        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+            <form action="{:url('OrderConfirm/index')}" method="post">
+                <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                       id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                    <style type="text/css">
+                        .table th {
+                            font-size: 13px;
+                            text-align: left;
+                        }
+
+                        .table th span {
+                            color: red;
+                        }
+                    </style>
+                    <tbody>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>组织机构:<span>*</span></label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 85%;">
+                            <select name="Organization" id="Organization" size="1" style="width:340px;">
+                                <option value=""></option>
+                                {volist name="org" id="vo"}
+                                <option value="{$vo['ID']}">{$vo.OrganizationTitle}</option>
+                                {/volist}
+                            </select>
+                        </th>
+                    </tr>
+                    <tr role="row" class="sinosure">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <label>买方代码:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <input type="text" name="sinosureBuyerNo" id="sinosureBuyerNo" value=""
+                                   onkeypress="getBuyerName()" style="width:9%;">
+                            <input type="button" value="..." data-toggle="modal" data-target="#searchModal"
+                                   style="width:25px;">
+                            <input type="text" name="buyerEngName" id="buyerEngName" value="" style="width:25%;"
+                                   readonly>
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row-fluid" style="margin-top: 8px;">
+                    <div class="span6">
+                        <div id="DataTables_Table_0_length" class="dataTables_length">
+                            <label>
+                                <div class="form-actions" style="background-color: #fff;">
+                                    <input type="submit" id="sub" value="提交"
+                                           class="btn btn-success btn-sm"
+                                           style="border:0px solid #fff ">
+                                    <input type="reset" value="重置" class="btn btn-sm"
+                                           style="border:0px solid #fff ">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $('form').validate({
+            rules: {
+                Organization: {
+                    required: true
+                },
+                sinosureBuyerNo: {
+                    required: true
+                }
+            },
+            messages: {
+                Organization: {
+                    required: "必填项"
+                },
+                sinosureBuyerNo: {
+                    required: "必填项"
+                },
+            },
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            },
+        });
+    });
+</script>
+{/block}

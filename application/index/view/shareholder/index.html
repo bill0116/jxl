@@ -1,0 +1,630 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <form class="form-horizontal" method="post" action="{:url('Shareholder/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <input type="hidden" name="attach" value="{$data['attach']}" data-text="{$data['attach']}">
+                    </form>
+                    <p>附件上传</p>
+                    <div class="com">
+                    <input type="file" class="Attaches1" name="Attaches" style="float: left;width:200px;">
+                    <button type="button" class="upload1 btn btn-success btn-sm">上传</button>
+                    </div>
+                    <!--上传文件的显示列-->
+                    <div class="img" align="center">
+                            <img name="attach1" src="__ROOT__/{$data['attach']}">
+                    </div>
+
+
+                    <p><b  style="font-size: 20px; text-align: left;">股东情况</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="share_add" class="com"></p>
+                    <br/>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="share_header">
+                            <td >股东</td>
+                            <td >认缴资本额（单位：千元（美元））</td>
+                            <td >投资比例（%）</td>
+                            <td style="display: none;">出资方式</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="share_list" id="vo"}
+                        <tr class="share">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst1'>{$vo.member}</span><input name='xs1' type='text' value="{$vo.member}" style="display: none;"></td>
+                            <td><span class='xst2'>{$vo.money}</span><input name='xs2' type='text' value="{$vo.money}" style="display: none;"></td>
+                            <td><span class='xst3'>{$vo.rate}</span><input name='xs3' type='text' value="{$vo.rate}" style="display: none;"></td>
+                            <td style="display: none;"><span class='xst4'>{$vo.investType}</span><input name='xs4' type='text' value="{$vo.investType}" style="display: none;"></td>
+                            <td class="com"><span name='n' class='normal'> <a rel='edit_share' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_share' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_share' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"><a rel='del_share' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        {/volist}
+                        <tr>
+                            <td >合计</td>
+                            <td class="total_money">{$total_money}</td>
+                            <td class="total_rate">{$total_rate}</td>
+                            <td style="display: none;">--</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        </thead>
+                    </table>
+                    <br/><br/>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="referee_header"><td colspan="3">主要股东概况&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="referee_add" class="com"></td></tr>
+                        {volist name="sharedetail_list" id="vo"}
+                        <tr class="referee">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><textarea class='xst1' rows='6' style='width:98%;overflow-y:auto;'>{$vo.information}</textarea><textarea name='xs1' rows='6' style='width:98%;overflow-y:auto;display: none;'>{$vo.information}</textarea></td>
+                            <td class="com"  style="width: 30px;"><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_invest' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"  style="width: 30px;"><a rel='del_invest' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/><br/>
+
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        //访问时间
+        jeDate({
+            dateCell: "#date",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+    });
+
+
+    //股东情况新增
+    $('#share_add').click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('CompanyInformation2/add_share')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.data){
+                    var  str= "<tr class='share'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst1' style='display: none;'>"+data.data.member+"</span><input name='xs1' type='text' value='"+data.data.member+"' ></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.money+"</span><input name='xs2' type='text' value='"+data.data.money+"' ></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.rate+"</span><input name='xs3' type='text' value='"+data.data.rate+"' ></td>"+
+                            "<td style='display: none;'><span class='xst4' style='display: none;'>"+data.data.investType+"</span><input name='xs4' type='text' value='"+data.data.investType+"' ></td>"+
+                            "<td><span name='n' class='normal'> <a rel='edit_share' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_share' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_share' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td><a rel='del_share' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+
+                    $(".share_header").after(str);
+                    //点击编辑
+                    $("a[rel='edit_share']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").show();
+                        $(this).parent().parent().parent().find("input[name='xs2']").show();
+                        $(this).parent().parent().parent().find("input[name='xs3']").show();
+                        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+                        $(this).hide();
+                        $(this).parent().parent().find("span[class='edit']").show();
+                    });
+                    //点击保存
+                    $("a[rel='update_share']").click(function () {
+                        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+                        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        var applicationid = $('#applicationid').val();
+                        var tis = $(this);
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('CompanyInformation2/share_update')}",
+                            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,applicationid:applicationid,id:id}
+                        }).done(function (data) {
+                            if (data.data) {
+                                console.log(data.data);
+                                tankuang(300,data.msg);
+                                location=location;
+                                $('.total_money').text(data.data.total_money);
+                                $('.total_rate').text(data.data.total_rate);
+
+                                tis.parent().parent().parent().find("span[class='xst1']").show();
+                                tis.parent().parent().parent().find("span[class='xst2']").show();
+                                tis.parent().parent().parent().find("span[class='xst3']").show();
+                                tis.parent().parent().parent().find("span[class='xst4']").show();
+
+                                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                                tis.parent().parent().parent().find("input[name='xs4']").hide();
+
+                                tis.parent().parent().find("span[class='edit']").hide();
+                                tis.parent().parent().find("a[rel='edit_share']").show();
+                            }
+                        });
+                        //取消表单
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_share']").show();
+                    });
+                    //点击取消
+                    $("a[rel='cancel_share']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_share']").show();
+                    });
+                    //点击删除
+                    $("a[rel='del_share']").click(function () {
+                        if (!confirm("确定要删除吗？")) {
+                            return false;
+                        }
+                        var id = $(this).parent().parent().find("input[name='ids']").val();
+                        var applicationid = $('#applicationid').val();
+                        console.log(id);
+                        var tis = $(this);
+                        if(id!=''){
+                            $.ajax({
+                                type: 'post',
+                                data: {id: id,applicationid:applicationid},
+                                url: "{:url('CompanyInformation2/share_del')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    if(data.code == 1){
+                                        tis.parent().parent().remove();
+                                        $('.total_money').text(data.data.total_money);
+                                        $('.total_rate').text(data.data.total_rate);
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
+    });
+    //点击编辑
+    $("a[rel='edit_share']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_share']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('CompanyInformation2/share_update')}",
+            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,applicationid:applicationid,id:id}
+        }).done(function (data) {
+            if (data.data) {
+                console.log(data.data);
+                tankuang(300,data.msg);
+                $('.total_money').text(data.data.total_money);
+                $('.total_rate').text(data.data.total_rate);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+                tis.parent().parent().parent().find("span[class='xst3']").show();
+                tis.parent().parent().parent().find("span[class='xst4']").show();
+
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("input[name='xs4']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_share']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_share']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_share']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_share']").show();
+    });
+    //点击删除
+    $("a[rel='del_share']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id,applicationid:applicationid},
+                url: "{:url('CompanyInformation2/share_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                        $('.total_money').text(data.data.total_money);
+                        $('.total_rate').text(data.data.total_rate);
+                    }
+                }
+            });
+        }
+    });
+
+
+    //主要股东概况
+    $('#referee_add').click(function(){
+        add1('referee','referee_header')
+    });
+
+    //增加
+    function add1(ob,ob_header){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('Shareholder/add_report')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data);
+                if(data.data){
+                    var str= "<tr class='"+ob+"'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><textarea class='xst1'  rows='6' style='display: none;width:98%;overflow-y:auto;'>"+data.data.information+"</textarea><textarea name='xs1' rows='6' style='width:98%;overflow-y:auto;' >"+data.data['information']+"</textarea></td>"+
+                            "<td style='width: 30px;'><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_invest' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td style='width: 30px;'><a rel='del_invest' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+                    $("."+ob_header).after(str);
+                }
+                //点击编辑
+                $("a[rel='edit_invest']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+
+                    $(this).parent().parent().parent().find("textarea[class='xst1']").hide();
+
+                    $(this).hide();
+                    $(this).parent().parent().find("span[class='edit']").show();
+                });
+                //点击保存
+                $("a[rel='update_invest']").click(function () {
+                    var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+                    var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                    $(this).parent().parent().parent().find("textarea[class='xst1']").val(xs1);
+
+                    $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+                    var applicationid = $('#applicationid').val();
+                    var tis = $(this);
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('Shareholder/report_update')}",
+                        data: {xs1:xs1,applicationid:applicationid,id:id}
+                    }).done(function (data) {
+                        if (data.data) {
+                            console.log(data.data);
+                            tankuang(300,data.msg);
+                            location=location;
+                            tis.parent().parent().parent().find("textarea[class='xst1']").show();
+
+                            tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+
+
+                            tis.parent().parent().find("span[class='edit']").hide();
+                            tis.parent().parent().find("a[rel='edit_invest']").show();
+                        }
+                    });
+                    //取消表单
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+                    $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击取消
+                $("a[rel='cancel_invest']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+                    $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击删除
+                $("a[rel='del_invest']").click(function () {
+                    if (!confirm("确定要删除吗？")) {
+                        return false;
+                    }
+                    var id = $(this).parent().parent().find("input[name='ids']").val();
+                    var tis = $(this);
+                    if(id!=''){
+                        $.ajax({
+                            type: 'post',
+                            data: {id: id},
+                            url: "{:url('Shareholder/report_del')}",
+                            dataType: 'json',
+                            success: function (data) {
+                                if(data.code == 1){
+                                    tis.parent().parent().remove();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    //点击编辑
+    $("a[rel='edit_invest']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+
+        $(this).parent().parent().parent().find("textarea[class='xst1']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_invest']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("textarea[class='xst1']").val(xs1);
+
+        $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('Shareholder/report_update')}",
+            data: {xs1:xs1,applicationid:applicationid,id:id}
+        }).done(function (data) {
+            if (data.data) {
+                console.log(data.data);
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("textarea[class='xst1']").show();
+
+                tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_invest']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+        $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_invest']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+        $(this).parent().parent().parent().find("textarea[class='xst1']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击删除
+    $("a[rel='del_invest']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('Shareholder/report_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //保存
+    function doSave(){
+        var applicationid=$("#applicationid").val();
+        var activeid=$("#activeid").val();
+        var attach=$("input[name='attach']").attr('data-text');
+        console.log(attach);
+        $.ajax({
+            type:'post',
+            url:"{:url('Shareholder/save')}",
+            data:{"attach":attach,"activeid":activeid,"applicationid":applicationid},
+            dataType:'json',
+            success:function(data){
+                tankuang(300,data.msg);
+            },
+            error:function(){
+                alert("系统繁忙！");
+            }
+        });
+    }
+
+
+    //上传附件
+    $('.upload1').click(function(){
+        var userID = "{$Think.session.auth_id}";
+        var $input = $('.Attaches1');
+        // 相当于： $input[0].files, $input.get(0).files
+        var files = $input.prop('files');
+        var data = new FormData();
+        data.append('Attaches1', files[0]);
+        var id = $("input[name='id']").val();
+        data.append('id',id);
+        $.ajax({
+            url: "{:url('Shareholder/upload')}",
+            type: 'POST',
+            data: data,
+            cache: false,
+            processData: false,
+            contentType: false,
+            success:function(data){
+                console.log(data);
+                if (data.code == 1) {
+                    $(".img img[name='attach1']").attr('src',"__ROOT__/"+data.data[0]['AttachUrl']);
+                    $("input[name='attach']").attr('data-text',data.data[0]['AttachUrl']);
+                }
+            }
+        });
+
+    });
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Register2/recheck')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('Register2/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

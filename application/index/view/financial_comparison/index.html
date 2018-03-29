@@ -1,0 +1,122 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>5.财务指标行业对比参照</b></p>
+                    <br/><br/>
+                    <form class="form-horizontal" method="post" action="{:url('FinancialComparison/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                                width: 33%;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+                            <td>参照指标</td>
+                            <td>行业平均值</td>
+                            <td>目标公司情况</td>
+                        </tr>
+                        <tr>
+                            <td>资产负债率（%）</td>
+                            <td>60.00</td>
+                            <td>{$data['debtRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>存货周转率（次）</td>
+                            <td>1.7</td>
+                            <td>{$data['stockTurn']}</td>
+                        </tr>
+                        <tr>
+                            <td>速动比率（%）</td>
+                            <td>90.50</td>
+                            <td>{$data['quickRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>总资产周转率（次）</td>
+                            <td>0.5</td>
+                            <td>{$data['totalAssetTurnRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>应收账款周转率（次）</td>
+                            <td>1.8</td>
+                            <td>{$data['receiAccountTurnRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>流动资产周转率（次）</td>
+                            <td>0.80</td>
+                            <td>{$data['flowAssetTurnRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>主营业务利润率（%）</td>
+                            <td>6.10</td>
+                            <td>{$data['mainProfitRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>净资产收益率（%）</td>
+                            <td>2.50</td>
+                            <td>{$data['netProfitRate']}</td>
+                        </tr>
+                        <tr>
+                            <td>成本费用利润率（%）</td>
+                            <td>1.80</td>
+                            <td>{$data['costProfitRate']}</td>
+                        </tr>
+                        </thead>
+                    </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //保存
+    function doSave(){
+        saveFlow("{:url('FinancialComparison/save')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('FinancialComparison/recheck')}";
+        var data={"applicationid":applicationid};
+         ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('FinancialComparison/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+          ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

@@ -1,0 +1,261 @@
+{extend name='layout/ins_page' /}
+{block name="content"}
+{:widget('PageHeader/simple',['name'=>'总部非LC限额申请','search'=>'N'])}
+<div class="box span12">
+    <div class="box-content">
+        <div id="DataTables_Table_0_wrapper" class="dataTables_wrapper" role="grid">
+            <form action="{:url('Nolc/index')}" method="post">
+                <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                       id="DataTables_Table_0" aria-describedby="DataTables_Table_0_info">
+                    <style type="text/css">
+                        .table th {
+                            font-size: 13px;
+                            text-align: left;
+                        }
+
+                        .table th span {
+                            color: red;
+                        }
+                    </style>
+                    <tbody>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>组织机构:<span>*</span></label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 85%;">
+                            <select name="Organization" id="Organization" size="1" style="width:340px;">
+                                <option value=""></option>
+                                {volist name="org" id="vo"}
+                                <option value="{$vo['ID']}">{$vo.OrganizationTitle}</option>
+                                {/volist}
+                            </select>
+                        </th>
+                    </tr>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>客户类型:<span>*</span></label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 85%;">
+                            <select name="CustomerType" id="CustomerType" size="1" style="width:340px;">
+                                <option value=""></option>
+                                <option value="1">有信保买方代码</option>
+                                <option value="2">有SAP代码</option>
+                                <option value="3">新客户</option>
+                            </select>
+                        </th>
+                    </tr>
+                    <tr role="row" class="sinosure">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <label>买方代码:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <input type="text" name="sinosureBuyerNo" id="sinosureBuyerNo" value="" onkeypress="getBuyerName()" style="width:9%;">
+                            <input type="button" value="..." data-toggle="modal" data-target="#searchModal" style="width:25px;">
+                            <input type="text" name="buyerEngName" id="buyerEngName" value="" style="width:25%;"
+                                   readonly>
+                        </th>
+                    </tr>
+                    <tr role="row" class="corp">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>SAP代码:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 85%;">
+                            <input type="text" name="corpBuyerNo" id="corpBuyerNo" value="" onkeypress="getSapBuyerName()" style="width:9%;">
+                            <input type="button" value="..." data-toggle="modal" data-target="#searchSapModal" style="width:25px;">
+                            <input type="text" name="buyerSapEngName" id="buyerSapEngName" value="" style="width:25%;" readonly>
+                        </th>
+                    </tr>
+                    <tr role="row" class="buyer">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>新客户名称:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width:85%;">
+                            <input type="text" name="buyerNewEngName" id="buyerNewEngName" value="" style="width:340px;">
+                        </th>
+                    </tr>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <label>是否有担保人:<span>*</span></label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width: 145px;">
+                            <select name="warrantorType" id="warrantorType" size="1" style="width:340px;">
+                                <option value=""></option>
+                                {volist name=":model('common')->getCommon(329)" id="vo"}
+                                <option value="{$vo['GeneralCode']}" >{$vo.CodeText}</option>
+                                {/volist}
+                            </select>
+                            <span class='warrantorMsg' style='color:red;'></span>
+                        </th>
+                    </tr>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>担保人代码:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width:85%;">
+                            <input type="text" name="corpWarrantorNo" id="corpWarrantorNo" value="" onkeypress="getWarBuyerName()" style="width:9%;">
+                            <input type="button" value="..." data-toggle="modal" data-target="#searchWarModal" style="width:25px;">
+                            <input type="text" name="warrantorNewEngName" id="warrantorNewEngName" value="" style="width:25%;" readonly>
+                        </th>
+                    </tr>
+                    <tr role="row">
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="1"
+                            aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                            <label>担保人名称:</label>
+                        </th>
+                        <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                            colspan="3"
+                            aria-label="Role: activate to sort column ascending" style="width:85%;">
+                            <input type="text" name="warrantorEndEngName" id="warrantorEndEngName" value="" style="width:340px;">
+                        </th>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row-fluid" style="margin-top: 8px;">
+                    <div class="span6">
+                        <div id="DataTables_Table_0_length" class="dataTables_length">
+                            <label>
+                                <div class="form-actions" style="background-color: #fff;">
+                                    <input type="submit" id="sub" value="提交"
+                                           class="btn btn-success btn-sm"
+                                           style="border:0px solid #fff ">
+                                    <input type="reset" value="重置" class="btn btn-sm"
+                                           style="border:0px solid #fff ">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $('#CustomerType').change(function () {
+            var status = $(this).val();
+            if (status == 1) {
+                $('.sinosure').show();
+                $('.corp,.buyer').hide();
+                $('#corpBuyerNo,#buyerNewEngName,#buyerSapEngName').val("");
+            } else if (status == 2) {
+                $('.corp').show();
+                $('.sinosure,.buyer').hide();
+                $('#sinosureBuyerNo,#buyerEngName,#buyerNewEngName').val("");
+            } else if (status == 3) {
+                $('.buyer').show();
+                $('.sinosure,.corp').hide();
+                $('#sinosureBuyerNo,#buyerEngName,#corpBuyerNo,#buyerSapEngName').val("");
+            } else {
+                $('.sinosure,.corp,.buyer').show();
+            }
+        });
+        $('#warrantorType').change(function () {
+            if ($(this).val() == '1') {
+                $('.warrantorMsg').html("担保人代码和担保人名称至少填写一项");
+            } else {
+                $('.warrantorMsg').html("");
+            }
+        });
+        $('form').validate({
+            rules: {
+                Organization: {
+                    required: true
+                },
+                CustomerType: {
+                    required: true
+                },
+                sinosureBuyerNo: {
+                    required: function () {
+                        if ($('#CustomerType').val() == 1) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                },
+                corpBuyerNo: {
+                    required: function () {
+                        if ($('#CustomerType').val() == 2) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                },
+                buyerEngName: {
+                    required: function () {
+                        if ($('#CustomerType').val() == 3) {
+                            return true;
+                        } else {
+                            return false;
+                        }
+                    }
+                },
+                warrantorType: {
+                    required: true
+                }
+            },
+            messages: {
+                Organization: {
+                    required: "必填项"
+                },
+                CustomerType: {
+                    required: "必填项"
+                },
+                sinosureBuyerNo: {
+                    required: "必填项"
+                },
+                corpBuyerNo: {
+                    required: "必填项"
+                },
+                buyerEngName: {
+                    required: "必填项"
+                },
+                warrantorType: {
+                    required: "必填项"
+                }
+            },
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            },
+            submitHandler: function (form) {
+                if ($('form').valid()) {
+                    form.submit();
+                }
+            }
+        });
+    });
+</script>
+{/block}

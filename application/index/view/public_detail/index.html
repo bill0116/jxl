@@ -1,0 +1,776 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>1.法律诉讼记录</b></p>
+                    <p style="font-size: 14px; text-align: left;">执行信息&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="exec_add" class="com"></p>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="exec_header">
+                            <td>案号</td>
+                            <td>执行法院</td>
+                            <td>立案时间</td>
+                            <td>执行标的（单位：元）</td>
+                            <td>案件状态</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="exec_list" id="vo"}
+                        <tr class="exec">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <input type='hidden' value="{$vo.tableKey}" name='key'>
+                            <td><span class='xst1'>{$vo.key1}</span><input name='xs1' value="{$vo.key1}" style="display: none;"/></td>
+                            <td><span class='xst2'>{$vo.key2}</span><input name='xs2' value="{$vo.key2}" style="display: none;"/></td>
+                            <td><span class='xst3'>{$vo.key3}</span><input name='xs3' value="{$vo.key3}" style="display: none;"/></td>
+                            <td><span class='xst4'>{$vo.key4}</span><input name='xs4' value="{$vo.key4}" style="display: none;"/></td>
+                            <td><span class='xst5'>{$vo.key5}</span><input name='xs5' value="{$vo.key5}" style="display: none;"/></td>
+                            <td class="com" style="width: 30px;"><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_invest' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com" style="width: 30px;"><a rel='del_invest' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="dishonesty_header"><td colspan="3">失信信息&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="dishonesty_add" class="com"> </td></tr>
+                        {volist name="dishonesty_list" id="vo"}
+                        <tr class="dishonesty">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <input type='hidden' value="{$vo.tableKey}" name='key'>
+                            <td><span class='xst1'>{$vo.information}</span><textarea name='xs1' rows='3' style='width:98%;overflow-y:auto;display: none;' >{$vo.information}</textarea></td>
+                            <td class="com" style="width: 30px;"><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_invest1' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest1' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com" style="width: 30px;"><a rel='del_invest1' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                        </tr>
+                        {/volist}
+
+                        </thead>
+                    </table>
+                    <br/>
+                    <p style="font-size: 14px; text-align: left;">法院公告&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="notice_add" class="com"></p>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="notice_header">
+                            <td>当事人</td>
+                            <td>公告人</td>
+                            <td>公告时间</td>
+                            <td>公告类型</td>
+                            <td>公告内容</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="notice_list" id="vo"}
+                        <tr class="notice">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <input type='hidden' value="{$vo.tableKey}" name='key'>
+                            <td><span class='xst1'>{$vo.key1}</span><input name='xs1' value="{$vo.key1}" style="display: none;"/></td>
+                            <td><span class='xst2'>{$vo.key2}</span><input name='xs2' value="{$vo.key2}" style="display: none;"/></td>
+                            <td><span class='xst3'>{$vo.key3}</span><input name='xs3' value="{$vo.key3}" style="display: none;"/></td>
+                            <td><span class='xst4'>{$vo.key4}</span><input name='xs4' value="{$vo.key4}" style="display: none;"/></td>
+                            <td><span class='xst5'>{$vo.key5}</span><input name='xs5' value="{$vo.key5}" style="display: none;"/></td>
+                            <td class="com" style="width: 30px;"><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_invest' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com" style="width: 30px;"><a rel='del_invest' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="referee_header"><td colspan="3">裁判文书&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="referee_add" class="com"></td></tr>
+                        {volist name="referee_list" id="vo"}
+                        <tr class="referee">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <input type='hidden' value="{$vo.tableKey}" name='key'>
+                            <td><span class='xst1'>{$vo.information}</span><textarea name='xs1'  rows='3' style='width:98%;overflow-y:auto;display: none;'>{$vo.information}</textarea></td>
+                            <td class="com" style="width: 30px;"><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_invest1' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest1' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com" style="width: 30px;"><a rel='del_invest1' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/>
+                    <p style="font-size: 20px; text-align: left;"><b>2.海关记录</b></p>
+                    <br/>
+                    <form class="form-horizontal" method="post" action="{:url('PublicDetail/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 15%;">海关登记号：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="certificateCode" value="{$data['certificateCode']}" size="100px;" placeholder="--"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="certificateCodeEng" value="{$data['certificateCodeEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">企业等级：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="grade" value="{$data['grade']}"  size="100px;" placeholder="--"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="gradeEng" value="{$data['gradeEng']}"  size="100px;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/>
+                        <p style="font-size: 20px; text-align: left;"><b>3.获得资质</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="qualification" rows="4" style="width:98%;overflow-y:auto;">{$data['qualification']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="qualificationEng" rows="4" style="width:98%;overflow-y:auto;display: none;">{$data['qualificationEng']}</textarea>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>4.其他不良记录</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="badReport" rows="4" style="width:98%;overflow-y:auto;">{$data['badReport']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="badReportEng" rows="4" style="width:98%;overflow-y:auto;display: none;">{$data['badReportEng']}</textarea>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>5.网络安全认证</b></p>
+                        <br/>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 15%;">网址：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="website" value="{$data['website']}" size="100px;" placeholder="--"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="websiteEng" value="{$data['websiteEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">认证机构：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="organization" value="{$data['organization']}"  size="100px;" placeholder="无"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="organizationEng" value="{$data['organizationEng']}"  size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">认证名称：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="name_authen" value="{$data['name_authen']}" size="100px;" placeholder="无"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="name_authenEng" value="{$data['name_authenEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">安全等级：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="safetyGrade" value="{$data['safetyGrade']}"  size="100px;" placeholder="无"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="safetyGradeEng" value="{$data['safetyGradeEng']}"  size="100px;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //执行信息
+    $('#exec_add').click(function(){
+        add('exec','exec_header','exec');
+    });
+
+    //法院公告
+    $('#notice_add').click(function(){
+        add('notice','notice_header','notice');
+    });
+
+    //增加
+    function add(ob,ob_header,key){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid,key:key},
+            url:  "{:url('PublicDetail/add_report')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data);
+                if(data.data){
+                    var str= "<tr class='"+ob+"'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<input type='hidden' value='"+data.data.tableKey+"' name='key'>" +
+                            "<td><span class='xst1' style='display: none;'>"+data.data.key1+"</span><input name='xs1' value='"+data.data['key1']+"' /></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.key2+"</span><input name='xs2' value='"+data.data['key2']+"' /></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.key3+"</span><input name='xs3' value='"+data.data['key3']+"' /></td>"+
+                            "<td><span class='xst4' style='display: none;'>"+data.data.key4+"</span><input name='xs4' value='"+data.data['key4']+"' /></td>"+
+                            "<td><span class='xst5' style='display: none;'>"+data.data.key5+"</span><input name='xs5' value='"+data.data['key5']+"' /></td>"+
+                            "<td style='width: 30px;'><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_invest' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td style='width: 30px;'><a rel='del_invest' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+                    $("."+ob_header).after(str);
+                }
+                //点击编辑
+                $("a[rel='edit_invest']").click(function () {
+                    $(this).parent().parent().parent().find("input[name='xs1']").show();
+                    $(this).parent().parent().parent().find("input[name='xs2']").show();
+                    $(this).parent().parent().parent().find("input[name='xs3']").show();
+                    $(this).parent().parent().parent().find("input[name='xs4']").show();
+                    $(this).parent().parent().parent().find("input[name='xs5']").show();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                    $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                    $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                    $(this).parent().parent().parent().find("span[class='xst4']").hide();
+                    $(this).parent().parent().parent().find("span[class='xst5']").hide();
+
+                    $(this).hide();
+                    $(this).parent().parent().find("span[class='edit']").show();
+                });
+                //点击保存
+                $("a[rel='update_invest']").click(function () {
+                    var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                    var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                    var xss = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                    var ret= checkDate(xss);
+                    if(!ret){
+                        tankuang(300,'日期不合法');
+                        return false;
+                    }
+                    var xs3=ret;
+                    var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+                    var xs5 = $(this).parent().parent().parent().find("input[name='xs5']").val();
+                    var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+                    var key=$(this).parent().parent().parent().find("input[name='key']").val();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                    $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                    $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                    $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+                    $(this).parent().parent().parent().find("span[class='xst5']").text(xs5);
+
+                    var applicationid = $('#applicationid').val();
+                    var tis = $(this);
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('PublicDetail/report_update')}",
+                        data: {xs1:xs1,xs2:xs2,xs3:xs3,xs4:xs4,xs5:xs5,applicationid:applicationid,id:id,key:key}
+                    }).done(function (data) {
+                        if (data.data) {
+                            console.log(data.data);
+                            tankuang(300,data.msg);
+                            window.location.reload(true);
+                            tis.parent().parent().parent().find("span[class='xst1']").show();
+                            tis.parent().parent().parent().find("span[class='xst2']").show();
+                            tis.parent().parent().parent().find("span[class='xst3']").show();
+                            tis.parent().parent().parent().find("span[class='xst4']").show();
+                            tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                            tis.parent().parent().parent().find("input[name='xs1']").hide();
+                            tis.parent().parent().parent().find("input[name='xs2']").hide();
+                            tis.parent().parent().parent().find("input[name='xs3']").hide();
+                            tis.parent().parent().parent().find("input[name='xs4']").hide();
+                            tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                            tis.parent().parent().find("span[class='edit']").hide();
+                            tis.parent().parent().find("a[rel='edit_invest']").show();
+                        }
+                    });
+                    //取消表单
+                    $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs4']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+                    $(this).parent().parent().parent().find("span[class='xst2']").show();
+                    $(this).parent().parent().parent().find("span[class='xst3']").show();
+                    $(this).parent().parent().parent().find("span[class='xst4']").show();
+                    $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击取消
+                $("a[rel='cancel_invest']").click(function () {
+                    $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs4']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+                    $(this).parent().parent().parent().find("span[class='xst2']").show();
+                    $(this).parent().parent().parent().find("span[class='xst3']").show();
+                    $(this).parent().parent().parent().find("span[class='xst4']").show();
+                    $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击删除
+                $("a[rel='del_invest']").click(function () {
+                    if (!confirm("确定要删除吗？")) {
+                        return false;
+                    }
+                    var id = $(this).parent().parent().find("input[name='ids']").val();
+                    var key = $(this).parent().parent().find("input[name='key']").val();
+                    var tis = $(this);
+                    if(id!=''){
+                        $.ajax({
+                            type: 'post',
+                            data: {id: id,key:key},
+                            url: "{:url('PublicDetail/report_del')}",
+                            dataType: 'json',
+                            success: function (data) {
+                                if(data.code == 1){
+                                    tis.parent().parent().remove();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    //点击编辑
+    $("a[rel='edit_invest']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("input[name='xs4']").show();
+        $(this).parent().parent().parent().find("input[name='xs5']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+        $(this).parent().parent().parent().find("span[class='xst5']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_invest']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xss = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var ret= checkDate(xss);
+        if(!ret){
+            tankuang(300,'日期不合法');
+            return false;
+        }
+        var xs3=ret;
+        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+        var xs5 = $(this).parent().parent().parent().find("input[name='xs5']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+        var key=$(this).parent().parent().parent().find("input[name='key']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+        $(this).parent().parent().parent().find("span[class='xst5']").text(xs5);
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('PublicDetail/report_update')}",
+            data: {xs1:xs1,xs2:xs2,xs3:xs3,xs4:xs4,xs5:xs5,applicationid:applicationid,id:id,key:key}
+        }).done(function (data) {
+            if (data.data) {
+                console.log(data.data);
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+                tis.parent().parent().parent().find("span[class='xst3']").show();
+                tis.parent().parent().parent().find("span[class='xst4']").show();
+                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_invest']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_invest']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+        $(this).parent().parent().parent().find("input[name='xs5']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+        $(this).parent().parent().parent().find("span[class='xst5']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击删除
+    $("a[rel='del_invest']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var key = $(this).parent().parent().find("input[name='key']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id,key:key},
+                url: "{:url('PublicDetail/report_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //失信信息
+    $('#dishonesty_add').click(function(){
+        add1('dishonesty','dishonesty_header','dishonesty')
+    });
+
+
+
+    //裁判文书
+    $('#referee_add').click(function(){
+        add1('referee','referee_header','referee')
+    });
+
+    //增加
+    function add1(ob,ob_header,key){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid,key:key},
+            url:  "{:url('PublicDetail/add_report')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data);
+                if(data.data){
+                      var str= "<tr class='"+ob+"'>" +
+                                "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                                "<input type='hidden' value='"+data.data.tableKey+"' name='key'>" +
+                                "<td><span class='xst1' style='display: none;'>"+data.data.information+"</span><textarea name='xs1' rows='3' style='width:98%;overflow-y:auto;' >"+data.data['information']+"</textarea></td>"+
+                                "<td style='width: 30px;'><span name='n' class='normal'> <a rel='edit_invest' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                                "<span name='e' class='edit'><a rel='update_invest1' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_invest' href='javascript:void(0)' >取消</a></span> </td>"+
+                                "<td style='width: 30px;'><a rel='del_invest1' href='javascript:void(0)'>删除</a></td>" +
+                                "</tr>";
+                    $("."+ob_header).after(str);
+                   // $("input[name='xs1']").hide();
+                   // $("span[class='edit']").hide();
+
+                }
+                //点击编辑
+                $("a[rel='edit_invest']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").hide();
+
+                    $(this).hide();
+                    $(this).parent().parent().find("span[class='edit']").show();
+                });
+                //点击保存
+                $("a[rel='update_invest1']").click(function () {
+                    var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+                    var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+                    var key=$(this).parent().parent().parent().find("input[name='key']").val();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+                    var applicationid = $('#applicationid').val();
+                    var tis = $(this);
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('PublicDetail/report_update')}",
+                        data: {xs1:xs1,applicationid:applicationid,id:id,key:key}
+                    }).done(function (data) {
+                        if (data.data) {
+                            console.log(data.data);
+                            tankuang(300,data.msg);
+                            window.location.reload(true);
+                            tis.parent().parent().parent().find("span[class='xst1']").show();
+
+                            tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+
+
+                            tis.parent().parent().find("span[class='edit']").hide();
+                            tis.parent().parent().find("a[rel='edit_invest']").show();
+                        }
+                    });
+                    //取消表单
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击取消
+                $("a[rel='cancel_invest1']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_invest']").show();
+                });
+                //点击删除
+                $("a[rel='del_invest1']").click(function () {
+                    if (!confirm("确定要删除吗？")) {
+                        return false;
+                    }
+                    var id = $(this).parent().parent().find("input[name='ids']").val();
+                    var key = $(this).parent().parent().find("input[name='key']").val();
+                    var tis = $(this);
+                    if(id!=''){
+                        $.ajax({
+                            type: 'post',
+                            data: {id: id,key:key},
+                            url: "{:url('PublicDetail/report_del')}",
+                            dataType: 'json',
+                            success: function (data) {
+                                if(data.code == 1){
+                                    tis.parent().parent().remove();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
+    //点击编辑
+    $("a[rel='edit_invest']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_invest1']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+        var key=$(this).parent().parent().parent().find("input[name='key']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('PublicDetail/report_update')}",
+            data: {xs1:xs1,applicationid:applicationid,id:id,key:key}
+        }).done(function (data) {
+            if (data.data) {
+                console.log(data.data);
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+
+                tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_invest']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_invest1']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_invest']").show();
+    });
+    //点击删除
+    $("a[rel='del_invest1']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var key = $(this).parent().parent().find("input[name='key']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id,key:key},
+                url: "{:url('PublicDetail/report_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('PublicDetail/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(翻译)
+    function doSaveEng(){
+        saveFlow("{:url('PublicDetail/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url= "{:url('PublicDetail/recheck')}";
+        var data={"applicationid":applicationid};
+         ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url= "{:url('PublicDetail/recheckEng')}";
+        var data={"applicationid":applicationid};
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('PublicDetail/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var url="{:url('PublicDetail/save_memoEng')}";
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

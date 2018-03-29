@@ -1,0 +1,253 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>1.注册信息</b></p>
+                    <form class="form-horizontal" method="post" action="{:url('Register/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 20%">注册名称:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="name" value="{$data['name']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="nameEng" value="{$data['nameEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">注册地址:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="address" value="{$data['address']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="addressEng" value="{$data['addressEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">注册资本:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="registerCapital" value="{$data['registerCapital']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="registerCapitalEng" value="{$data['registerCapitalEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">企业类型:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="companyType" value="{$data['companyType']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="companyTypeEng" value="{$data['companyTypeEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">经营范围:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><textarea name="business" rows="3" style="width: 700px;overflow-y:auto;">{$data['business']}</textarea></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<textarea name="businessEng" rows="4" style="width: 700px;overflow-y:auto;">{$data['businessEng']}</textarea></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">法定代表人:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="representative" value="{$data['representative']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="representativeEng" value="{$data['representativeEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">成立日期:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="registerDate" id="registerDate" value="{$data['registerDate']}" size="100%;" placeholder="单击选择日期" readonly></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="registerDateEng" value="{$data['registerDateEng']}" size="100%;"></td>
+                            </tr>
+
+                            <tr>
+                                <td style="width: 20%">注册机构:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="registerOffice" value="{$data['registerOffice']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="registerOfficeEng" value="{$data['registerOfficeEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">工商注册号:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="organization" value="{$data['organization']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="organizationEng" value="{$data['organizationEng']}" size="100%;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 20%">营业期限:</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="businessTerm" value="{$data['businessTerm']}" size="100%;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 20%"></td>
+                                <td >({$language})<input type="text" name="businessTermEng" value="{$data['businessTermEng']}" size="100%;"></td>
+                            </tr>
+
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <p style="font-size: 20px; text-align: left;"><b>进出口经营权</b></p>
+                        <br/>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                }
+                            </style>
+                            <thead>
+                            <tr>
+                                <td style="width: 15%;">进出口经营权：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="import_export_power" value="{$data['import_export_power']}" size="100px;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="import_export_powerEng" value="{$data['import_export_powerEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">获得进出口权时间：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="import_export_start" id="import_export_start" value="{$data['import_export_start']}"  size="100px;" placeholder="单击选择日期"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="import_export_startEng" value="{$data['import_export_startEng']}"  size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">使用代理机构：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="agent" value="{$data['agent']}" size="100px;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="agentEng" value="{$data['agentEng']}" size="100px;"></td>
+                            </tr>
+                            <tr>
+                                <td style="width: 15%;">企业海关十位编码：</td>
+                                <td ><span class="foreign" style="display: none;">(中文)</span><input type="text" name="certificateCode" value="{$data['certificateCode']}"  size="100px;"></td>
+                            </tr>
+                            <tr class="foreign" style="display: none;">
+                                <td style="width: 15%;"></td>
+                                <td >({$language})<input type="text" name="certificateCodeEng" value="{$data['certificateCodeEng']}"  size="100px;"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/> <br/>
+                        <p style="font-size: 20px; text-align: left;"><b>公共记录</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="publicDetail" rows="4" style="width:98%;overflow-y:auto;">{$data['publicDetail']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="publicDetailEng" rows="4"  style="width:98%;overflow-y:auto;display: none;">{$data['publicDetailEng']}</textarea>
+                        <br/> <br/>
+                        <p style="font-size: 20px; text-align: left;"><b>商标</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="brand" rows="4" style="width:98%;overflow-y:auto;">{$data['brand']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="brandEng" rows="4"  style="width:98%;overflow-y:auto;display: none;">{$data['brandEng']}</textarea>
+                        <br/>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        //成立日期
+        jeDate({
+            dateCell: "#registerDate",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+
+        //获得进出口权时间
+        jeDate({
+            dateCell: "#import_export_start",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('Register/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(翻译)
+    function doSaveEng(){
+        saveFlow("{:url('Register/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Register/recheck')}";
+        ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('Register/recheckEng')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('Register/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var url="{:url('Register/save_memoEng')}";
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

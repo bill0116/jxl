@@ -1,0 +1,108 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'报告审核','search'=>'N'))}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <div class="ibox" sort="12">
+            <div class="ibox-content">
+                <div class="tab-content">
+                    <div id="calendar-schedule" class=" ul_table tab-pane in active">
+                        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"  aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table th{
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                                .table td{
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                            </style>
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                    报告编号
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                    客户代码
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                    客户名称
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                    目标公司名称
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    处理人
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    提交人
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    提交时间
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    操作
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" id="list">
+                            <div id="list_s">
+                                {volist name='data' id='vo'}
+                                <tr class="gra odd db">
+                                    <input class="id" type="hidden" name="activeid"  value="{$vo['ActiveID']}" data-text="{$vo['ActiveID']}">
+                                    <input class="id" type="hidden" name="applicationid"  value="{$vo['ApplicationID']}" data-text="{$vo['ApplicationID']}">
+                                    <input class="id" type="hidden" name="Creator"  value="{$vo['Creator']}" data-text="{$vo['Creator']}">
+                                    <input class="id" type="hidden" name="KeyCol10"  value="{$vo['KeyCol10']}" data-text="{$vo['KeyCol10']}">
+                                    <td class="center ">{$vo['KeyCol6']}</td>
+                                    <td class="center ">{$vo['KeyCol4']}</td>
+                                    <td class="center ">{$vo['KeyCol5']}</td>
+                                    <td class="center ">{$vo['KeyCol8']}</td>
+                                    <td class="center ">{$vo['activeusername']}</td>
+                                    <td class="center" >{$vo['sendusername']}</td>
+                                    <td class="center " >{$vo['SendDate']}</td>
+                                    <td class="center ">
+                                        <a class="cl btn btn-success"   style="border:0px solid #fff;float:left;margin-left: 3px;">
+                                            <i class="white zoom-in" >处理</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {/volist}
+
+                            </div>
+                            </tbody>
+                        </table>
+                        <div align="right" id="page">
+                            <div id="pp">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    $(function () {
+        var userid="{$Think.session.auth_lid}";
+        $('.cl').click(function(){
+             var activeid = $(this).parent("td").parent("tr").find("input").eq(0).attr("data-text");
+             var applicationid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            var type = $(this).parent("td").parent("tr").find("input").eq(3).attr("data-text");
+            var option='3';
+            if(type==1){
+                //标准报告
+                var url="{:url('make_baogao/index')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            else if(type==2){
+                //深度报告
+                var url="{:url('make_baogao/index1')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            window.open(url, '_self');
+
+        });
+    })
+</script>
+{/block}

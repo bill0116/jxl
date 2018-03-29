@@ -1,0 +1,195 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>4.重要财务状况比率表</b></p>
+                    <br/><br/>
+                    <form class="form-horizontal" method="post" action="{:url('FinancialRateDetail/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                    width: 33%;
+                                }
+                            </style>
+                            <thead>
+                            {if condition="$year neq null"}
+                            <tr>
+                                <td >偿债能力</td>
+                                <td >{$year-1}</td>
+                                <td >{$year-2}</td>
+                            </tr>
+                            {else/}
+                            <tr>
+                                <td >偿债能力</td>
+                                <td ><?php echo date('Y',time())-1;?></td>
+                                <td ><?php echo date('Y',time())-2;?></td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <td>资产负债率（%）</td>
+                                <td><input type="text" name="debtRate" value="{$data['debtRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="debtRate1" value="{$data['debtRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>流动比率（%）</td>
+                                <td><input type="text" name="flowRate" value="{$data['flowRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="flowRate1" value="{$data['flowRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>速动比率（%）</td>
+                                <td><input type="text" name="quickRate" value="{$data['quickRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="quickRate1" value="{$data['quickRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>产权比率（%）</td>
+                                <td><input type="text" name="propertyRate" value="{$data['propertyRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="propertyRate1" value="{$data['propertyRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                    width: 33%;
+                                }
+                            </style>
+                            <thead>
+                            {if condition="$year neq null"}
+                            <tr>
+                                <td >营运能力</td>
+                                <td >{$year-1}</td>
+                                <td >{$year-2}</td>
+                            </tr>
+                            {else/}
+                            <tr>
+                                <td >营运能力</td>
+                                <td ><?php echo date('Y',time())-1;?></td>
+                                <td ><?php echo date('Y',time())-2;?></td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <td>总资产周转率（%）</td>
+                                <td><input type="text" name="totalAssetTurnRate" value="{$data['totalAssetTurnRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="totalAssetTurnRate1" value="{$data['totalAssetTurnRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>应收账款周转率（%）</td>
+                                <td><input type="text" name="receiAccountTurnRate" value="{$data['receiAccountTurnRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="receiAccountTurnRate1" value="{$data['receiAccountTurnRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>净资产周转率(%)</td>
+                                <td><input type="text" name="assetTurnRate" value="{$data['assetTurnRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="assetTurnRate1" value="{$data['assetTurnRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>存货周转率（%）</td>
+                                <td><input type="text" name="stockTurn" value="{$data['stockTurn']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="stockTurn1" value="{$data['stockTurn1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                        <br/><br/>
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                    width: 33%;
+                                }
+                            </style>
+                            <thead>
+                            {if condition="$year neq null"}
+                            <tr>
+                                <td >盈利能力</td>
+                                <td >{$year-1}</td>
+                                <td >{$year-2}</td>
+                            </tr>
+                            {else/}
+                            <tr>
+                                <td >盈利能力</td>
+                                <td ><?php echo date('Y',time())-1;?></td>
+                                <td ><?php echo date('Y',time())-2;?></td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <td>销售毛利率（%）</td>
+                                <td><input type="text" name="salesGrossRate" value="{$data['salesGrossRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="salesGrossRate1" value="{$data['salesGrossRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>销售净利率（%）</td>
+                                <td><input type="text" name="salesNetRate" value="{$data['salesNetRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="salesNetRate1" value="{$data['salesNetRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>资产净利率（%）</td>
+                                <td><input type="text" name="assetsNetRate" value="{$data['assetsNetRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="assetsNetRate1" value="{$data['assetsNetRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            <tr>
+                                <td>净资产收益率（%）</td>
+                                <td><input type="text" name="assetsProfitRate" value="{$data['assetsProfitRate']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                                <td><input type="text" name="assetsProfitRate1" value="{$data['assetsProfitRate1']}" placeholder="请输入数字" onkeyup="if(isNaN(value))execCommand('undo')" onafterpaste="if(isNaN(value))execCommand('undo')"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //保存
+    function doSave(){
+        saveFlow("{:url('FinancialRateDetail1/save')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('FinancialRateDetail1/recheck')}";
+        var data={"applicationid":applicationid};
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        var url="{:url('FinancialRateDetail1/save_memo')}";
+         ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

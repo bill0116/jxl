@@ -1,0 +1,290 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'确认有无旧报','search'=>'N'))}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <form class="form-horizontal" method="post" action="{:url('ConfirmJb/update')}" id="tableForm">
+        <div class="span6">
+                <button type="button" class="btn btn-info" value="提交"  onclick="doSubmit()">
+                    <span class="glyphicon glyphicon-ok-sign">提交</span>
+                </button>
+                <button type="button" class="btn btn-info" value="保存" onclick="doSave()">
+                    <span class="glyphicon glyphicon-saved">保存</span>
+                </button>
+            <button type="button" class="btn btn-info" value="调查历史"  onclick="doSearch1()">
+                <span class="glyphicon glyphicon-search">调查历史</span>
+            </button>
+            <input type="hidden" name="id" id="applicationid" value="{$data['id']}">
+            <input type="hidden" id="activeid" name="activeid" value="{$activeid}">
+            <input type="hidden" name="companyName" id="companyName" value="{$data['companyName']}">
+        </div>
+            <br/>
+        <style>
+            #pageajax {
+                height: 500px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+            .tablehead p {
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <!--搜索框-->
+            <div id="DataTables_Table_0_length" class="dataTables_length">
+                <input type="text" name="company1" value="{$data['companyName']}">
+                <label>
+                    <input type="button" class="btn btn-info btn-sm" value="{:lang('查询')}" onclick="doSearch()">
+                </label>
+            </div>
+            <!--旧报列表-->
+            <div class="history_list">
+                <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"  aria-describedby="DataTables_Table_0_info">
+                    <thead>
+                    <tr role="row">
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                            报告编号
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                            客户代码
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                            客户名称
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                            目标公司名称
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                            处理人
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                            提交人
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                            提交时间
+                        </th>
+                        <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                            操作
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody role="alert" aria-live="polite" aria-relevant="all" id="list">
+                    <div id="list_s">
+                        {volist name='hitory_list' id='vo'}
+                        <tr class="gra odd db">
+                            <input class="id" type="hidden" name="activeid"  value="{$vo['ActiveID']}" data-text="{$vo['ActiveID']}">
+                            <input class="id" type="hidden" name="applicationid"  value="{$vo['ApplicationID']}" data-text="{$vo['ApplicationID']}">
+                            <input class="id" type="hidden" name="Creator"  value="{$vo['Creator']}" data-text="{$vo['Creator']}">
+                            <input class="id" type="hidden" name="KeyCol10"  value="{$vo['KeyCol10']}" data-text="{$vo['KeyCol10']}">
+                            <td class="center ">{$vo['KeyCol6']}</td>
+                            <td class="center ">{$vo['KeyCol4']}</td>
+                            <td class="center ">{$vo['KeyCol5']}</td>
+                            <td class="center ">{$vo['KeyCol8']}</td>
+                            <td class="center ">{$vo['activeusername']}</td>
+                            <td class="center" >{$vo['sendusername']}</td>
+                            <td class="center " >{$vo['SendDate']}</td>
+                            <td class="center ">
+                                <a class="cl btn btn-success"   style="border:0px solid #fff;float:left;margin-left: 3px;">
+                                    <i class="white zoom-in" >查看</i>
+                                </a>
+                            </td>
+                        </tr>
+                        {/volist}
+
+                    </div>
+                    </tbody>
+                </table>
+                <div align="right" id="page">
+                    <div id="pp">
+                    </div>
+                </div>
+            </div>
+            <div id="pageajax">
+                <div class="tablehead">
+                    <form action="" method="post" name="">
+                        <p>状态：{$data['statusName']}阶段</p>
+                        <p>确认有无旧资料：
+                            <input type="radio" name="isOldData" value="1" {if condition="$data['isOldData'] eq 1"}checked{/if}>有  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isOldData" value="0" {if condition="$data['isOldData'] eq 0"}checked{/if}>无
+                        </p>
+                        <p>确认有无旧报：
+                            <input type="radio" name="isOldReport" value="1" {if condition="$data['isOldReport'] eq 1"}checked{/if}>有  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isOldReport" value="0" {if condition="$data['isOldReport'] eq 0"}checked{/if}>无
+                        </p>
+                        <p style="display: none;" class="confirm2">是否为同一客户：
+                            <input type="radio" name="isSameCompany" value="1" {if condition="$data['isSameCompany'] eq 1"}checked{/if}>同一客户  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isSameCompany" value="0" {if condition="$data['isSameCompany'] eq 0"}checked{/if}>不同客户
+                        </p>
+                        <p style="display: none;" class="confirm2">报告时间：
+                            <input type="radio" name="oldReportDate" value="1"  {if condition="$data['oldReportDate'] eq 1"}checked{/if}>今年报告  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="oldReportDate" value="0"  {if condition="$data['oldReportDate'] eq 0"}checked{/if}>往年报告
+                        </p>
+                        <p style="display: none;" class="confirm4">要求是否一致：
+                            <input type="radio" name="isSameRequire" value="1" {if condition="$data['isSameRequire'] eq 1"}checked{/if}>要求一致  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isSameRequire" value="0" {if condition="$data['isSameRequire'] eq 0"}checked{/if}>要求不一致
+                        </p>
+                        <br/>
+                        <p>确认报告类型
+                            <input type="radio" name="speedType1" value="1" {if condition="$data['speedType1'] eq 1"}checked{/if} disabled>普通&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="speedType1" value="2" {if condition="$data['speedType1'] eq 2"}checked{/if} disabled>加急&nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="speedType1" value="3" {if condition="$data['speedType1'] eq 3"}checked{/if} disabled>特急&nbsp;&nbsp;&nbsp;&nbsp;
+                        </p>
+                        <p>
+                            委托日期:
+                            <input type="text" name="entrustDate" value="{$data['entrustDate']}" size="15px;" id="entrustDate" readonly>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            预计完成日期:
+                            <input type="text" name="finishDate" value="{$data['finishDate']}" size="15px;" id="finishDate" readonly>
+                        </p>
+                        <p>备注：</p>
+                        <textarea name="speedMemo"  style="width:98%;overflow-y:auto;height:100px;;">{$data['speedMemo']}</textarea>
+                        <br/>
+                        <p>确认是否有误：
+                            <input type="radio" name="isTrue" value="1" {if condition="$data['isTrue'] eq 1"}checked{/if} disabled>是  &nbsp;&nbsp;&nbsp;&nbsp;
+                            <input type="radio" name="isTrue" value="0" {if condition="$data['isTrue'] eq 0"}checked{/if} disabled>否
+                        </p>
+                        <p>备注：</p>
+                        <textarea name="trueMemo"  style="width:98%;overflow-y:auto;height:100px;;">{$data['trueMemo']}</textarea>
+
+
+                        <br/><br/>
+                        <!--委托单-->
+                        {include file="public:wtd"/}
+
+                    </form>
+                </div>
+            </div>
+        </div>
+      </form>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //查询
+    function doSearch(page) {
+        var company=$("input[name='company1']").val();
+        $.ajax({
+            type: 'post',
+            data: {"company":company,"page":page},
+            url: "{:url('Confirm/search')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if (data.code == 1) {
+                    var html = "";
+                    var page = data.data.page;
+                    for (var i = 0; i < data.data.list.length; i++) {
+                        html += "<tr style='height: 40px;' class='dbb'>" +
+                                "<input  type='hidden' name='activeid'  value='" + data.data['list'][i].ActiveID + "' data-text='" + data.data['list'][i].ActiveID + "'>" +
+                                "<input  type='hidden' name='applicationid'  value='" + data.data['list'][i].ApplicationID + "' data-text='" + data.data['list'][i].ApplicationID + "'>" +
+                                "<input  type='hidden' name='Creator'  value='" + data.data['list'][i].Creator + "' data-text='" + data.data['list'][i].Creator + "'>" +
+                                "<input  type='hidden' name='KeyCol10'  value='" + data.data['list'][i].KeyCol10 + "' data-text='" + data.data['list'][i].KeyCol10 + "'>" +
+                                "<td >" + data.data['list'][i].KeyCol6 + "</td>" +
+                                "<td >" + data.data['list'][i].KeyCol4 + "</td>" +
+                                "<td >" + data.data['list'][i].KeyCol5 + "</td>" +
+                                "<td >" + data.data['list'][i].KeyCol8 + "</td>" +
+                                "<td >" + data.data['list'][i].activeusername + "</td>" +
+                                "<td >" + data.data['list'][i].sendusername + "</td>" +
+                                "<td >" + data.data['list'][i].SendDate + "</td>" +
+                                "<td><a href='javascript:void(0);' class='cl'>{:lang('查看')}</a></td>" +
+                                "<tr>";
+                    }
+                    $("#list").empty();
+                    $("#list").html(html);
+                    $("#page").empty();
+                    $("#page").html(page);
+                }
+            },
+            error: function () {
+                alert("服务器繁忙。。。")
+                return false;
+            }
+        });
+    }
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('ConfirmJb/save')}", $('#tableForm').serialize());
+    }
+
+    //提交
+    function doSubmit(){
+        $('#tableForm').submit();
+    }
+
+    //有无旧报
+    $("input[name='isOldReport']").click(function(){
+        var jb=$(this).val();
+        if(jb==1){
+            $('.confirm2').show();
+        }else{
+            $('.confirm2').hide();
+        }
+    });
+
+    //是否为今年报告
+    $("input[name='oldReportDate']").click(function(){
+        var jn=$(this).val();
+        if(jn==1){
+            $('.confirm4').show();
+        }else{
+            $('.confirm4').hide();
+        }
+    });
+
+    //查看旧报
+    $(function () {
+        var userid="{$Think.session.auth_lid}";
+        $('.cl').click(function(){
+            var activeid = $(this).parent("td").parent("tr").find("input").eq(0).attr("data-text");
+            var applicationid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            var type = $(this).parent("td").parent("tr").find("input").eq(3).attr("data-text");
+            var option='6';
+            if(type==1){
+                //标准报告
+                var url="{:url('Layout/common_baogao')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            else if(type==2){
+                //深度报告
+                var url="{:url('Layout/common_baogao2')}?option="+option+"&applicationid="+applicationid+"&activeid="+activeid;
+            }
+            window.open(url, '_self');
+
+        });
+    })
+
+    //调查历史
+    function doSearch1(){
+        var companyName=$("#companyName").val();
+        var url="{:url('Confirm/history')}?companyName="+companyName;
+        window.open(url,'_blank');
+    }
+
+    $("#WTD_info").find("input,textarea").attr("disabled", "disabled");
+
+</script>
+{/block}
+

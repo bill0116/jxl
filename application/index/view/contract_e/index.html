@@ -1,0 +1,605 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{if condition="$myActive['tasktype'] eq 1"}
+{:widget('PageHeader/simple',array('name'=>$myActive['FlowTitle']."—".$myActive['sectionname'],'search'=>'N'))}
+{else /}
+{:widget('PageHeader/simple',array('name'=>$myActive['FlowTitle'],'search'=>'N'))}
+{/if}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('ContractE/update')}" id="tableForm">
+                <div class="tab-pane">
+                    <input type="hidden" name="ID" id="applicationid" value="{$data['ID']}">
+                    <input type="hidden" id="activeid" name="activeid" value="{$myActive['activeid']}">
+                    <input type="hidden" name="tasktype" id="tasktype" value="{$myActive['tasktype']}">
+                    <!--按钮组-->
+                    {include file="Public:buttonGroup"/}
+                    <!--下一个审批-->
+                    {include file="Public:nextApprove"/}
+                    <!--审批意见-->
+                    {include file="Public:approveWork"/}
+                    <!--导航组-->
+                    <ul id="myTab" class="nav nav-tabs">
+                        <li class="active" style="width:165px;">
+                            <a href="#applyTable" data-toggle="tab" id="btn_jbxx">二期合同申请表单</a>
+                        </li>
+                    </ul>
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="applyTable">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                   aria-describedby="DataTables_Table_0_info">
+                                <style type="text/css">
+                                    .table td {
+                                        font-size: 13px;
+                                        text-align: left;
+                                    }
+
+                                    .table td span {
+                                        color: red;
+                                    }
+
+                                    .table input {
+                                        width: 175px;
+                                    }
+                                </style>
+                                <tbody>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Branch company: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="TVKOT_VTEXT" id="TVKOT_VTEXT" value="{$data['TVKOT_VTEXT']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Contract No: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_TKONN" id="WBHK_TKONN" value="{$data['WBHK_TKONN']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Customer:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="KNA1_NAME1" id="KNA1_NAME1" value="{$data['KNA1_NAME1']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Currency:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="kzTxt3" id="kzTxt3" value="{$data['kzTxt3']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Trade company: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="T005T_MYGB" id="T005T_MYGB" value="{$data['T005T_MYGB']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Consumer country: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="T005T_XFGB" id="T005T_XFGB" value="{$data['T005T_XFGB']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Shipping port: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZZYKA" id="WBHK_ZZYKA" value="{$data['WBHK_ZZYKA']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Declaration port: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZBGKA" id="WBHK_ZBGKA" value="{$data['WBHK_ZBGKA']}">
+                                    </td>
+                                </tr>
+
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Destination : </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZMDG" id='WBHK_ZMDG' value="{$data['WBHK_ZMDG']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Trade term:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHD_INCO1_SD" id='WBHD_INCO1_SD' value="{$data['WBHD_INCO1_SD']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Payment term: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="TVZBT_VTEXT" id='TVZBT_VTEXT' value="{$data['TVZBT_VTEXT']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Req delivery date: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZGCJHQ" id="WBHK_ZGCJHQ" value="{$data['WBHK_ZGCJHQ']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Supplier : </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width:35%;">
+                                        <input type="text" name="LFA1_NAME1" id="LFA1_NAME1" value="{$data['LFA1_NAME1']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Value-maintained: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WKBK_ZSFBZ" id="WKBK_ZSFBZ" value="{$data['WKBK_ZSFBZ']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>1st production: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZSFSP" id="WBHK_ZSFSP" value="{$data['WBHK_ZSFSP']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="4"
+                                        aria-label="Role: activate to sort column ascending" style="width: 100%;">
+                                        <table>
+                                            <style type="text/css">
+                                                .table td {
+                                                    border: 1px solid #6f6f6f;
+                                                    font-size: 5px;
+                                                }
+                                            </style>
+                                            <tbody>
+                                            {notempty name="childList"}
+                                            <tr role="row">
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Customer order No.</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Factory model No</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Export model No</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Customer model No</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Product category </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Brand</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Qty </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Est fty unit cost </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Est fty total cost </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>FOB cost</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>FOB amt</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Selling price </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>Selling amt </label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: 145px;">
+                                                    <label>GMR </label>
+                                                </td>
+                                            </tr>
+                                            {volist name="childList" id="child"}
+                                            <tr role="row">
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_ZKHPO}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_ZFACMODEL}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_ZMODEL}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_ZCUSMODEL}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.TSPA_VTEXT}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.ZTBRAND_ZBRANDDESC}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_MENGE}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.EstFtyUnitCost}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.EstFtyTotalCost}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.FOBPurchasePrice}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.FOBTotalPurchases}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.SellingPrice}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.SellingAmt}</label>
+                                                </td>
+                                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0"
+                                                    rowspan="1"
+                                                    colspan="1"
+                                                    aria-label="Status: activate to sort column ascending"
+                                                    style="width: auto;">
+                                                    <label>{$child.WBHI_ZDJMLL}</label>
+                                                </td>
+                                            </tr>
+                                            {/volist}
+                                            {/notempty}
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="4"
+                                        aria-label="Role: activate to sort column ascending"
+                                        style="width: 145px;background: lightblue;">
+                                        <label>Expense Estimate</label>
+                                    </th>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>IP: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZLF" id="WBHK_ZLF" value="{$data['WBHK_ZLF']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Ocean freight: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZHYF" id="WBHK_ZHYF" value="{$data['WBHK_ZHYF']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Marine insu: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZHBF" id="WBHK_ZHBF" value="{$data['WBHK_ZHBF']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Duty: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="Custom" id="Custom" value="{$data['Custom']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Customs cle fee: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="CustomsClearanceTax" id="CustomsClearanceTax" value="{$data['CustomsClearanceTax']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>If  has  limit : </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="IfHasLimit" id="IfHasLimit" value="{$data['IfHasLimit']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending"
+                                        style="width:15%;">
+                                        <label>Sales Scope</label>
+                                    </th>
+                                    <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Role: activate to sort column ascending"
+                                        style="width: 85%;">
+                                        <input type="text" value="{$data['TVKOT_VTEXT']}">
+                                    </th>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Account manager: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text"  value="{$data['WBHK_VKGRP']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Sales group: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="WBHK_ZYWQY" id="WBHK_ZYWQY" value="{$data['WBHK_ZYWQY']}">
+                                    </td>
+                                </tr>
+
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>CreateDate: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="createtime" id='createtime' value="{$data['createtime']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>Created By: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 85%;">
+                                        <input type="text" name="CreaterName" id='CreaterName' value="{$data['CreaterName']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="4"
+                                        aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                                        {include file="Public:approveList"/}
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $('#tableForm').validate({
+            rules: {IsApproved: {required: true}, routeid: {required: true}, userid: {required: true}},
+            messages: {IsApproved: {required: "必填项"}, routeid: {required: "必填项"}, userid: {required: "必填项"}},
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            }
+        });
+        $('#myTabContent').find('input,textarea').prop('readonly', true);
+        $('#myTabContent').find('select').prop('disabled', true);
+    });
+    function doSubmite() {
+        $('#tableForm').submit();
+    }
+</script>
+{/block}

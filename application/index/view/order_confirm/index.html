@@ -1,0 +1,358 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'客户资信报告确认下单信息表','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('OrderConfirm/update')}" id="tableForm">
+                <div class="tab-pane">
+                    <div class="row-fluid" style="margin-bottom: 8px;">
+                        <div class="span6">
+                            <div id="DataTables_Table_0_lengtd" class="dataTables_lengtd">
+                                <button type="button" value="提交" id="onSubmite" onclick="doSubmite()" class="btn btn-success btn-sm"
+                                        style="border:0 solid #fff "><span
+                                        class="glyphicon glyphicon-ok-sign"></span> 提交
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="applyTable">
+                            <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                                   aria-describedby="DataTables_Table_0_info">
+                                <style type="text/css">
+                                    .table td {
+                                        font-size: 13px;
+                                        text-align: left;
+                                    }
+
+                                    .table td span {
+                                        color: red;
+                                    }
+
+                                    .table input {
+                                        width: 175px;
+                                    }
+                                </style>
+                                <tbody>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>企业标识:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="hidden" name="ID"  value="{$data['ID']}">
+                                        <input type="text" name="clientNo" id="clientNo" value="{$data['clientNo']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业中国信保企业代码:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportbuyerNo" id="reportbuyerNo" value="{$data['reportbuyerNo']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业国别:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpCountryCode" id="buyerCountryCode" value="{$data['reportCorpCountryCode']}" onkeypress="getCountryName('buyer')" style="width:12%;">
+                                        <input type="button" value="..." data-toggle="modal" data-target="#searchCountryModal" style="width: 25px;" onclick="checkTypeCountry('buyer')">
+                                        <input type="text" id="buyerCountryName" value="{:model('Common')->getCountryName($data['reportCorpCountryCode'])}" style="width:28%;" readonly>
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业中文名称:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpChnName" id="reportCorpChnName" value="{$data['reportCorpChnName']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业英文名称:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpEngName" id="reportCorpEngName" value="{$data['reportCorpEngName']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业地址:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpaddress" id="reportCorpaddress" value="{$data['reportCorpaddress']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业联系电话: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorptel" id="reportCorptel" value="{$data['reportCorptel']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业传真:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpfax" id="reportCorpfax" value="{$data['reportCorpfax']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业邮箱: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpemail" id="reportCorpemail" value="{$data['reportCorpemail']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>待调查企业联系人:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="reportCorpcontacts" id="reportCorpcontacts" value="{$data['reportCorpcontacts']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>是否导读（或是否翻译）:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="istranslation" id="istranslation" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(329)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}" {if condition="$data['istranslation'] eq $vo['GeneralCode']"}selected="selected"{/if}>{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                </tr>
+
+
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>发票类型:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="invoiceType" id="invoiceType" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(329)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}" {if condition="$data['invoiceType'] eq $vo['GeneralCode']"}selected="selected"{/if}>{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>付款人:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="ipayerName" id="ipayerName" value="{$data['ipayerName']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>发票项目:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <select name="invoicePro" id="invoicePro" size="1" style="width:175px;">
+                                            <option value=""></option>
+                                            {volist name=":model('common')->getCommon(329)" id="vo"}
+                                            <option value="{$vo['GeneralCode']}" {if condition="$data['invoicePro'] eq $vo['GeneralCode']"}selected="selected"{/if}>{$vo.CodeText}</option>
+                                            {/volist}
+                                        </select>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>发票抬头:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="invoiceTitle" id="invoiceTitle" value="{$data['invoiceTitle']}">
+                                    </td>
+                                </tr>
+
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>收件人:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="irecipient" id="irecipient" value="{$data['irecipient']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>收件人电话:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="irecipientnum" id="irecipientnum" value="{$data['irecipientnum']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>邮寄地址:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="iaddress" id="iaddress" value="{$data['iaddress']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>邮政编码:<span>*</span> </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="ipostcode" id="ipostcode" value="{$data['ipostcode']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>纳税人识别号: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="iidentNum" id="iidentNum" value="{$data['iidentNum']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>开户行:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="iopenbank" id="iopenbank" value="{$data['iopenbank']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>账号: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="ivnaccount" id="ivnaccount" value="{$data['ivnaccount']}">
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>地址及联系电话:</label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <input type="text" name="iaddressAtel" id="iaddressAtel" value="{$data['iaddressAtel']}">
+                                    </td>
+                                </tr>
+                                <tr role="row">
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="1"
+                                        aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                        <label>备注: </label>
+                                    </td>
+                                    <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                        colspan="3"
+                                        aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                        <textarea id="remark" name="remark" class="form-control" rows="3" value="{$data['remark']}">{$data['remark']}</textarea>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        jQuery.validator.addMethod("notEqual",
+                function (value, element, param) {
+                    return value != param;
+                }, $.validator.format("输入值不允许为{0}!"));
+        $('#tableForm').validate({
+            rules: {IsApproved: {required: true}, routeid: {required: true}, userid: {required: true}},
+            messages: {IsApproved: {required: "必填项"}, routeid: {required: "必填项"}, userid: {required: "必填项"}},
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            }
+        });
+    });
+    function doSubmite() {
+        $('#tableForm').submit();
+    }
+</script>
+{/block}

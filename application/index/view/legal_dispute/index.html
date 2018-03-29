@@ -1,0 +1,386 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p><b style="font-size: 20px; text-align: left;">法律纠纷</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="dispute_add" class="com"></p>
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="dispute_header">
+                            <td style="width: 10%">诉讼对象</td>
+                            <td style="width: 50%">案件概述</td>
+                            <td style="width: 20%">诉讼请求</td>
+                            <td style="width: 10%">判决或预计判决时间</td>
+                            <td class="com"></td>
+                            <td class="com"></td>
+                        </tr>
+                        {volist name="dispute_list" id="vo"}
+                        <tr class="dispute">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst1'>{$vo.name}</span><input name='xs1' type='text' value="{$vo.name}" style="display: none;" size="15px;"></td>
+                            <td><span class='xst2'>{$vo.summary}</span><input name='xs2' type='text' value="{$vo.summary}" style="display: none;" size="60px;"></td>
+                            <td><span class='xst3'>{$vo.request}</span><input name='xs3' type='text' value="{$vo.request}" style="display: none;" size="35px;"></td>
+                            <td><span class='xst4'>{$vo.date}</span><input name='xs4' type='text' value="{$vo.date}" style="display: none;" size="10px;"></td>
+                            <td class="com"><span name='n' class='normal'> <a rel='edit_dispute' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_dispute' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_dispute' href='javascript:void(0)'>取消</a></span> </td>
+                            <td class="com"><a rel='del_dispute' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                            <td >({$language})<input type="text" name="" value="" ></td>
+                        </tr>
+                        {/volist}
+                        </thead>
+                    </table>
+                    <br/><br/>
+                    <p><b style="font-size: 20px; text-align: left;">诉讼的影响</b></p>
+                    <form class="form-horizontal" method="post" action="{:url('LegalDispute/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="affect"  style="width:98%;overflow-y:auto;height:300px;;">{$data['affect']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="affectEng"  style="width:98%;overflow-y:auto;height:400px;display:none; ">{$data['affectEng']}</textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function(){
+        //访问时间
+        jeDate({
+            dateCell: "#date",
+            format: "YYYY-MM-DD",
+            isTime: true,
+            zIndex: 3000
+        });
+    });
+
+
+    //新增法律纠纷
+    $('#dispute_add').click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('LegalDispute/add_dispute')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data);
+                if(data.data){
+                    var  str =  "<tr class='dispute'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst1' style='display: none;'>"+data.data.name+"</span><input name='xs1' type='text' value='"+data.data.name+"' size='15px;'></td>"+
+                            "<td><span class='xst2' style='display: none;'>"+data.data.summary+"</span><input name='xs2' type='text' value='"+data.data.summary+"' size='60px;'></td>"+
+                            "<td><span class='xst3' style='display: none;'>"+data.data.request+"</span><input name='xs3' type='text' value='"+data.data.request+"' size='35px;'></td>"+
+                            "<td><span class='xst4' style='display: none;'>"+data.data.date+"</span><input name='xs4' type='text' value='"+data.data.date+"' size='10px;'></td>"+
+                            "<td><span name='n' class='normal'> <a rel='edit_dispute' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_dispute' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_dispute' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td><a rel='del_dispute' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+
+                    $(".dispute_header").after(str);
+
+                    //点击编辑
+                    $("a[rel='edit_dispute']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").show();
+                        $(this).parent().parent().parent().find("input[name='xs2']").show();
+                        $(this).parent().parent().parent().find("input[name='xs3']").show();
+                        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+                        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+                        $(this).hide();
+                        $(this).parent().parent().find("span[class='edit']").show();
+                    });
+                    //点击保存
+                    $("a[rel='update_dispute']").click(function () {
+                        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+                        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+                        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+                        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+                        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+                        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        var tis = $(this);
+                        $.ajax({
+                            type: "post",
+                            url: "{:url('LegalDispute/dispute_update')}",
+                            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,id:id}
+                        }).done(function (data) {
+                            if (data.code) {
+                                tankuang(300,data.msg);
+                                location=location;
+                                tis.parent().parent().parent().find("span[class='xst1']").show();
+                                tis.parent().parent().parent().find("span[class='xst2']").show();
+                                tis.parent().parent().parent().find("span[class='xst3']").show();
+                                tis.parent().parent().parent().find("span[class='xst4']").show();
+                                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                                tis.parent().parent().find("span[class='edit']").hide();
+                                tis.parent().parent().find("a[rel='edit_dispute']").show();
+                            }
+                        });
+                        //取消表单
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_dispute']").show();
+                    });
+                    //点击取消
+                    $("a[rel='cancel_dispute']").click(function () {
+                        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+                        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+                        $(this).parent().parent().parent().find("span[class='xst1']").show();
+                        $(this).parent().parent().parent().find("span[class='xst2']").show();
+                        $(this).parent().parent().parent().find("span[class='xst3']").show();
+                        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+                        $(this).parent().parent().find("span[class='edit']").hide();
+                        $(this).parent().parent().find("a[rel='edit_dispute']").show();
+                    });
+                    //点击删除
+                    $("a[rel='del_dispute']").click(function () {
+                        if (!confirm("确定要删除吗？")) {
+                            return false;
+                        }
+                        var id = $(this).parent().parent().find("input[name='ids']").val();
+                        var tis = $(this);
+                        if(id!=''){
+                            $.ajax({
+                                type: 'post',
+                                data: {id: id},
+                                url: "{:url('LegalDispute/dispute_del')}",
+                                dataType: 'json',
+                                success: function (data) {
+                                    console.log(data);
+                                    if(data.code == 1){
+                                        tis.parent().parent().remove();
+                                    }
+                                }
+                            });
+                        }
+                    });
+
+                }
+            }
+        });
+    });
+    //点击编辑
+    $("a[rel='edit_dispute']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+        $(this).parent().parent().parent().find("input[name='xs3']").show();
+        $(this).parent().parent().parent().find("input[name='xs4']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+        $(this).parent().parent().parent().find("span[class='xst3']").hide();
+        $(this).parent().parent().parent().find("span[class='xst4']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_dispute']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("input[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var xs3 = $(this).parent().parent().parent().find("input[name='xs3']").val();
+        var xs4 = $(this).parent().parent().parent().find("input[name='xs4']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+        $(this).parent().parent().parent().find("span[class='xst3']").text(xs3);
+        $(this).parent().parent().parent().find("span[class='xst4']").text(xs4);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('LegalDispute/dispute_update')}",
+            data: {xs1:xs1,xs2:xs2,xs3: xs3,xs4: xs4,id:id}
+        }).done(function (data) {
+            if (data.code) {
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+                tis.parent().parent().parent().find("span[class='xst3']").show();
+                tis.parent().parent().parent().find("span[class='xst4']").show();
+                tis.parent().parent().parent().find("span[class='xst5']").show();
+
+                tis.parent().parent().parent().find("input[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+                tis.parent().parent().parent().find("input[name='xs3']").hide();
+                tis.parent().parent().parent().find("input[name='xs4']").hide();
+                tis.parent().parent().parent().find("input[name='xs5']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_dispute']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_dispute']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_dispute']").click(function () {
+        $(this).parent().parent().parent().find("input[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+        $(this).parent().parent().parent().find("input[name='xs3']").hide();
+        $(this).parent().parent().parent().find("input[name='xs4']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+        $(this).parent().parent().parent().find("span[class='xst3']").show();
+        $(this).parent().parent().parent().find("span[class='xst4']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_dispute']").show();
+    });
+    //点击删除
+    $("a[rel='del_dispute']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('LegalDispute/dispute_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    console.log(data);
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('LegalDispute/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(翻译)
+    function doSaveEng(){
+        saveFlow("{:url('LegalDispute/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('LegalDispute/recheck')}";
+        ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var data={"applicationid":applicationid};
+        var url="{:url('LegalDispute/recheckEng')}";
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('LegalDispute/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var url="{:url('LegalDispute/save_memoEng')}";
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        ajax_check_memo(url,data);
+    });
+</script>
+{/block}
+

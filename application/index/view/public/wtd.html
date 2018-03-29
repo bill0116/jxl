@@ -1,0 +1,139 @@
+<table class="table table-striped" id="WTD_info">
+    <style type="text/css">
+        .table td {
+            font-size: 12px;
+        }
+        .table span {
+            color: red;
+        }
+    </style>
+    <center style="font-size: 30px;"><b>资信报告委托单</b></center>
+    <br/>
+    <center style="font-size: 14px;">兹委托深圳佳信隆企业管理咨询有限公司调查以下企业的资信情况;</center>
+    <br/>
+    <thead>
+    <tr>
+        <td colspan="4" style="text-align:center" >目标公司资料（请以正楷填写）</td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">报告种类</td>
+        <td colspan="3"><input type="text" name="typeName" value="{$data['typeName']}" size="100%;" readonly style="background-color:#EEEEEE "></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">委托单编号</td>
+        <td colspan="3"><input type="text" name="wtdCode" value="{$data['wtdCode']}" size="100%;" readonly style="background-color:#EEEEEE"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">目标公司中文名称（必填）<span>*</span></td>
+        <td colspan="3"><input type="text" name="companyName" value="{$data['companyName']}" size="100%;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">英文文名称</td>
+        <td colspan="3"><input type="text" name="engName" value="{$data['engName']}" size="100%;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">地址(必填)<span>*</span></td>
+        <td colspan="3"><input type="text" name="address" value="{$data['address']}" size="100%;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">电话（必填）<span>*</span></td>
+        <td colspan="1"><input type="text" name="tel" value="{$data['tel']}" size="40px;"></td>
+        <td colspan="1" style="width: 13%">传真</td>
+        <td colspan="1"><input type="text" name="fax" value="{$data['fax']}" size="40px;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">负责人</td>
+        <td colspan="1"><input type="text" name="FZR" value="{$data['FZR']}" size="40px;"></td>
+        <td colspan="1" style="width: 13%">联系人</td>
+        <td colspan="1"><input type="text" name="companyLXR" value="{$data['companyLXR']}" size="40px;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">客户调查要求或目的（必填）<span>*</span></td>
+        <td colspan="3"><textarea name="demand" rows="3" style="width: 800px;overflow-y:auto;">{$data['demand']}</textarea></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">地区</td>
+        <td colspan="3">
+            <input type="radio" name="area" value="1" {if condition="$data['area'] eq 1"}checked{/if}>中国&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="area" value="2" {if condition="$data['area'] eq 2"}checked{/if}>香港&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="area" value="3" {if condition="$data['area'] eq 3"}checked{/if}>台湾&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="area" value="4" {if condition="$data['area'] eq 4"}checked{/if}>国际&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">报告情况<span>*</span></td>
+        <td colspan="3">
+            <input type="radio" name="speedType" value="1" {if condition="$data['speedType'] eq 1"}checked{/if}>普通&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="speedType" value="2" {if condition="$data['speedType'] eq 2"}checked{/if}>加急&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="speedType" value="3" {if condition="$data['speedType'] eq 3"}checked{/if}>特急&nbsp;&nbsp;&nbsp;&nbsp;
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">付款</td>
+        <td colspan="3">
+            <input type="radio" name="payType" value="1" {if condition="$data['payType'] eq 1"}checked{/if}>现结&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="payType" value="2" {if condition="$data['payType'] eq 2"}checked{/if}>月结&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="payType" value="3" {if condition="$data['payType'] eq 3"}checked{/if}>预购&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="payType" value="4" {if condition="$data['payType'] eq 4"}checked{/if}>其他&nbsp;&nbsp;&nbsp;&nbsp;
+            （说明：<input type="text" name="payMemo" value="{$data['payMemo']}" size="60px;">）
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">翻译</td>
+        <td colspan="3">
+            <input type="radio" name="isTranslate" value="1" {if condition="$data['isTranslate'] eq 1"}checked{/if}>否&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="radio" name="isTranslate" value="2" {if condition="$data['isTranslate'] eq 2"}checked{/if}>是&nbsp;&nbsp;&nbsp;&nbsp;
+            （
+            <input type="radio" name="translateType" value="1" {if condition="$data['translateType'] eq 1"}checked{/if}>中翻英&nbsp;&nbsp;&nbsp;&nbsp;
+            / <input type="radio" name="translateType" value="2" {if condition="$data['translateType'] eq 2"}checked{/if}>英翻中&nbsp;&nbsp;&nbsp;&nbsp;
+            / <input type="radio" name="translateType" value="3" {if condition="$data['translateType'] eq 3"}checked{/if}>中翻日文&nbsp;&nbsp;&nbsp;&nbsp;
+            / <input type="radio" name="translateType" value="4" {if condition="$data['translateType'] eq 4"}checked{/if}>其他&nbsp;&nbsp;&nbsp;&nbsp;
+            （说明：<input type="text" name="translateMemo" value="{$data['translateMemo']}" size="60px;">）
+            ）
+        </td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">委托日期<span>*</span></td>
+        <td colspan="1"><input type="text" name="entrustDate" value="{$data['entrustDate']}" size="40px;" id="entrustDate" placeholder="单击选择日期"></td>
+        <td colspan="1" style="width: 13%">预计完成日期</td>
+        <td colspan="1"><input type="text" name="finishDate" value="{$data['finishDate']}" size="40px;" id="finishDate" readonly style="background-color:#EEEEEE"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">单价</td>
+        <td colspan="1"><input type="text" name="price" value="{$data['price']}" size="40px;">元/份</td>
+        <td colspan="1" style="width: 13%">接单部门</td>
+        <td colspan="1"><input type="text" name="department" value="{$data['department']}" size="40px;"></td>
+    </tr>
+    <tr>
+        <td colspan="1" style="width: 13%">下单人签字</td>
+        <td colspan="1"><input type="text" name="creatorName" value="{$data['creatorName']}" size="40px;"></td>
+        <td colspan="1" style="width: 13%">下单时间</td>
+        <td colspan="1"><input type="text" name="createDate" value="{$data['createDate']}" size="40px;"></td>
+    </tr>
+    </thead>
+</table>
+<br/><br/> <br/> <br/>
+<p>委托单位代码:<u>{$data['kunnr']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</u></p>
+<p>委托单位(盖章):<u>{$data['name']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </u></p>
+<p>委托人(签字):<u>{$data['entrustor']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</u></p>
+<p>联系人:<u>{$data['LXR']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</u></p>
+<p>电话:<u>{$data['LXRPhone']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</u></p>
+<p>特殊需求:<u>{$data['specicalRequire']}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</u></p>

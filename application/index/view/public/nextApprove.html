@@ -1,0 +1,46 @@
+<table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+       aria-describedby="DataTables_Table_0_info">
+    <style type="text/css">
+        .table td {
+            font-size: 13px;
+            text-align: left;
+        }
+    </style>
+    <tbody>
+    {if condition="isset($route) AND $route AND (empty($user))"}
+    <tr role="row" id="flowroute">
+        {if condition="$myActive['tasktype'] eq 1"}
+        <input name="IsApproved" type="hidden" value="{$IsApproved}">
+        {/if}
+        <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+            colspan="1" aria-label="Status: activate to sort column ascending" style="width: 15%;">
+            <label>请选择下一个审批环节:</label>
+        </td>
+        <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+            colspan="3" aria-label="Status: activate to sort column ascending" style="width: 85%;">
+            {foreach name='route' item='vo'}
+            <input style="margin:0 5px 0 10px;width:auto;" name="routeid" id="routeid" type="radio" value="{$vo['routeid']}"><label>{$vo.routename}</label>
+            {/foreach}
+        </td>
+    </tr>
+    {/if}
+    {if condition="isset($user) AND $user"}
+    <tr role="row" id="flowuser">
+        {if condition="$myActive['tasktype'] eq 1"}
+        <input name="IsApproved" type="hidden" value="{$IsApproved}">
+        {/if}
+        <input name="routeid" type="hidden" value="{$routeid}">
+        <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+            colspan="1" aria-label="Status: activate to sort column ascending" style="width: 15%;">
+            <label>请选择{$usermsg}:</label>
+        </td>
+        <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+            colspan="3" aria-label="Status: activate to sort column ascending" style="width: 85%;">
+            {foreach name='user' item='vo'}
+            <input style="margin:0 5px 0 10px;width:auto;" name="userid" class="userid" id="userid" type="radio" value="{$vo['userid']}" style="width: auto;"><label>{$vo.username}</label>
+            {/foreach}
+        </td>
+    </tr>
+    {/if}
+    </tbody>
+</table>

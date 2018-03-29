@@ -1,0 +1,243 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'流程查询','search'=>'N'))}
+<div class="box-content">
+    <form>
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" class="btn btn-success btn-sm" value="查询" onclick="doSearch()">
+                        <input type="reset" class="btn btn-default btn-sm" value="重置">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <style type="text/css">
+                .table td {
+                    text-align: left;
+                }
+
+                .table input {
+                    width: 175px;
+                }
+            </style>
+            <thead>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>流程名称:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="flowID" name="flowID" size="1" style="width:175px;">
+                        <option value="">请选择流程</option>
+                        {volist name=":model('Common')->getFlowName()" id="flow"}
+                        <option value="{$flow['FlowID']}">{$flow.FlowTitle}</option>
+                        {/volist}
+                    </select>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>流程状态:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="flowStatus" name="flowStatus" size="1" style="width:175px;">
+                        {volist name=":model('Common')->getCommon(206)" id="status"}
+                        <option value="{$status['GeneralCode']}">{$status.CodeText}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr role="row">
+                <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                    <label>组织机构:</label>
+                </th>
+                <th role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Role: activate to sort column ascending" style="width: 35%;">
+                    <select name="Organization" id="Organization" size="1" style="width:175px;" multiple>
+                        <option value="">请选择组织机构</option>
+                        {volist name=":controller('common')->listOrganizations(session('auth_id'))" id="vo"}
+                        <option value="{$vo['ID']}">{$vo.OrganizationTitle}</option>
+                        {/volist}
+                    </select>
+                </th>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>审批结果:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <select id="approveResult" name="approveResult" size="1" style="width:175px;">
+                        <option value="">请选择审批结果</option>
+                        {volist name=":model('Common')->getCommon(207)" id="approve"}
+                        <option value="{$approve['GeneralCode']}">{$approve.CodeText}</option>
+                        {/volist}
+                    </select>
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>创建人:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="creator" id="creator">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>创建时间:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input name="createDateFrom" id="createDateFrom" type="text" placeholder="点击选择时间">--<input
+                        name="createDateTo" id="createDateTo" type="text" placeholder="点击选择时间">
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>关键字:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="key" id="key">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>客户名称:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="name" id="name">
+                </td>
+            </tr>
+            </thead>
+        </table>
+        <style>
+            #pageajax {
+                height: 480px;
+                width: 1080px;
+                border: 1px solid #ddd;
+                position: relative;
+                overflow-x: auto;
+                overflow-y: auto;
+                table-layout: fixed;
+                work-break: break-all;
+                margin-top: 10px;
+            }
+            .tablehead {
+                width: 1420px;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align: center;
+                padding: 0px;
+                margin: 0px;
+                height: 30px;
+            }
+
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+                        <thead>
+                        <tr>
+                            <td style='width:120px;'>操作</td>
+                            <td style='width:100px;'>流水号</td>
+                            <td style='width:140px;'>流程名称</td>
+                            <td style='width:140px;'>流程环节</td>
+                            <td style='width:120px;'>关键字</td>
+                            <td style='width:300px;'>客户名称</td>
+                            <td style='width:100px;'>当前处理人</td>
+                            <td style='width:120px;'>创建人</td>
+                            <td style='width:100px;'>创建时间</td>
+                            <td style='width:120px;'>提交人</td>
+                            <td style='width:100px;'>提交时间</td>
+                        </tr>
+                        <tbody class="body" id="dynr" style="word-break:break-all; word-wrap:break-word;">
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            <div align="right" id="page">
+            </div>
+        </div>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        jeDate({
+            dateCell: "#createDateFrom",
+            format: "YYYY-MM-DD",
+            isTime: true
+        });
+        jeDate({
+            dateCell: "#createDateTo",
+            format: "YYYY-MM-DD",
+            isTime: true
+        });
+    });
+    function doSearch(page) {
+        if ($('#flowID').val() != '') {
+            $.ajax({
+                type: 'post',
+                data: $('form').serialize() + "&page=" + page,
+                url: "{:url('Flow/index')}",
+                dataType: 'json',
+                success: function (data) {
+                    if (data.code == 1) {
+                        var html = "";
+                        var page = data.data.page;
+                        for (var i = 0; i < data.data.list.length; i++) {
+                            html += "<tr style='height: 40px;' class='dbb'>" +
+                                    "<td style='width:120px;text-align: center;padding-left: 5px;'>" +
+                                    "<span class='btn btn-success' id='look'  style='border:0px solid #fff'>" +
+                                    "<a href='" + data.data['list'][i].FlowUrl + "' target='_blank' style='color: white;font-size: small'>查看</a></span>" +
+                                    "<span class='btn btn-info' style='border:0px solid #fff;display: none;'>" +
+                                    "<a rel='up' href='#' style='color: white;font-size: small''>重新提交</a></span></td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].ActiveID + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].FlowTitle + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].ActiveMessage + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i]._CustomerNumber + "</td>" +
+                                    "<td style='width:300px;'>" + data.data['list'][i]._CustomerName + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].ActiveUserName + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].CreatorName + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].CreateDate + "</td>" +
+                                    "<td style='width:120px;'>" + data.data['list'][i].SendUserName + "</td>" +
+                                    "<td style='width:100px;'>" + data.data['list'][i].SendDate + "</td>" +
+                                    "<tr>";
+                        }
+                        $("#dynr").empty();
+                        $("#dynr").html(html);
+                        $("#page").empty();
+                        $("#page").html(page);
+                    }
+                },
+                error: function () {
+
+                }
+            });
+        } else {
+            alert("请选择流程名称");
+            return false;
+        }
+    }
+</script>
+{/block}

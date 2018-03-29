@@ -1,0 +1,253 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+
+            #pageajax span{
+                color: red;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>3.损益表</b></p>
+                    <br/>
+                    <p style="font-size: 14px; text-align: right;"><span>单位：千元</span></p>
+                    <form class="form-horizontal" method="post" action="{:url('SunyiDetail/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 14px;
+                                    width: 20%;
+                                }
+                            </style>
+                            <thead>
+                            {if condition="$data eq null"}
+                            <tr>
+                                <td ></td>
+                                <td><?php echo date('Y',time())-1;?></td>
+                                <td><?php echo date('Y',time())-2;?></td>
+                                <td><?php echo date('Y',time())-3;?></td>
+                                <td><?php echo date('Y',time())-4;?></td>
+                                <td><?php echo date('Y',time())-5;?></td>
+                            </tr>
+                            {else/}
+                            <tr>
+                                <td ></td>
+                                <td>{$data[0]['year']}</td>
+                                <td>{$data[1]['year']}</td>
+                                <td>{$data[2]['year']}</td>
+                                <td>{$data[3]['year']}</td>
+                                <td>{$data[4]['year']}</td>
+                            </tr>
+                            {/if}
+                            <tr>
+                                <td>销售收入</td>
+                                <td><input type="text" name="salesIncome[]" value="{$data[0]['salesIncome']}"></td>
+                                <td><input type="text" name="salesIncome[]" value="{$data[1]['salesIncome']}"></td>
+                                <td><input type="text" name="salesIncome[]" value="{$data[2]['salesIncome']}"></td>
+                                <td><input type="text" name="salesIncome[]" value="{$data[3]['salesIncome']}"></td>
+                                <td><input type="text" name="salesIncome[]" value="{$data[4]['salesIncome']}"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">主营业务收入</td>
+                                <td><input type="text" name="mainIncome[]" value="{$data[0]['mainIncome']}"></td>
+                                <td><input type="text" name="mainIncome[]" value="{$data[1]['mainIncome']}"></td>
+                                <td><input type="text" name="mainIncome[]" value="{$data[2]['mainIncome']}"></td>
+                                <td><input type="text" name="mainIncome[]" value="{$data[3]['mainIncome']}"></td>
+                                <td><input type="text" name="mainIncome[]" value="{$data[4]['mainIncome']}"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">其他业务收入</td>
+                                <td><input type="text" name="otherIncome[]" value="{$data[0]['otherIncome']}"></td>
+                                <td><input type="text" name="otherIncome[]" value="{$data[1]['otherIncome']}"></td>
+                                <td><input type="text" name="otherIncome[]" value="{$data[2]['otherIncome']}"></td>
+                                <td><input type="text" name="otherIncome[]" value="{$data[3]['otherIncome']}"></td>
+                                <td><input type="text" name="otherIncome[]" value="{$data[4]['otherIncome']}"></td>
+                            </tr>
+                            <tr>
+                                <td>减：业务成本</td>
+                                <td><input type="text" name="cost[]" value="{$data[0]['cost']}"></td>
+                                <td><input type="text" name="cost[]" value="{$data[1]['cost']}"></td>
+                                <td><input type="text" name="cost[]" value="{$data[2]['cost']}"></td>
+                                <td><input type="text" name="cost[]" value="{$data[3]['cost']}"></td>
+                                <td><input type="text" name="cost[]" value="{$data[4]['cost']}"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">主营业务成本</td>
+                                <td><input type="text" name="mainCost[]" value="{$data[0]['mainCost']}"></td>
+                                <td><input type="text" name="mainCost[]" value="{$data[1]['mainCost']}"></td>
+                                <td><input type="text" name="mainCost[]" value="{$data[2]['mainCost']}"></td>
+                                <td><input type="text" name="mainCost[]" value="{$data[3]['mainCost']}"></td>
+                                <td><input type="text" name="mainCost[]" value="{$data[4]['mainCost']}"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">其他业务成本</td>
+                                <td><input type="text" name="otherCost[]" value="{$data[0]['otherCost']}"></td>
+                                <td><input type="text" name="otherCost[]" value="{$data[1]['otherCost']}"></td>
+                                <td><input type="text" name="otherCost[]" value="{$data[2]['otherCost']}"></td>
+                                <td><input type="text" name="otherCost[]" value="{$data[3]['otherCost']}"></td>
+                                <td><input type="text" name="otherCost[]" value="{$data[4]['otherCost']}"></td>
+                            </tr>
+                            <tr>
+                                <td style="text-align: center">业务税金及附加</td>
+                                <td><input type="text" name="tax_addition[]" value="{$data[0]['tax_addition']}"></td>
+                                <td><input type="text" name="tax_addition[]" value="{$data[1]['tax_addition']}"></td>
+                                <td><input type="text" name="tax_addition[]" value="{$data[2]['tax_addition']}"></td>
+                                <td><input type="text" name="tax_addition[]" value="{$data[3]['tax_addition']}"></td>
+                                <td><input type="text" name="tax_addition[]" value="{$data[4]['tax_addition']}"></td>
+                            </tr>
+                            <tr>
+                                <td>业务利润</td>
+                                <td><input type="text" name="prpfit_YW[]" value="{$data[0]['prpfit_YW']}"></td>
+                                <td><input type="text" name="prpfit_YW[]" value="{$data[1]['prpfit_YW']}"></td>
+                                <td><input type="text" name="prpfit_YW[]" value="{$data[2]['prpfit_YW']}"></td>
+                                <td><input type="text" name="prpfit_YW[]" value="{$data[3]['prpfit_YW']}"></td>
+                                <td><input type="text" name="prpfit_YW[]" value="{$data[4]['prpfit_YW']}"></td>
+                            </tr>
+                            <tr>
+                                <td>减：营业费用</td>
+                                <td><input type="text" name="business[]" value="{$data[0]['business']}"></td>
+                                <td><input type="text" name="business[]" value="{$data[1]['business']}"></td>
+                                <td><input type="text" name="business[]" value="{$data[2]['business']}"></td>
+                                <td><input type="text" name="business[]" value="{$data[3]['business']}"></td>
+                                <td><input type="text" name="business[]" value="{$data[4]['business']}"></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;管理费用</td>
+                                <td><input type="text" name="manage[]" value="{$data[0]['manage']}"></td>
+                                <td><input type="text" name="manage[]" value="{$data[1]['manage']}"></td>
+                                <td><input type="text" name="manage[]" value="{$data[2]['manage']}"></td>
+                                <td><input type="text" name="manage[]" value="{$data[3]['manage']}"></td>
+                                <td><input type="text" name="manage[]" value="{$data[4]['manage']}"></td>
+                            </tr>
+                            <tr>
+                                <td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;财务费用</td>
+                                <td><input type="text" name="financial[]" value="{$data[0]['financial']}"></td>
+                                <td><input type="text" name="financial[]" value="{$data[1]['financial']}"></td>
+                                <td><input type="text" name="financial[]" value="{$data[2]['financial']}"></td>
+                                <td><input type="text" name="financial[]" value="{$data[3]['financial']}"></td>
+                                <td><input type="text" name="financial[]" value="{$data[4]['financial']}"></td>
+                            </tr>
+                            <tr>
+                                <td>营业利润</td>
+                                <td><input type="text" name="profit_YY[]" value="{$data[0]['profit_YY']}"></td>
+                                <td><input type="text" name="profit_YY[]" value="{$data[1]['profit_YY']}"></td>
+                                <td><input type="text" name="profit_YY[]" value="{$data[2]['profit_YY']}"></td>
+                                <td><input type="text" name="profit_YY[]" value="{$data[3]['profit_YY']}"></td>
+                                <td><input type="text" name="profit_YY[]" value="{$data[4]['profit_YY']}"></td>
+                            </tr>
+                            <tr>
+                                <td>投资收益</td>
+                                <td><input type="text" name="investIncome[]" value="{$data[0]['investIncome']}"></td>
+                                <td><input type="text" name="investIncome[]" value="{$data[1]['investIncome']}"></td>
+                                <td><input type="text" name="investIncome[]" value="{$data[2]['investIncome']}"></td>
+                                <td><input type="text" name="investIncome[]" value="{$data[3]['investIncome']}"></td>
+                                <td><input type="text" name="investIncome[]" value="{$data[4]['investIncome']}"></td>
+                            </tr>
+                            <tr>
+                                <td>加：营业外收入</td>
+                                <td><input type="text" name="otherBusinessIn[]" value="{$data[0]['otherBusinessIn']}"></td>
+                                <td><input type="text" name="otherBusinessIn[]" value="{$data[1]['otherBusinessIn']}"></td>
+                                <td><input type="text" name="otherBusinessIn[]" value="{$data[2]['otherBusinessIn']}"></td>
+                                <td><input type="text" name="otherBusinessIn[]" value="{$data[3]['otherBusinessIn']}"></td>
+                                <td><input type="text" name="otherBusinessIn[]" value="{$data[4]['otherBusinessIn']}"></td>
+                            </tr>
+                            <tr>
+                                <td>减：营业外支出</td>
+                                <td><input type="text" name="otherBusinessOut[]" value="{$data[0]['otherBusinessOut']}"></td>
+                                <td><input type="text" name="otherBusinessOut[]" value="{$data[1]['otherBusinessOut']}"></td>
+                                <td><input type="text" name="otherBusinessOut[]" value="{$data[2]['otherBusinessOut']}"></td>
+                                <td><input type="text" name="otherBusinessOut[]" value="{$data[3]['otherBusinessOut']}"></td>
+                                <td><input type="text" name="otherBusinessOut[]" value="{$data[4]['otherBusinessOut']}"></td>
+                            </tr>
+                            <tr>
+                                <td>利润总额</td>
+                                <td><input type="text" name="totalProfit[]" value="{$data[0]['totalProfit']}"></td>
+                                <td><input type="text" name="totalProfit[]" value="{$data[1]['totalProfit']}"></td>
+                                <td><input type="text" name="totalProfit[]" value="{$data[2]['totalProfit']}"></td>
+                                <td><input type="text" name="totalProfit[]" value="{$data[3]['totalProfit']}"></td>
+                                <td><input type="text" name="totalProfit[]" value="{$data[4]['totalProfit']}"></td>
+                            </tr>
+                            <tr>
+                                <td>减：所得税</td>
+                                <td><input type="text" name="incomeTax[]" value="{$data[0]['incomeTax']}"></td>
+                                <td><input type="text" name="incomeTax[]" value="{$data[1]['incomeTax']}"></td>
+                                <td><input type="text" name="incomeTax[]" value="{$data[2]['incomeTax']}"></td>
+                                <td><input type="text" name="incomeTax[]" value="{$data[3]['incomeTax']}"></td>
+                                <td><input type="text" name="incomeTax[]" value="{$data[4]['incomeTax']}"></td>
+                            </tr>
+                            <tr>
+                                <td>税后利润</td>
+                                <td><input type="text" name="profit_SH[]" value="{$data[0]['profit_SH']}"></td>
+                                <td><input type="text" name="profit_SH[]" value="{$data[1]['profit_SH']}"></td>
+                                <td><input type="text" name="profit_SH[]" value="{$data[2]['profit_SH']}"></td>
+                                <td><input type="text" name="profit_SH[]" value="{$data[3]['profit_SH']}"></td>
+                                <td><input type="text" name="profit_SH[]" value="{$data[4]['profit_SH']}"></td>
+                            </tr>
+                            </thead>
+                        </table>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <p>
+            <input type="button" value="保存" class="make" onclick="doSave()">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="button" id="recheck" value="确认" class="make">
+        </p>
+        <br/>
+        <div class="approve_memo" style="display: none;">
+            审核备注：
+            <textarea name="confirmMemo"  style="width:98%;overflow-y:auto;height:50px;" id="confirmMemo">{$data[0]['confirmMemo']}</textarea>
+            <p><input type="button" value="保存" id="save_memo"></p>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('SunyiDetail/save')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('SunyiDetail/recheck')}";
+        var data={"applicationid":applicationid};
+         ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        var url="{:url('SunyiDetail/save_memo')}";
+         ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

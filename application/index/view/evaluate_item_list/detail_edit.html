@@ -1,0 +1,117 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'评估明细项目','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('EvaluateItemList/detail_save')}" id="tableForm">
+                <div class="tab-pane">
+                    <button type="button" value="保存" id="save" onclick="doSave()"
+                            class="btn btn-info btn-sm"
+                            style="border:0 solid #fff "><span
+                            class="glyphicon glyphicon-saved"></span> 保存
+                    </button>
+
+                    <input type="hidden" name="id" id="id" value="{$data['EvaluateItemDetailID']}">
+                    <input type="hidden" name="pid" id="pid" value="{$data['EvaluateItemID']}">
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                               aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 13px;
+                                    text-align: left;
+                                }
+
+                                .table td span {
+                                    color: red;
+                                }
+                            </style>
+                            <tbody>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>序号:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="EvaluateItemDetailIndex"  value="{$data['EvaluateItemDetailIndex']}">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>比重:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="Ratio"  value="{$data['Ratio']}">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label class="type1">开始值:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="StartValue"  value="{$data['StartValue']}">
+                                </td>
+                            </tr>
+                            <tr role="row" class="type2">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>结束值:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="EndValue"  value="{$data['EndValue']}">
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+            <!--数据附件-->
+            {include file="Public:upload"/}
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+
+        var type="{$type}";
+        if(type=='str'){
+            $(".type1").text('值');
+            $(".type2").hide();
+        }
+    });
+
+    function close1(){
+        window.close();
+    }
+
+    function doSave() {
+        var option="edit";
+        saveFlow("{:url('EvaluateItemList/detail_save')}?option="+option, $('#tableForm').serialize());
+        // setTimeout('close1()',100);
+        window.opener.location.href = window.opener.location.href;
+    }
+
+</script>
+{/block}

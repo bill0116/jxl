@@ -1,0 +1,240 @@
+{extend name="layout/common_baogao" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <form class="form-horizontal" method="post" action="{:url('CreditEvaluate/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <table class="table table-striped pjsm">
+                            <style type="text/css">
+                                .pjsm td {
+                                    font-size: 14px;
+                                    width: 25%;
+                                }
+                            </style>
+                            <thead>
+                            <tr><td colspan="4" style="text-align: center;font-size: 18px;"><b>信用评级明细</b></td></tr>
+                            <tr>
+                                <td colspan="2">项目</td>
+                                <td >分值</td>
+                                <td >实际得分</td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">管理因素</td>
+                                <td>组织结构</td>
+                                <td>5分</td>
+                                <td><input type="text" name="manage_factor1" value="{$data['manage_factor1']}"></td>
+                            </tr>
+                            <tr>
+                                <td>管理者</td>
+                                <td>5分</td>
+                                <td><input type="text" name="manage_factor2" value="{$data['manage_factor2']}"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="2">经营因素</td>
+                                <td>经营情况</td>
+                                <td>15分</td>
+                                <td><input type="text" name="business_factor1" value="{$data['business_factor1']}"></td>
+                            </tr>
+                            <tr>
+                                <td>其他因素</td>
+                                <td>5分</td>
+                                <td><input type="text" name="business_factor2" value="{$data['business_factor2']}"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">信用因素</td>
+                                <td>购销支付信用</td>
+                                <td>10分</td>
+                                <td><input type="text" name="credit_factor1" value="{$data['credit_factor1']}"></td>
+                            </tr>
+                            <tr>
+                                <td>往来银行</td>
+                                <td>10分</td>
+                                <td><input type="text" name="credit_factor2" value="{$data['credit_factor2']}"></td>
+                            </tr>
+                            <tr>
+                                <td>公共记录</td>
+                                <td>5分</td>
+                                <td><input type="text" name="credit_factor3" value="{$data['credit_factor3']}"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="3">财务因素</td>
+                                <td>偿债能力</td>
+                                <td>10分</td>
+                                <td><input type="text" name="financial_factor1" value="{$data['financial_factor1']}"></td>
+                            </tr>
+                            <tr>
+                                <td>营运能力</td>
+                                <td>10分</td>
+                                <td><input type="text" name="financial_factor2" value="{$data['financial_factor2']}"></td>
+                            </tr>
+                            <tr>
+                                <td>盈利能力</td>
+                                <td>10分</td>
+                                <td><input type="text" name="financial_factor3" value="{$data['financial_factor3']}"></td>
+                            </tr>
+                            <tr>
+                                <td rowspan="4">其他因素</td>
+                                <td>行业发展潜力</td>
+                                <td>5分</td>
+                                <td><input type="text" name="other_factor1" value="{$data['other_factor1']}"></td>
+                            </tr>
+                            <tr>
+                                <td>企业行业地位</td>
+                                <td>5分</td>
+                                <td><input type="text" name="other_factor2" value="{$data['other_factor2']}"></td>
+                            </tr>
+                            <tr>
+                                <td>企业发展潜力</td>
+                                <td>5分</td>
+                                <td><input type="text" name="other_factor3" value="{$data['other_factor3']}"></td>
+                            </tr>
+                            <tr>
+                                <td>调研人员综合评价</td>
+                                <td>±10分</td>
+                                <td><input type="text" name="other_factor4" value="{$data['other_factor4']}"></td>
+                            </tr>
+                            <tr>
+                                <td>合计</td>
+                                <td></td>
+                                <td></td>
+                                <td><input type="text" name="total" value="{$data['total']}" readonly style="background-color:#EEEEEE"></td>
+                            </tr>
+
+
+                            </thead>
+                        </table>
+                     </form>
+                    <br/><br/>
+                    <p style="font-size: 20px; text-align: left;"><b>信用等级评定</b></p>
+                    <br/>
+                    <table class="table table-striped xydj">
+                        <style type="text/css">
+                            .xydj td {
+                                font-size: 14px;
+                                width: 33%;
+                            }
+                        </style>
+                        <thead>
+                        <tr>
+                            <td >信用等级</td>
+                            <td >分值</td>
+                            <td >建议信用额度</td>
+                        </tr>
+                        <tr id="CR1">
+                            <td>CR1</td>
+                            <td>80-100</td>
+                            <td>大额</td>
+                        </tr>
+                        <tr id="CR2">
+                            <td>CR2</td>
+                            <td>70-79</td>
+                            <td>中大额</td>
+                        </tr>
+                        <tr id="CR3">
+                            <td>CR3</td>
+                            <td>60-69</td>
+                            <td>中额</td>
+                        </tr>
+                        <tr id="CR4">
+                            <td>CR4</td>
+                            <td>50-59</td>
+                            <td>中小额</td>
+                        </tr>
+                        <tr id="CR5">
+                            <td>CR5</td>
+                            <td>40-49</td>
+                            <td>小额</td>
+                        </tr>
+                        <tr id="CR6">
+                            <td>CR6</td>
+                            <td>0-39</td>
+                            <td>现金交易</td>
+                        </tr>
+                        <tr id="NR">
+                            <td>NR</td>
+                            <td>--</td>
+                            <td>不予评估</td>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    var total="{$data['total']}";
+    if(total>=80 && total<=100 ){
+        $("#CR1").css('background-color','red');
+    }
+    else if(total>=70 && total<=79){
+        $("#CR2").css('background-color','red');
+    }
+    else if(total>=60 && total<=69){
+        $("#CR3").css('background-color','red');
+    }
+    else if(total>=50 && total<=59){
+        $("#CR4").css('background-color','red');
+    }
+    else if(total>=40 && total<=49){
+        $("#CR5").css('background-color','red');
+    }
+    else if(total>0 && total<=39){
+        $("#CR6").css('background-color','red');
+    }
+    else{
+        $("#NR").css('background-color','red');
+    }
+
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('CreditEvaluate/save')}", $('#tableForm').serialize());
+            window.location=window.location;
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('CreditEvaluate/recheck')}";
+        var data={"applicationid":applicationid};
+       ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        var url="{:url('CreditEvaluate/save_memo')}";
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+

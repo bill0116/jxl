@@ -1,0 +1,100 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'用户管理','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form id="number_validate" class="form-horizontal" method="post" action="{:url('UserManage/roleedit')}" name="number_validate" enctype="multipart/form-data" novalidate="novalidate">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div id="DataTables_Table_0_length" class="dataTables_length">
+                            <input type="submit" id="save" value="保存"  class="btn btn-success btn-sm" style="margin: 0px;width:62px;height:31px;border: 0px solid red;">
+                            <input type="hidden" name="option" id="option" value="{$param['option']}">
+                            <input type="hidden" name="userid" id="userid" value="{$userData[0]['userid']|default=''}">
+                            <input type="hidden" name="roleid" id="roleid" value="{$userData[0]['roleid']|default=''}">
+                            <input type="hidden" name="vkorg" id="vkorg" value="{$param['organization']}">
+                            <input type="hidden" name="userroleid" id="userroleid" value="{$param['userroleid']}">
+                        </div>
+                    </div>
+                </div>
+                <!--内容-->
+                <div class="tab-pane" id="xsxx" style="margin-top: 8px;">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                        <style type="text/css">
+                            .table {
+                                height:100px;
+                            }
+                            .table th {
+                                font-size: 13px;
+                                text-align: left;
+                            }
+
+                            .table th span {
+                                color: red;
+                            }
+                        </style>
+                        <thead>
+                        <tr role="row">
+                            <th rowspan="1" colspan="1" style="width: 15%">
+                                <label>姓名：<span>*</span></label>
+                            </th>
+                            <td  rowspan="1" colspan="3" style="width: 85%">
+                                <input type="text" name="name" id="UserName" value="{$userData[0]['username']|default=''}" readonly>
+                            </td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr role="row">
+                            <td  rowspan="1" colspan="4">
+                                <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                                    <thead>
+                                    <tr role="row">
+                                        <th style="width: 30%">渠道/办事处</th>
+                                        <th style="width: 70%">角色</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr role="row">
+                                        <td>
+                                            <div class="easyui-panel" style="padding:5px;width: 300px;">
+                                                <ul class="easyui-tree" >
+                                                    <!--一级菜单-->
+                                                    {volist name="vkorglist" id="i"}
+                                                    <li data-options="state:'closed'">
+                                                            <span>
+                                                                <input style="height:12px;" class="vtweg" type="checkbox" name="vtweg[]" value="{$i.id}" id="{$i.id}" >
+                                                                <span>{$i.OrganizationTitle}</span>
+                                                            </span>
+                                                    </li>
+                                                    {/volist}
+                                                </ul>
+                                            </div>
+                                        </td>
+                                        <td>
+                                        {volist name="roleData" id="vo"}
+                                            <div style="width: 30%;float: left;"><input class="role" style="height:15px;" type="checkbox" name="Role[]" id="{$vo.RoleID}" value="{$vo.RoleID}" {if condition="in_array($vo['RoleID'],array_column($old,'RoleID'))"}checked{/if}>{$vo.RoleName}</div>
+                                        {/volist}
+                                        <div style="clear: both"></div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+    })
+</script>
+{/block}

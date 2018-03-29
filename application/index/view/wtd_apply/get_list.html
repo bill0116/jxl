@@ -1,0 +1,209 @@
+{extend name="layout/ins_page" /}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'委托单','search'=>'N'))}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <div class="ibox" sort="12">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <button type="button" class="btn btn-info" value="新建" onclick="doAdd()">
+                        <span class="glyphicon glyphicon-plus">新建</span>
+                    </button>
+                </div>
+            </div>
+            <div class="ibox-content">
+                <div class="tab-content">
+                    <div id="calendar-schedule" class=" ul_table tab-pane in active">
+                        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"  aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table th{
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                                .table td{
+                                    font-size: 13px;
+                                    text-align: center;
+                                }
+                            </style>
+                            <thead>
+                            <tr role="row">
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                    委托单编号
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Role: activate to sort column ascending" style="width: auto;">
+                                    客户代码
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                    客户名称
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Status: activate to sort column ascending" style="width: auto;">
+                                    目标公司名称
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    处理状态
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    提交人
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    提交时间
+                                </th>
+                                <th class="sorting" role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Actions: activate to sort column ascending" style="width: auto;">
+                                    操作
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody role="alert" aria-live="polite" aria-relevant="all" id="list">
+                            <div id="list_s">
+                                {volist name='data' id='vo'}
+                                <tr class="gra odd db">
+                                    <input class="id" type="hidden" name="activeid"  value="{$vo['ActiveID']}" data-text="{$vo['ActiveID']}">
+                                    <input class="id" type="hidden" name="applicationid"  value="{$vo['ApplicationID']}" data-text="{$vo['ApplicationID']}">
+                                    <input class="id" type="hidden" name="Creator"  value="{$vo['Creator']}" data-text="{$vo['Creator']}">
+                                    <td class="center ">{$vo['KeyCol6']}</td>
+                                    <td class="center ">{$vo['KeyCol4']}</td>
+                                    <td class="center ">{$vo['KeyCol5']}</td>
+                                    <td class="center ">{$vo['KeyCol8']}</td>
+                                    <td class="center" >{$vo['statusName']}</td>
+                                    <td class="center" >{$vo['creatorname']}</td>
+                                    <td class="center " >{$vo['SendDate']}</td>
+                                    <td class="center ">
+                                        <a class="cl btn btn-success"   style="border:0px solid #fff;float:left;margin-left: 3px;">
+                                            <i class="white zoom-in" >处理</i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                {/volist}
+                            </div>
+                            </tbody>
+                        </table>
+                        <div align="right" id="page">
+                            <div id="pp">
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                    </script>
+                    <script type="text/javascript">
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    //新建资信报告
+    function doAdd(){
+        var url="{:url('WtdApply/add')}";
+        window.open(url,'_self');
+       // var iWidth = 800; //弹出窗口的宽度;
+       // var iHeight = 500; //弹出窗口的高度;
+        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+       // var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+        //var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+/*        window.open(url, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');*/
+    }
+
+    $(function () {
+        var userid="{$Think.session.auth_lid}";
+        $(".db").each(function(){
+            var rn = $(this).children('input').eq(3).val();
+            if(rn == userid)
+                $(this).find('a').eq(1).show();
+        });
+        $(".zb").each(function(){
+            var rn = $(this).children('input').eq(3).val();
+            if(rn == userid)
+                $(this).find('button').eq(1).show();
+        });
+        $('.cl').click(function(){
+             var activeid = $(this).parent("td").parent("tr").find("input").eq(0).attr("data-text");
+             var applicationid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            var url="{:url('WtdApply/index')}?applicationid="+applicationid+"&activeid="+activeid;
+            window.open(url, '_self');
+
+        });
+        $(".chakan").click(function () {
+//											var id = $(this).attr("id");
+            var flowid = $(this).parent("td").parent("tr").find("input").eq(0).attr("data-text");
+            var activeid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            var applicationid = $(this).parent("td").parent("tr").find("input").eq(2).attr("data-text");
+            var url = $(this).parent("td").parent("tr").find("input").eq(4).attr("data-text");
+            $.ajax({
+                type:'post',
+                url:"{:url('LawsuitSearchList/jinru')}",
+                data:{activeid:activeid},
+                success:function(data){
+                    var cl = data['cl'];
+                    if (cl==1) {
+                        var loadurl = "./" + url + "/activeid/" + activeid + "/applicationid/" + applicationid + "/cl/1";
+                        var iWidth = 1100; //弹出窗口的宽度;
+                        var iHeight = 600; //弹出窗口的高度;
+                        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+                        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+                        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+                        window.open(loadurl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+                        $('#xsxx').find('input,textarea').prop('readonly', false);
+                        $('#xsxx').find('select,button').prop('disabled', false);
+                        $("#LawsuitCode").prop('disabled',false);
+
+                    } else if(cl == 0){
+                        var getUrl = "./" + url + "/activeid/" + activeid + "/applicationid/" + applicationid + "/cl/0";
+                        var iWidth = 1100; //弹出窗口的宽度;
+                        var iHeight = 600; //弹出窗口的高度;
+                        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+                        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+                        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+                        window.open(getUrl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+                    }
+                }
+            })
+        })
+        $(".btn.btn-danger").click(function () {
+            var userid="{$Think.session.auth_lid}";
+            var id = $(this).attr("data-id");
+            var activeid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            if(id=="cx") {
+                if (confirm("是否撤销？")) {
+                    $.ajax({
+                        url: "{:url('Index/index/cancel_active')}",
+                        type: 'post',
+                        data: {"activeid": activeid, "curuserid": userid},
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(JSON.stringify(data[0].msg));
+                            location.reload();
+                        }
+                    });
+                }
+            }
+        })
+        $(".btn.btn-warning").click(function () {
+            var userid="{$Think.session.auth_lid}";
+            var id = $(this).attr("data-id");
+            var activeid = $(this).parent("td").parent("tr").find("input").eq(1).attr("data-text");
+            if(id=="cb") {
+                if(confirm("是否催办？")) {
+                    $.ajax({
+                        url: "{:url('Index/index/press_active')}",
+                        type: 'post',
+                        data: {"activeid": activeid},
+                        dataType: 'json',
+                        success: function (data) {
+                            alert(JSON.stringify(data[0].msg));
+                        }
+                    });
+                }
+            }
+        })
+    })
+</script>
+{/block}

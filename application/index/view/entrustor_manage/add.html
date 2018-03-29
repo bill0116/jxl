@@ -1,0 +1,160 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'委托方信息','search'=>'N'))}
+<div class="span12">
+    <div class="widget-box">
+        <div class="widget-content nopadding">
+            <form class="form-horizontal" method="post" action="{:url('EntrustorManage/add')}" id="tableForm">
+                <div class="tab-pane">
+                    <div class="row-fluid">
+                        <div class="span6">
+                            <div id="DataTables_Table_0_length" class="dataTables_length">
+                                <label>
+                                    <input type="submit" class="btn btn-success btn-sm" value="{:lang('保存')}">
+                                    <input type="button" class="btn btn-default btn-sm" value="{:lang('返回')}"  onclick="javascript:history.back(-1);">
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <!--表单数据-->
+                    <div id="myTabContent" class="tab-content">
+                        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable"
+                               aria-describedby="DataTables_Table_0_info">
+                            <style type="text/css">
+                                .table td {
+                                    font-size: 13px;
+                                    text-align: left;
+                                }
+
+                                .table td span {
+                                    color: red;
+                                }
+                            </style>
+                            <tbody>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>客户代码:<span>*</span></label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="buyerno" id="buyerno" value="">
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>客户名称:<span>*</span></label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="buyerName" id="buyerName" value="" style="width: 300px;">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>联系人:<span>*</span></label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="buyerPerson" id="buyerPerson" value="">
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>电话:<span>*</span></label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="buyerTel" id="buyerTel" value="" style="width: 300px;">
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>委托人:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="entrustor" id="entrustor" value="" >
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>普通报告完成天数:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <input type="text" name="finishDay" id="finishDay" value="" >
+                                </td>
+                            </tr>
+                            <tr role="row">
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="1"
+                                    aria-label="Role: activate to sort column ascending" style="width: 15%;">
+                                    <label>特殊需求:</label>
+                                </td>
+                                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                                    colspan="3"
+                                    aria-label="Status: activate to sort column ascending" style="width: 35%;">
+                                    <textarea name="specicalRequire" class="form-control" rows="2"></textarea>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $('form').validate({
+            rules: {
+                buyerno: {
+                    required: true
+                },
+                buyerName: {
+                    required: true
+                },
+                buyerPerson: {
+                    required: true
+                },
+                buyerTel: {
+                    required: true
+                }
+            },
+            messages: {
+                buyerno: {
+                    required: "必填项"
+                },
+                buyerName: {
+                    required: "必填项"
+                },
+                buyerPerson: {
+                    required: "必填项"
+                },
+                buyerTel: {
+                    required: "必填项"
+                }
+            },
+            errorPlacement: function (error, element) { //错误信息位置设置方法
+                error.appendTo(element.parent().last()); //这里的element是录入数据的对象
+            },
+        });
+    });
+</script>
+{/block}

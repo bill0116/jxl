@@ -1,0 +1,202 @@
+{extend name='Layout/ins_page'/}
+{block name="content"}
+{:widget('PageHeader/simple',array('name'=>'用户信息','search'=>'N'))}
+<div class="box-content">
+    <form id="saveTable">
+        <div class="row-fluid">
+            <div class="span6">
+                <div id="DataTables_Table_0_length" class="dataTables_length">
+                    <label>
+                        <input type="button" id="save" value="保存" class="btn btn-success btn-sm"
+                               style="margin: 0px;width:62px;height:31px;border: 0px solid red;">
+                        <input type="button" id="adduser" value="增加角色" class="btn btn-success btn-sm"
+                               style="margin: 0px;width:82px;height:31px;border: 0px solid red;">
+                    </label>
+                </div>
+            </div>
+        </div>
+        <table class="table table-striped table-bordered bootstrap-datatable datatable dataTable">
+            <thead>
+            <tr role="row">
+                <input type="hidden" name="UserID" id="UserID" value="{$userData['userid']}">
+                <input type="hidden" name="organization" id="organization" value="{$userData['organization']}"
+                       readonly>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>登录名:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="LoginName" id="LoginName" value="{$userData['loginname']}">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>用户名:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="UserName" id="UserName" value="{$userData['username']}">
+                </td>
+            </tr>
+            <tr role="row">
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>Email:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="text" name="EMail" id="EMail" value="{$userData['email']}">
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending" style="width: 145px;">
+                    <label>状态:</label>
+                </td>
+                <td role="columnheader" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1"
+                    colspan="1"
+                    aria-label="Status: activate to sort column ascending">
+                    <input type="radio" name="IsActive" id="IsActive_0" value="1" style="width:20px;" {if
+                           condition="$userData['isactive'] eq 1" }checked{/if}>启用
+                    <input type="radio" name="IsActive" id="IsActive_1" value="0" style="width:20px;" {if
+                           condition="$userData['isactive'] eq 0" }checked{/if}>禁用
+                </td>
+            </tr>
+            <tr role="row">
+                <th rowspan="1" colspan="4" style="width: 15%">
+                    <label>修改密码</label>
+                </th>
+            </tr>
+            <tr role="row">
+                <th rowspan="1" colspan="1" style="width: 15%">
+                    <label>新密码：<span>*</span></label>
+                </th>
+                <td rowspan="1" colspan="1" style="width: 35%">
+                    <input type="text" name="PassWord" id="password" value="" style="width:80%">
+                </td>
+            </tr>
+            <tr role="row">
+                <td rowspan="1" colspan="4">
+                    <table class="table table-striped table-bordered bootstrap-datatable datatable">
+                        <thead>
+                        <tr role="row">
+                            <th style='width:120px;'>角色</th>
+                            <th style='width:300px;'>渠道/办公室</th>
+                            <th style='width:130px;'>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {volist name="listData" id="vo"}
+                        <tr role="row">
+                            <td>{$vo.rolename}</td>
+                            <td>
+                                <input type="hidden" name="userroleid" value="{$vo.userroleid}">
+                                <span>{$vo.organizationtitle}</span><br/>
+                            </td>
+                            <td>
+                                <a rel="edit2" href="javascript:void(0)">编辑</a>&nbsp;&nbsp;
+                                <a rel="del2" href="javascript:void(0)">删除</a>
+                            </td>
+                        </tr>
+                        {/volist}
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            </thead>
+        </table>
+    </form>
+</div>
+{include file="Public:modal"/}
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    $(function () {
+        $("#sidebar,#top_menu,#breadcrumbs").remove();
+        $('.gray-bg').attr("id", "");
+        $("#save").click(function () {
+            $.ajax({
+                type: 'post',
+                url: "{:url('UserManage/edit')}",
+                data: $('#saveTable').serialize(),
+                datatype: 'json',
+                success: function (data) {
+                    alert(data.msg);
+                },
+                error: function () {
+                    alert("服务器繁忙中!")
+                    return false;
+                }
+            })
+        })
+        //编辑
+        $("a[rel='edit2']").click(function(){
+            var organization = $("#organization").val();
+            var userid = $("#UserID").val();
+            var userroleid = $(this).parent().parent().find("input[name='userroleid']").val();
+            var getUrl = "{:url('UserManage/role')}"+"?organization="+organization+"&userid="+userid+"&userroleid="+userroleid+"&option=edit";
+            var iWidth = 1000; //弹出窗口的宽度;
+            var iHeight = 600; //弹出窗口的高度;
+            //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+            var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+            var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+            window.open(getUrl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                    'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                    'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+        })
+        //删除
+        $("a[rel='del2']").click(function(){
+            var userroleid = $(this).parent().parent().find("input[name='userroleid']").val();
+            var status=confirm("确定要删除吗？")
+            if(!status){
+                return false;
+            };
+            $.ajax({
+                type:'post',
+                url:"{:url('UserManage/editdel')}",
+                data:{userroleid:userroleid},
+                datatype:'json',
+                success:function(data){
+                    if(data.code == 1){
+                        alert(data.msg);
+                        var organization = $("#organization").val();
+                        var userid = $("#UserID").val();
+                        window.close();
+                        var getUrl = "{:url('UserManage/edit')}"+"?organization="+organization+"&userid="+userid;
+                        var iWidth = 1000; //弹出窗口的宽度;
+                        var iHeight = 600; //弹出窗口的高度;
+                        //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+                        var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+                        var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+                        window.open(getUrl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                                'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                                'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+                        CollectGarbage();
+                    }else{
+                        alert(data.msg);
+                    }
+                }
+            })
+        })
+        //增加角色
+        $("#adduser").click(function(){
+            var organization = $("#organization").val();
+            var userid = $("#UserID").val();
+            var getUrl = "{:url('UserManage/addrole')}"+"?organization="+organization+"&userid="+userid+"&option=add";
+            var iWidth = 1000; //弹出窗口的宽度;
+            var iHeight = 600; //弹出窗口的高度;
+            //window.screen.height获得屏幕的高，window.screen.width获得屏幕的宽
+            var iTop = (window.screen.height - 30 - iHeight) / 2; //获得窗口的垂直位置;
+            var iLeft = (window.screen.width - 10 - iWidth) / 2; //获得窗口的水平位置;
+            window.open(getUrl, '_blank', 'height=' + iHeight + ',innerHeight=' + iHeight + ',' +
+                    'width=' + iWidth + ',innerWidth=' + iWidth + ',top=' + iTop + ',left=' + iLeft + ',' +
+                    'toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no');
+        })
+    })
+</script>
+{/block}

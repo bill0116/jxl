@@ -1,0 +1,336 @@
+{extend name="layout/common_baogao2" /}
+{block name="content"}
+<div class="row" id="sortable-view">
+    <div class="col-sm-12 ui-sortable" id="t1">
+        <style>
+            .tablehead {
+                width:100%;
+                left: 0;
+                word-break: break-all;
+                word-wrap: break-word;
+                padding: 0px;
+                margin: 0px;
+            }
+            .tablehead td {
+                border: 1px solid #ddd;
+                text-align:left;
+                padding: 0px;
+                margin: 0px;
+                height: 20px;
+            }
+        </style>
+        <div id="get_list">
+            <div id="pageajax">
+                <div class="tablehead">
+                    <p style="font-size: 20px; text-align: left;"><b>综合评价</b></p>
+                    <br/><br/>
+                    <p><b style="font-size: 20px; text-align: left;">企业发展历史</b>&nbsp;&nbsp;&nbsp;<input type="button" value="新增" id="history_add" class="com"></p>
+
+                    <table class="table table-striped">
+                        <style type="text/css">
+                            .table td {
+                                font-size: 14px;
+                            }
+                        </style>
+                        <thead>
+                        <tr class="history_header">
+                            <td style="width: 15%">时间</td>
+                            <td style="width: 75%">事件</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        {volist name="history_list" id="vo"}
+                        <tr class="history">
+                            <input type='hidden' value="{$vo.id}" name='ids'>
+                            <td><span class='xst2'>{$vo.time}</span><input type="text" name='xs2' style="display: none;" value="{$vo.time}"/></td>
+                            <td><span class='xst1'>{$vo.information}</span><textarea name='xs1' rows='3' style='width:98%;overflow-y:auto;display: none;' >{$vo.information}</textarea></td>
+                            <td style="width: 30px;"><span name='n' class='normal'> <a rel='edit_history' href='javascript:void(0)'>编辑</a> </span>
+                                <span name='e' class='edit' style="display: none;"><a rel='update_history' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_history' href='javascript:void(0)'>取消</a></span> </td>
+                            <td style="width: 30px;"><a rel='del_history' href='javascript:void(0)'>删除</a></td>
+                        </tr>
+                        <tr class="foreign" style="display: none;">
+                            <td >({$language})<input type="text" name="name" value="" style="width: 100%;"></td>
+                        </tr>
+                        {/volist}
+
+                        </thead>
+                    </table>
+
+                    <form class="form-horizontal" method="post" action="{:url('CreditAnalyse1/save')}" id="tableForm">
+                        <input type="hidden" name="id" id="applicationid" value="{$applicationid}">
+                        <input type="hidden"  name="activeid" id="activeid" value="{$activeid}">
+                        <br/><br/>
+                        <p style="font-size: 16px; text-align: left;"><b>经营与管理</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="businessManage"  style="width:98%;overflow-y:auto;height:300px;">{$data['businessManage']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="businessManageEng"  style="width:98%;overflow-y:auto;height:300px;display: none;">{$data['businessManageEng']}</textarea>
+                        <br/><br/>
+                        <p style="font-size: 16px; text-align: left;"><b>行业现状及前景</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="summany"  style="width:98%;overflow-y:auto;height:200px;">{$data['summany']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="summanyEng"  style="width:98%;overflow-y:auto;height:200px;display: none;">{$data['summanyEng']}</textarea>
+                        <br/><br/>
+                        <p style="font-size: 16px; text-align: left;"><b>企业SWOT分析</b></p>
+                        <span class="foreign" style="display: none;">(中文)</span>
+                        <textarea name="compreAnalyse"  style="width:98%;overflow-y:auto;height:300px;">{$data['compreAnalyse']}</textarea>
+                        <br/>
+                        <span class="foreign" style="display: none;">{$language}</span>
+                        <textarea class="foreign" name="compreAnalyseEng"  style="width:98%;overflow-y:auto;height:300px;display: none;">{$data['compreAnalyseEng']}</textarea>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!--按钮与报告备注-->
+        {include file="public:baogaoMemo"/}
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script type="text/javascript">
+    //新增发展史
+    $('#history_add').click(function(){
+        var applicationid=$("#applicationid").val();
+        $.ajax({
+            type: 'post',
+            data: {"applicationid":applicationid},
+            url:  "{:url('CreditAnalyse1/add_history')}",
+            dataType: 'json',
+            success: function (data) {
+                console.log(data.data);
+                if(data.data){
+                    var str= "<tr class='history'>" +
+                            "<input type='hidden' value='"+data.data.id+"' name='ids'>" +
+                            "<td><span class='xst2' style='display: none;'>"+data.data.time+"</span><input name='xs2' value='"+data.data['information']+"'/></td>"+
+                            "<td><span class='xst1' style='display: none;'>"+data.data.information+"</span><textarea name='xs1' rows='3' style='width:98%;overflow-y:auto;' >"+data.data['information']+"</textarea></td>"+
+                            "<td style='width: 30px;'><span name='n' class='normal'> <a rel='edit_history' href='javascript:void(0)' style='display: none;'>编辑</a> </span>"+
+                            "<span name='e' class='edit'><a rel='update_history' id='' href='javascript:void(0)'>保存</a>|<a rel='cancel_history' href='javascript:void(0)' >取消</a></span> </td>"+
+                            "<td style='width: 30px;'><a rel='del_history' href='javascript:void(0)'>删除</a></td>" +
+                            "</tr>";
+                    $(".history_header").after(str);
+                }
+                //点击编辑
+                $("a[rel='edit_history']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+                    $(this).parent().parent().parent().find("input[name='xs2']").show();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").hide();
+                    $(this).parent().parent().parent().find("span[class='xst2']").hide();
+
+                    $(this).hide();
+                    $(this).parent().parent().find("span[class='edit']").show();
+                });
+                //点击保存
+                $("a[rel='update_history']").click(function () {
+                    var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+                    var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+                    var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+                    $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+                    $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+                    var applicationid = $('#applicationid').val();
+                    var tis = $(this);
+                    $.ajax({
+                        type: "post",
+                        url: "{:url('CreditAnalyse1/history_update')}",
+                        data: {xs1:xs1,applicationid:applicationid,id:id,xs2:xs2}
+                    }).done(function (data) {
+                        if (data.data) {
+                            console.log(data.data);
+                            tankuang(300,data.msg);
+                            location=location;
+                            tis.parent().parent().parent().find("span[class='xst1']").show();
+                            tis.parent().parent().parent().find("span[class='xst2']").show();
+
+                            tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+                            tis.parent().parent().parent().find("input[name='xs2']").hide();
+
+                            tis.parent().parent().find("span[class='edit']").hide();
+                            tis.parent().parent().find("a[rel='edit_history']").show();
+                        }
+                    });
+                    //取消表单
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs2']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+                    $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_history']").show();
+                });
+                //点击取消
+                $("a[rel='cancel_history']").click(function () {
+                    $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+                    $(this).parent().parent().parent().find("input[name='xs2']").hide();
+
+                    $(this).parent().parent().parent().find("span[class='xst1']").show();
+                    $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+                    $(this).parent().parent().find("span[class='edit']").hide();
+                    $(this).parent().parent().find("a[rel='edit_history']").show();
+                });
+                //点击删除
+                $("a[rel='del_history']").click(function () {
+                    if (!confirm("确定要删除吗？")) {
+                        return false;
+                    }
+                    var id = $(this).parent().parent().find("input[name='ids']").val();
+                    var tis = $(this);
+                    if(id!=''){
+                        $.ajax({
+                            type: 'post',
+                            data: {id: id},
+                            url: "{:url('CreditAnalyse1/history_del')}",
+                            dataType: 'json',
+                            success: function (data) {
+                                if(data.code == 1){
+                                    tis.parent().parent().remove();
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    //点击编辑
+    $("a[rel='edit_history']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").show();
+        $(this).parent().parent().parent().find("input[name='xs2']").show();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").hide();
+        $(this).parent().parent().parent().find("span[class='xst2']").hide();
+
+        $(this).hide();
+        $(this).parent().parent().find("span[class='edit']").show();
+    });
+    //点击保存
+    $("a[rel='update_history']").click(function () {
+        var xs1 = $(this).parent().parent().parent().find("textarea[name='xs1']").val();
+        var xs2 = $(this).parent().parent().parent().find("input[name='xs2']").val();
+        var id = $(this).parent().parent().parent().find("input[name='ids']").val();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").text(xs1);
+        $(this).parent().parent().parent().find("span[class='xst2']").text(xs2);
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+        var applicationid = $('#applicationid').val();
+        var tis = $(this);
+        $.ajax({
+            type: "post",
+            url: "{:url('CreditAnalyse1/history_update')}",
+            data: {xs1:xs1,applicationid:applicationid,id:id,xs2:xs2}
+        }).done(function (data) {
+            if (data.data) {
+                console.log(data.data);
+                tankuang(300,data.msg);
+                tis.parent().parent().parent().find("span[class='xst1']").show();
+                tis.parent().parent().parent().find("span[class='xst2']").show();
+
+                tis.parent().parent().parent().find("textarea[name='xs1']").hide();
+                tis.parent().parent().parent().find("input[name='xs2']").hide();
+
+                tis.parent().parent().find("span[class='edit']").hide();
+                tis.parent().parent().find("a[rel='edit_history']").show();
+            }
+        });
+        //取消表单
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_history']").show();
+    });
+    //点击取消
+    $("a[rel='cancel_history']").click(function () {
+        $(this).parent().parent().parent().find("textarea[name='xs1']").hide();
+        $(this).parent().parent().parent().find("input[name='xs2']").hide();
+
+        $(this).parent().parent().parent().find("span[class='xst1']").show();
+        $(this).parent().parent().parent().find("span[class='xst2']").show();
+
+        $(this).parent().parent().find("span[class='edit']").hide();
+        $(this).parent().parent().find("a[rel='edit_history']").show();
+    });
+    //点击删除
+    $("a[rel='del_history']").click(function () {
+        if (!confirm("确定要删除吗？")) {
+            return false;
+        }
+        var id = $(this).parent().parent().find("input[name='ids']").val();
+        var tis = $(this);
+        if(id!=''){
+            $.ajax({
+                type: 'post',
+                data: {id: id},
+                url: "{:url('CreditAnalyse1/history_del')}",
+                dataType: 'json',
+                success: function (data) {
+                    if(data.code == 1){
+                        tis.parent().parent().remove();
+                    }
+                }
+            });
+        }
+    });
+
+    //保存
+    function doSave(){
+        saveFlow("{:url('CreditAnalyse1/save')}", $('#tableForm').serialize());
+    }
+
+    //保存(翻译)
+    function doSaveEng(){
+        saveFlow("{:url('CreditAnalyse1/saveEng')}", $('#tableForm').serialize());
+    }
+
+    //确认
+    $('#recheck').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('CreditAnalyse1/recheck')}";
+        var data={"applicationid":applicationid};
+          ajax_check_memo(url,data);
+    });
+
+    //确认(翻译)
+    $('#recheckEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var url="{:url('CreditAnalyse1/recheckEng')}";
+        var data={"applicationid":applicationid};
+        ajax_check_memo(url,data);
+    });
+
+    //备注
+    $('#save_memo').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemo=$("#confirmMemo").val();
+        var url="{:url('CreditAnalyse1/save_memo')}";
+        var data={"applicationid":applicationid,"confirmMemo":confirmMemo};
+        ajax_check_memo(url,data);
+    });
+
+    //备注(翻译)
+    $('#save_memoEng').click(function(){
+        var applicationid=$("#applicationid").val();
+        var confirmMemoEng=$("#confirmMemoEng").val();
+        var url="{:url('CreditAnalyse1/save_memoEng')}";
+        var data={"applicationid":applicationid,"confirmMemoEng":confirmMemoEng};
+        ajax_check_memo(url,data);
+    });
+
+</script>
+{/block}
+
